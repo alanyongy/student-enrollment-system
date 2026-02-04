@@ -1,3 +1,18 @@
 spring:
   application:
     name: CourseRegistrationSystem
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: course-reg
+    password: myproject
+
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
