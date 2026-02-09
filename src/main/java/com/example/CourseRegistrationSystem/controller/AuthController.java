@@ -4,8 +4,8 @@ package com.example.CourseRegistrationSystem.controller;
 
 import org.springframework.web.bind.annotation.*;
 
+import com.example.CourseRegistrationSystem.dto.ApiResponse;
 import com.example.CourseRegistrationSystem.dto.LoginRequest;
-import com.example.CourseRegistrationSystem.dto.LoginResponse;
 import com.example.CourseRegistrationSystem.dto.SignupRequest;
 import com.example.CourseRegistrationSystem.service.AuthService;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +22,22 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody SignupRequest request) {
-        authService.signup(request);
-        return ResponseEntity.ok("User registered successfully");
+    public ResponseEntity<ApiResponse> signup(@RequestBody SignupRequest request) {
+        try {
+            authService.signup(request);
+            return ResponseEntity.ok(new ApiResponse(true, "User registered successfully"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new ApiResponse(false, e.getMessage()));
+        }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-        LoginResponse response = authService.login(request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<ApiResponse> login(@RequestBody LoginRequest request) {
+        try {
+            authService.login(request);
+            return ResponseEntity.ok(new ApiResponse(true, "Login successful"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(401).body(new ApiResponse(false, e.getMessage()));
+        }
     }
 }
