@@ -23,11 +23,9 @@ public class Program {
     @JoinColumn(name = "department_id")
     private Department department;
 
-    @ManyToMany
-    @JoinTable(
-        name = "program_students",
-        joinColumns = @JoinColumn(name = "program_id"),
-        inverseJoinColumns = @JoinColumn(name = "student_id")
-    )
-    private Set<Student> students = new HashSet<>();
+    @OneToMany(mappedBy = "program", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Admission> admissions = new HashSet<>();
+
+    @OneToMany(mappedBy = "program", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CourseAccess> courseAccesses = new HashSet<>();
 }

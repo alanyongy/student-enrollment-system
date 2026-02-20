@@ -43,5 +43,8 @@ public class Course {
 
     @OneToMany(mappedBy = "course")
     private Set<CompletedCourse> completions;
+
+    @OneToMany(mappedBy = "course")
+    private Set<CourseAccess> programAccesses = new HashSet<>();
 }
 
