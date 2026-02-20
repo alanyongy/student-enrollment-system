@@ -23,9 +23,9 @@ public class Program {
     @JoinColumn(name = "department_id")
     private Department department;
 
-    @OneToMany(mappedBy = "program", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "program")
     private Set<Admission> admissions = new HashSet<>();
 
-    @OneToMany(mappedBy = "program", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "program")
     private Set<CourseAccess> courseAccesses = new HashSet<>();
 }
