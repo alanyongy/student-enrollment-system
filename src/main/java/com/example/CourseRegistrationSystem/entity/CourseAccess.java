@@ -17,14 +17,14 @@ public class CourseAccess {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private Boolean required;
     
-    @ManyToOne
-    @MapsId("program_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "program_id", nullable = false)
     private Program program;
 
-    @ManyToOne
-    @MapsId("course_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 }

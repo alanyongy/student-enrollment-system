@@ -26,7 +26,6 @@ public class Section {
     private Integer sectionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("courseId")
     @JoinColumn(name = "course_id")
     private Course course;
 

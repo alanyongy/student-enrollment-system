@@ -17,11 +17,11 @@ public class Admission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @MapsId("student_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
-    @ManyToOne
-    @MapsId("program_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "program_id", nullable = false)
     private Program program;
 }

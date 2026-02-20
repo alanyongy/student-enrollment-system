@@ -19,17 +19,13 @@ public class Enrollment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("studentId")
-    @JoinColumn(name = "student_id")
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-            @JoinColumn(name = "course_id", referencedColumnName = "course_id"),
-            @JoinColumn(name = "section_number", referencedColumnName = "section_number")
-    })
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "section_id", nullable = false)
 
     private Section section;
 
