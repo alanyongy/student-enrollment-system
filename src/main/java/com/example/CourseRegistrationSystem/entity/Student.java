@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -23,5 +24,8 @@ public class Student extends Person {
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private List<Enrollment> enrollments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "student")
+    private Set<Admission> admissions = new HashSet<>();
 }
 
