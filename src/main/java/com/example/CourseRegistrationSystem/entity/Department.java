@@ -26,6 +26,6 @@ public class Department {
     private List<Course> courses = new ArrayList<>();
 
     @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
-    private List<Instructor> instructors = new ArrayList<>();
+    private List<Program> programs = new ArrayList<>();
 }
 

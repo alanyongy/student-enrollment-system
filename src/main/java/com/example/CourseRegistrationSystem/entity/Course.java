@@ -37,5 +37,11 @@ public class Course {
             inverseJoinColumns = @JoinColumn(name = "prerequisite_id")
     )
     private Set<Course> prerequisites = new HashSet<>();
+
+    @ManyToMany(mappedBy = "prerequisites")
+    private Set<Course> dependentCourses = new HashSet<>();
+
+    @OneToMany(mappedBy = "course")
+    private Set<CompletedCourse> completions;
 }
 
