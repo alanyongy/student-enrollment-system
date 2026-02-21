@@ -1,26 +1,31 @@
 package com.example.CourseRegistrationSystem.entity;
 
-import java.util.HashSet;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "sections")
+@Table(
+    name = "sections",
+    uniqueConstraints = @UniqueConstraint(
+        columnNames = {"course_id", "section_id"}
+    )
+)
 @Getter
 @Setter
 public class Section {
-
-    @EmbeddedId
-    private SectionId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String scheduleTime;
     private String location;
     private Integer capacity;
 
+    @Column(name = "section_id", nullable = false)
+    private Integer sectionId;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("courseId")
     @JoinColumn(name = "course_id")
     private Course course;
 
@@ -31,13 +36,5 @@ public class Section {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "instructor_id")
     private Instructor instructor;
-
-    @ManyToMany
-    @JoinTable(
-        name = "enrollments",
-        joinColumns = @JoinColumn(name = "section_id"),
-        inverseJoinColumns = @JoinColumn(name = "student_id")
-    )
-    private Set<Student> students = new HashSet<>();
 }
 

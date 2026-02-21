@@ -7,24 +7,26 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "enrollments")
+@Table(
+    name = "enrollments",
+    uniqueConstraints = @UniqueConstraint(
+        columnNames = {"student_id", "section_id"}
+    )
+)
 @Getter
 @Setter
 public class Enrollment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @EmbeddedId
-    private EnrollmentId id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("studentId")
-    @JoinColumn(name = "student_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-            @JoinColumn(name = "course_id", referencedColumnName = "course_id"),
-            @JoinColumn(name = "section_number", referencedColumnName = "section_number")
-    })
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "section_id", nullable = false)
+
     private Section section;
 
     private LocalDate enrollmentDate;
