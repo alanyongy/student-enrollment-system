@@ -1,62 +1,90 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+
+import Input from "../components/Input";
+import Button from "../components/Button";
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
 
-    const fakeUser = {
-      email: "admin@example.com",
-      password: "admin123",
-    };
-
-    if (email === fakeUser.email && password === fakeUser.password) {
-      navigate("/dashboard");
-    } else {
-      setError(
-        "Invalid credentials. Contact IT support if you don't have an account.",
-      );
-    }
+    setTimeout(() => {
+      if (email === "admin@example.com" && password === "admin123") {
+        navigate("/dashboard");
+      } else {
+        setError(
+          "Invalid credentials. If you don't have an account, contact IT support.",
+        );
+      }
+      setLoading(false);
+    }, 1000);
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Student Login</h2>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="
+          w-full max-w-md
+          p-8 rounded-2xl
+          bg-white/5 backdrop-blur-xl
+          border border-white/10
+          shadow-2xl
+        "
+      >
+        <h2 className="text-3xl font-bold text-white text-center mb-2">
+          Admin Login
+        </h2>
+        <p className="text-gray-400 text-center mb-6">
+          Course Registration System
+        </p>
+
+        {error && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-red-400 text-sm mb-4 text-center"
+          >
+            {error}
+          </motion.p>
+        )}
+
         <form onSubmit={handleLogin} className="space-y-4">
-          <input
+          <Input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
           />
-          <input
+
+          <Input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
           />
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors"
-          >
-            Login
-          </button>
+
+          <Button type="submit" loading={loading}>
+            Sign In
+          </Button>
         </form>
-        <p className="mt-4 text-sm text-center text-gray-500">
-          Don't have an account? Contact IT support.
+
+        <p className="mt-6 text-center text-gray-500 text-sm">
+          Students cannot self-register. Please contact IT support.
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 }
