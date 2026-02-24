@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Input from "../components/Input";
 import Button from "../components/Button";
 
-export default function Login() {
+export default function AdminLogin() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -20,7 +20,7 @@ export default function Login() {
 
     setTimeout(() => {
       if (email === "admin@example.com" && password === "admin123") {
-        navigate("/dashboard");
+        navigate("/admin-dashboard");
       } else {
         setError(
           "Invalid credentials. If you don't have an account, contact IT support.",
