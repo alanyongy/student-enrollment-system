@@ -18,4 +18,31 @@ public class CourseService {
     private ModelMapper modelMapper;
      
 
+    // List courses
+    // GET /api/admin/courses
+
+
+
+    // Get course
+    // GET /api/admin/courses/{id}
+
+
+
+    // Create course
+    // POST /api/admin/courses
+
+
+
+
+    // Update course
+    // PUT /api/admin/courses/{id}
+
+
+
+
+    // Delete course
+    // DELETE /api/admin/courses/{id}
+
+
+
 }
