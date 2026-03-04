@@ -1,50 +1,37 @@
 package com.example.CourseRegistrationSystem.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
 
 @Entity
 @Table(name = "courses")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "course_id")
     private Long courseId;
 
+    @Column(name = "course_number")
     private String courseNumber;
-    private String title;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "credits")
     private Integer credits;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "department_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dept_id", nullable = false)
     private Department department;
-
-    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Section> sections = new ArrayList<>();
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "course_prerequisites",
-            joinColumns = @JoinColumn(name = "course_id"),
-            inverseJoinColumns = @JoinColumn(name = "prerequisite_id")
-    )
-    private Set<Course> prerequisites = new HashSet<>();
-
-    @ManyToMany(mappedBy = "prerequisites")
-    private Set<Course> dependentCourses = new HashSet<>();
-
-    @OneToMany(mappedBy = "course")
-    private Set<CompletedCourse> completions;
-
-    @OneToMany(mappedBy = "course")
-    private Set<CourseAccess> programAccesses = new HashSet<>();
 }
 

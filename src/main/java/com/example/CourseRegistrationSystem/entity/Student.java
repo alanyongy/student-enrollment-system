@@ -1,8 +1,7 @@
 package com.example.CourseRegistrationSystem.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,19 +12,21 @@ import java.util.Set;
 @Table(name = "students")
 @Getter
 @Setter
-public class Student extends Person {
+@NoArgsConstructor
+@AllArgsConstructor
 
+public abstract class Student extends Person {
+
+    @Column(name = "enrollment_year")
     private Integer enrollmentYear;
+
+    @Column(name = "academic_status")
     private String academicStatus;
-    private Integer totalCreditsEarned;
 
-    @OneToMany(mappedBy = "student")
-    private Set<CompletedCourse> completedCourses;
+    @Column(name = "credits_earned")
+    private Integer creditsEarned;
 
-    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
-    private List<Enrollment> enrollments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "student")
-    private Set<Admission> admissions = new HashSet<>();
+    @Transient
+    private Double gpa;
 }
 

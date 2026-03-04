@@ -1,30 +1,29 @@
 package com.example.CourseRegistrationSystem.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(
-    name = "course_access",
-    uniqueConstraints = @UniqueConstraint(
-        columnNames = {"course_id", "program_id"}
-    )
-)
+@Table(name = "program_course_access")
 @Getter
 @Setter
-public class CourseAccess {
+@NoArgsConstructor
+@AllArgsConstructor
+public class ProgramCourseAccess {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "access_id")
+    private Long accessId;
 
-    private Boolean required;
-    
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "program_id", nullable = false)
     private Program program;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 }

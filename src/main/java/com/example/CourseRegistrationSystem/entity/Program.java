@@ -2,38 +2,37 @@ package com.example.CourseRegistrationSystem.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.example.CourseRegistrationSystem.enums.ProgramType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(
-    name = "programs",
-    uniqueConstraints = @UniqueConstraint(
-        columnNames = {"department_id", "program_id"}
-    )
-)
+@Table(name = "programs")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Program {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "program_id")
+    private Long programId;
 
+    @Column(name = "program_name")
     private String programName;
+
+    @Column(name = "description")
     private String description;
 
-    
-    @Column(name = "program_id", nullable = false)
-    private Integer programId;
-
-    @ManyToOne
-    @JoinColumn(name = "department_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dept_id", nullable = false)
     private Department department;
 
-    @OneToMany(mappedBy = "program")
-    private Set<Admission> admissions = new HashSet<>();
-
-    @OneToMany(mappedBy = "program")
-    private Set<CourseAccess> courseAccesses = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    @Column(name = "program_type")
+    private ProgramType programType;
 }

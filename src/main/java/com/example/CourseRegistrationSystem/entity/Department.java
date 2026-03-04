@@ -1,31 +1,36 @@
 package com.example.CourseRegistrationSystem.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Entity
 @Table(name = "departments")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long departmentId;
+    @Column(name = "dept_id")
+    private Long deptId;
 
-    private String name;
-    private String location;
+    @Column(name = "dept_name")
+    private String deptName;
+
+    @Column(name = "dept_email")
+    private String deptEmail;
+
+    @Column(name = "phone_number")
     private String phoneNumber;
-    private String email;
 
-    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
-    private List<Course> courses = new ArrayList<>();
-
-    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
-    private List<Program> programs = new ArrayList<>();
+    @Column(name = "office_location")
+    private String officeLocation;
 }
 

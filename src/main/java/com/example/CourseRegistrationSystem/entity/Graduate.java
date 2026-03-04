@@ -1,22 +1,18 @@
 package com.example.CourseRegistrationSystem.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "graduates")
+@Table(name = "grads")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Graduate extends Student {
 
-    private Boolean researchStudent;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "supervisor_id")
-    private Instructor supervisor;
-
-    private String thesisTitle;
-    private String researchTopic;
 }
 

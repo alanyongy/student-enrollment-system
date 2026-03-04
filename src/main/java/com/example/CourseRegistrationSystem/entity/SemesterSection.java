@@ -1,4 +1,5 @@
 package com.example.CourseRegistrationSystem.entity;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,23 +7,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "completed_courses")
+@Table(name = "semester_sections")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompletedCourse {
+public class SemesterSection {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "completed_course_id")
-    private Long completedCourseId;
+    @Column(name = "semester_section_id")
+    private Long semesterSectionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id", nullable = false)
-    private Student student;
+    @JoinColumn(name = "semester_id", nullable = false)
+    private Semester semester;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id", nullable = false)
-    private Course course;
+    @JoinColumn(name = "section_id", nullable = false)
+    private Section section;
 }
