@@ -1,5 +1,6 @@
 package com.example.CourseRegistrationSystem.dao;
 
+import com.example.CourseRegistrationSystem.entity.Course;
 import com.example.CourseRegistrationSystem.entity.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -9,43 +10,37 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-
 @Repository
-public class StudentDAOImpl implements StudentDAO {
+public class CourseDAOImpl implements CourseDAO{
 
     private final EntityManager entityManager;
 
+
     @Autowired
-    public StudentDAOImpl(EntityManager entityManager) {
+    public CourseDAOImpl(EntityManager entityManager){
         this.entityManager = entityManager;
     }
-
-
     @Override
-    public List<Student> findAll() {
-
-        TypedQuery<Student> query =
-                entityManager.createQuery("FROM Student", Student.class);
+    public List<Course> findAll() {
+        TypedQuery<Course> query = entityManager.createQuery("FROM Course", Course.class);
 
         return query.getResultList();
     }
 
     @Override
-    public Optional<Student> findById(Long id) {
+    public Optional<Course> findById(Long id) {
 
-        Student student = entityManager.find(Student.class, id);
-
-        return Optional.ofNullable(student);
-    }
-
-
-    @Override
-    public Student save(Student student) {
-        return entityManager.merge(student);
+        Course course = entityManager.find(Course.class, id);
+        return Optional.ofNullable(course);
     }
 
     @Override
-    public void delete(Student student) {
-        entityManager.remove(student);
+    public Course save(Course course) {
+        return entityManager.merge(course);
+    }
+
+    @Override
+    public void delete(Course course) {
+        entityManager.remove(course);
     }
 }
