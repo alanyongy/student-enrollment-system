@@ -14,7 +14,6 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public abstract class Person {
 
     @Id

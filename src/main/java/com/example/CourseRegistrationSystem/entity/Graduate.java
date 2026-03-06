@@ -10,8 +10,6 @@ import lombok.Setter;
 @Table(name = "grads")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Graduate extends Student {
 
 }
