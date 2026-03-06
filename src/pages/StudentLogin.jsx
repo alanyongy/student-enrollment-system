@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 
 import Input from "../components/Input";
 import Button from "../components/Button";
+import { loginStudent } from "../api/api";
 
 export default function StudentLogin() {
   const navigate = useNavigate();
@@ -13,21 +14,22 @@ export default function StudentLogin() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-
-    setTimeout(() => {
-      if (email === "student@example.com" && password === "student123") {
-        navigate("/student-dashboard");
-      } else {
-        setError(
-          "Invalid credentials. If you don't have an account, contact IT support.",
-        );
-      }
-      setLoading(false);
-    }, 1000);
+  
+    try {
+      const data = await loginStudent(email, password);
+  
+      localStorage.setItem("token", data.token);
+  
+      navigate("/student-dashboard");
+    } catch (err) {
+      setError(err.message);
+    }
+  
+    setLoading(false);
   };
 
   return (
