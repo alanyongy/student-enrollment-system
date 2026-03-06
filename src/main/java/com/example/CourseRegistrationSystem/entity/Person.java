@@ -40,6 +40,7 @@ public abstract class Person {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
+    @Column(name = "security_role")
     @Enumerated(EnumType.STRING)
     private SecurityRole role;
 }
