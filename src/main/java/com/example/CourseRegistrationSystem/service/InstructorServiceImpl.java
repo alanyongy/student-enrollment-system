@@ -4,10 +4,12 @@ import com.example.CourseRegistrationSystem.dao.InstructorDAO;
 import com.example.CourseRegistrationSystem.entity.Instructor;
 import com.example.CourseRegistrationSystem.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
 public class InstructorServiceImpl implements InstructorService{
 
     private final InstructorDAO instructorDAO;
