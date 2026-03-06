@@ -3,14 +3,17 @@ package com.example.CourseRegistrationSystem.service;
 import com.example.CourseRegistrationSystem.entity.Student;
 
 import java.util.List;
-import java.util.Optional;
+
 
 public interface StudentService {
-    List<Student> findAll();
 
-    Optional<Student> findById(Long id);
+    List<Student> getStudents();
 
-    Student save(Student student);
+    Student getStudent(Long id);
 
-    void delete(Student student);
+    Student createStudent(Student student);
+
+    Student updateStudent(Long id, Student student);
+
+    void deleteStudent(Long id);
 }
