@@ -52,10 +52,19 @@ public class StudentServiceImpl implements StudentService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Student not found with id " + id));
 
+        student.setPersonId(existingStudent.getPersonId());
+
         existingStudent.setFirstName(student.getFirstName());
+        existingStudent.setMiddleName(student.getMiddleName());
         existingStudent.setLastName(student.getLastName());
         existingStudent.setEmail(student.getEmail());
+        existingStudent.setPassword(student.getPassword());
+        existingStudent.setPhoneNumber(student.getPhoneNumber());
+        existingStudent.setDateOfBirth(student.getDateOfBirth());
+
         existingStudent.setEnrollmentYear(student.getEnrollmentYear());
+        existingStudent.setAcademicStatus(student.getAcademicStatus());
+        existingStudent.setCreditsEarned(student.getCreditsEarned());
 
         return studentDAO.save(existingStudent);
     }

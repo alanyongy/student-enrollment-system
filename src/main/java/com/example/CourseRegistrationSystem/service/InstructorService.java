@@ -1,18 +1,18 @@
 package com.example.CourseRegistrationSystem.service;
 
 import com.example.CourseRegistrationSystem.entity.Instructor;
-import com.example.CourseRegistrationSystem.entity.Student;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface InstructorService {
 
-    List<Instructor> findAll();
+    List<Instructor> getInstructors();
 
-    Optional<Instructor> findById(Long id);
+    Instructor getInstructor(Long id);
 
-    Student save(Instructor instructor);
+    Instructor createInstructor(Instructor instructor);
 
-        void delete(Instructor instructor);
+    Instructor updateInstructor(Long id, Instructor instructor);
+
+    void deleteInstructor(Long id);
 }
