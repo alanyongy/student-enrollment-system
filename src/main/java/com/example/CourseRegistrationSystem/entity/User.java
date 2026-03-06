@@ -36,6 +36,9 @@ public class User {
     @Column(name = "email", nullable = false, unique = true, length = 150)
     private String email;
 
+    @Column(name = "passwordHash", nullable = false, length = 200)
+    private String passwordHash;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

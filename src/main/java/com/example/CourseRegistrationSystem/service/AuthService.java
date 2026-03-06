@@ -30,7 +30,7 @@ public class AuthService {
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
-        //user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
 
         userRepository.save(user);
     }
@@ -38,7 +38,7 @@ public class AuthService {
     public void login(LoginRequest request) {
         Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
         if (optionalUser.isEmpty() 
-        /*|| !passwordEncoder.matches(request.getPassword(), optionalUser.get().getPassword())*/) {
+            || !passwordEncoder.matches(request.getPassword(), optionalUser.get().getPasswordHash())) {
             throw new RuntimeException("Invalid credentials");
         }
         // Successful login – nothing to return for now
