@@ -2,10 +2,8 @@ package com.example.CourseRegistrationSystem.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
-
-
+import com.example.CourseRegistrationSystem.enums.SecurityRole;
 
 @Entity
 @Table(name = "persons")
@@ -41,5 +39,8 @@ public abstract class Person {
 
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
+
+    @Enumerated(EnumType.STRING)
+    private SecurityRole role;
 }
 

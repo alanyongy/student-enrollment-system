@@ -34,8 +34,8 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@RequestBody LoginRequest request) {
         try {
-            authService.login(request);
-            return ResponseEntity.ok(new ApiResponse(true, "Login successful"));
+            String token = authService.login(request);
+            return ResponseEntity.ok(new ApiResponse(true, "Login successful. Token: " + token));
         } catch (RuntimeException e) {
             return ResponseEntity.status(401).body(new ApiResponse(false, e.getMessage()));
         }

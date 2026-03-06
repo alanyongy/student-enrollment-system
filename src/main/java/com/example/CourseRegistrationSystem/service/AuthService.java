@@ -4,7 +4,10 @@ import com.example.CourseRegistrationSystem.dto.LoginRequest;
 import com.example.CourseRegistrationSystem.dto.SignupRequest;
 import com.example.CourseRegistrationSystem.entity.Person;
 import com.example.CourseRegistrationSystem.entity.Undergrad;
+import com.example.CourseRegistrationSystem.enums.SecurityRole;
 import com.example.CourseRegistrationSystem.repository.UserRepository;
+import com.example.CourseRegistrationSystem.security.JwtService;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,17 +34,22 @@ public class AuthService {
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
+        user.setRole(SecurityRole.STUDENT);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         userRepository.save(user);
     }
 
-    public void login(LoginRequest request) {
+    public String login(LoginRequest request) {
         Optional<Person> optionalUser = userRepository.findByEmail(request.getEmail());
         if (optionalUser.isEmpty() 
             || !passwordEncoder.matches(request.getPassword(), optionalUser.get().getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
-        // Successful login – nothing to return for now
+
+        Person user = optionalUser.get();
+        JwtService jwtService = new JwtService();
+        String token = jwtService.generateToken(user.getEmail());
+        return token;
     }
 }
