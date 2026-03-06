@@ -2,7 +2,8 @@ package com.example.CourseRegistrationSystem.service;
 
 import com.example.CourseRegistrationSystem.dto.LoginRequest;
 import com.example.CourseRegistrationSystem.dto.SignupRequest;
-import com.example.CourseRegistrationSystem.entity.User;
+import com.example.CourseRegistrationSystem.entity.Person;
+import com.example.CourseRegistrationSystem.entity.Undergrad;
 import com.example.CourseRegistrationSystem.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,19 +27,19 @@ public class AuthService {
             throw new RuntimeException("Email already in use");
         }
 
-        User user = new User();
+        Person user = new Undergrad();
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
-        user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         userRepository.save(user);
     }
 
     public void login(LoginRequest request) {
-        Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
+        Optional<Person> optionalUser = userRepository.findByEmail(request.getEmail());
         if (optionalUser.isEmpty() 
-            || !passwordEncoder.matches(request.getPassword(), optionalUser.get().getPasswordHash())) {
+            || !passwordEncoder.matches(request.getPassword(), optionalUser.get().getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
         // Successful login – nothing to return for now
