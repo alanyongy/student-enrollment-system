@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/api/auth")
+@SuppressWarnings({"unused"})
 public class AuthController {
 
     private final AuthService authService;
