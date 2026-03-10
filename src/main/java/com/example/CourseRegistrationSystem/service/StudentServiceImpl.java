@@ -1,6 +1,8 @@
 package com.example.CourseRegistrationSystem.service;
 
+import com.example.CourseRegistrationSystem.dao.CourseDAO;
 import com.example.CourseRegistrationSystem.dao.StudentDAO;
+import com.example.CourseRegistrationSystem.entity.Course;
 import com.example.CourseRegistrationSystem.entity.Student;
 
 import com.example.CourseRegistrationSystem.exception.ResourceNotFoundException;
@@ -16,7 +18,8 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentDAO studentDAO;
 
-    public StudentServiceImpl(StudentDAO studentDAO) {
+    // For Spring injection compatibility
+    public StudentServiceImpl(StudentDAO studentDAO, CourseDAO courseDAO) {
         this.studentDAO = studentDAO;
     }
 
@@ -79,4 +82,5 @@ public class StudentServiceImpl implements StudentService {
 
         studentDAO.delete(student);
     }
+
 }

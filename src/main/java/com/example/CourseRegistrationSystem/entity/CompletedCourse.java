@@ -25,4 +25,28 @@ public class CompletedCourse {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
+
+    public Long getCompletedCourseId() {
+        return completedCourseId;
+    }
+
+    public void setCompletedCourseId(Long completedCourseId) {
+        this.completedCourseId = completedCourseId;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 }

@@ -18,6 +18,30 @@ public class Admission {
     @Column(name = "admission_id")
     private Long admissionId;
 
+    public Long getAdmissionId() {
+        return admissionId;
+    }
+
+    public void setAdmissionId(Long admissionId) {
+        this.admissionId = admissionId;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public Program getProgram() {
+        return program;
+    }
+
+    public void setProgram(Program program) {
+        this.program = program;
+    }
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;

@@ -6,7 +6,7 @@ import com.example.CourseRegistrationSystem.entity.Course;
 import java.util.List;
 
 public interface CoursePrerequisiteDAO {
-    CoursePrerequisite addPrerequisite(Course course, Course prerequisiteCourse);
+    void addPrerequisite(Course course, Course prerequisiteCourse);
     void removePrerequisite(Course course, Course prerequisiteCourse);
     List<CoursePrerequisite> getPrerequisites(Course course);
 }

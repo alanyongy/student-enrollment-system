@@ -20,12 +20,11 @@ public class CoursePrerequisiteDAOImpl implements CoursePrerequisiteDAO {
     }
 
     @Override
-    public CoursePrerequisite addPrerequisite(Course course, Course prerequisiteCourse) {
+    public void addPrerequisite(Course course, Course prerequisiteCourse) {
         CoursePrerequisite cp = new CoursePrerequisite();
         cp.setCourse(course);
         cp.setPrerequisiteCourse(prerequisiteCourse);
         entityManager.persist(cp);
-        return cp;
     }
 
     @Override
