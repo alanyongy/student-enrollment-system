@@ -44,5 +44,7 @@ public class AdminDepartmentController {
         departmentService.deleteDepartment(id);
         return ResponseEntity.noContent().build();
     }
+
+
 }
 

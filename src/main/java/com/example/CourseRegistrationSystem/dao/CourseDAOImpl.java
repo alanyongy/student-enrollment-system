@@ -1,6 +1,7 @@
 package com.example.CourseRegistrationSystem.dao;
 
 import com.example.CourseRegistrationSystem.entity.Course;
+import com.example.CourseRegistrationSystem.entity.Department;
 import com.example.CourseRegistrationSystem.entity.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -15,6 +16,8 @@ public class CourseDAOImpl implements CourseDAO{
 
     private final EntityManager entityManager;
 
+    @Autowired
+    private DepartmentDAO departmentDAO;
 
     @Autowired
     public CourseDAOImpl(EntityManager entityManager){
@@ -42,5 +45,26 @@ public class CourseDAOImpl implements CourseDAO{
     @Override
     public void delete(Course course) {
         entityManager.remove(course);
+    }
+
+    @Override
+    public Course assignDepartment(Long courseId, Long deptId) {
+        Course course = entityManager.find(Course.class, courseId);
+        Department department = entityManager.find(Department.class, deptId);
+        if (course == null || department == null) {
+            throw new RuntimeException("Course or Department not found");
+        }
+        course.setDepartment(department);
+        return entityManager.merge(course);
+    }
+
+    @Override
+    public Course removeDepartment(Long courseId) {
+        Course course = entityManager.find(Course.class, courseId);
+        if (course == null) {
+            throw new RuntimeException("Course not found");
+        }
+        course.setDepartment(null);
+        return entityManager.merge(course);
     }
 }

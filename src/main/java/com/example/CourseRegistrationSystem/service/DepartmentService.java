@@ -10,4 +10,3 @@ public interface DepartmentService {
     Department updateDepartment(Long id, Department department);
     void deleteDepartment(Long id);
 }
-

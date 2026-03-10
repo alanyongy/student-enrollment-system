@@ -1,6 +1,7 @@
 package com.example.CourseRegistrationSystem.service;
 
 import com.example.CourseRegistrationSystem.dao.CourseDAO;
+import com.example.CourseRegistrationSystem.dao.DepartmentDAO;
 import com.example.CourseRegistrationSystem.entity.Course;
 import com.example.CourseRegistrationSystem.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ import java.util.List;
 public class CourseServiceImpl implements CourseService{
 
     private final CourseDAO courseDAO;
+
+    @Autowired
+    private DepartmentDAO departmentDAO;
 
     @Autowired
     public CourseServiceImpl(CourseDAO courseDAO){
@@ -66,5 +70,17 @@ public class CourseServiceImpl implements CourseService{
                             new ResourceNotFoundException("Course not found with id " + id));
 
             courseDAO.delete(course);
+    }
+
+    @Transactional
+    @Override
+    public void assignDepartment(Long courseId, Long deptId) {
+        courseDAO.assignDepartment(courseId, deptId);
+    }
+
+    @Transactional
+    @Override
+    public void removeDepartment(Long courseId) {
+        courseDAO.removeDepartment(courseId);
     }
 }

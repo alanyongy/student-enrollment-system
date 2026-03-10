@@ -1,7 +1,6 @@
 package com.example.CourseRegistrationSystem.service;
 
 import com.example.CourseRegistrationSystem.entity.Course;
-import com.example.CourseRegistrationSystem.entity.Instructor;
 
 import java.util.List;
 
@@ -15,4 +14,8 @@ public interface CourseService {
     Course updateCourse(Long id, Course course);
 
     void deleteCourse(Long id);
+
+    void assignDepartment(Long courseId, Long deptId);
+
+    void removeDepartment(Long courseId);
 }

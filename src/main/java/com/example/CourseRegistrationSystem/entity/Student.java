@@ -3,11 +3,6 @@ package com.example.CourseRegistrationSystem.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 @Entity
 @Table(name = "students")
 @Getter
@@ -28,5 +23,36 @@ public abstract class Student extends Person {
 
     @Transient
     private Double gpa;
-}
 
+    public Integer getEnrollmentYear() {
+        return enrollmentYear;
+    }
+
+    public void setEnrollmentYear(Integer enrollmentYear) {
+        this.enrollmentYear = enrollmentYear;
+    }
+
+    public String getAcademicStatus() {
+        return academicStatus;
+    }
+
+    public void setAcademicStatus(String academicStatus) {
+        this.academicStatus = academicStatus;
+    }
+
+    public Integer getCreditsEarned() {
+        return creditsEarned;
+    }
+
+    public void setCreditsEarned(Integer creditsEarned) {
+        this.creditsEarned = creditsEarned;
+    }
+
+    public Double getGpa() {
+        return gpa;
+    }
+
+    public void setGpa(Double gpa) {
+        this.gpa = gpa;
+    }
+}

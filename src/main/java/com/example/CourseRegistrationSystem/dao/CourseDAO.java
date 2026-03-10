@@ -15,4 +15,8 @@ public interface CourseDAO {
     Course save(Course course);
 
     void delete(Course course);
+
+    Course assignDepartment(Long courseId, Long deptId);
+
+    Course removeDepartment(Long courseId);
 }

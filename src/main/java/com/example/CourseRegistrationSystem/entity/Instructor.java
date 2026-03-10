@@ -20,5 +20,21 @@ public class Instructor extends Person {
 
     @Column(name = "expertise_topics")
     private String expertiseTopics;
+
+    public Integer getYearsOfExperience() {
+        return yearsOfExperience;
+    }
+
+    public void setYearsOfExperience(Integer yearsOfExperience) {
+        this.yearsOfExperience = yearsOfExperience;
+    }
+
+    public String getExpertiseTopics() {
+        return expertiseTopics;
+    }
+
+    public void setExpertiseTopics(String expertiseTopics) {
+        this.expertiseTopics = expertiseTopics;
+    }
 }
 

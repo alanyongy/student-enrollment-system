@@ -4,17 +4,9 @@ import java.util.Set;
 
 import com.example.CourseRegistrationSystem.enums.ProgramType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "programs")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Program {
 
     @Id
@@ -35,4 +27,54 @@ public class Program {
     @Enumerated(EnumType.STRING)
     @Column(name = "program_type")
     private ProgramType programType;
+
+    public Program() {}
+
+    public Program(Long programId, String programName, String description, Department department, ProgramType programType) {
+        this.programId = programId;
+        this.programName = programName;
+        this.description = description;
+        this.department = department;
+        this.programType = programType;
+    }
+
+    public Long getProgramId() {
+        return programId;
+    }
+
+    public void setProgramId(Long programId) {
+        this.programId = programId;
+    }
+
+    public String getProgramName() {
+        return programName;
+    }
+
+    public void setProgramName(String programName) {
+        this.programName = programName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public ProgramType getProgramType() {
+        return programType;
+    }
+
+    public void setProgramType(ProgramType programType) {
+        this.programType = programType;
+    }
 }

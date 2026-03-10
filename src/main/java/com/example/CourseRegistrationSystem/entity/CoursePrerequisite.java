@@ -26,4 +26,28 @@ public class CoursePrerequisite {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prerequisite_course_id", nullable = false)
     private Course prerequisiteCourse;
+
+    public Long getPrerequisiteId() {
+        return prerequisiteId;
+    }
+
+    public void setPrerequisiteId(Long prerequisiteId) {
+        this.prerequisiteId = prerequisiteId;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public Course getPrerequisiteCourse() {
+        return prerequisiteCourse;
+    }
+
+    public void setPrerequisiteCourse(Course prerequisiteCourse) {
+        this.prerequisiteCourse = prerequisiteCourse;
+    }
 }

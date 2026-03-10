@@ -48,5 +48,14 @@ public class SectionServiceImpl implements SectionService {
     public void deleteSection(Long id) {
         sectionDAO.delete(id);
     }
-}
 
+    @Override
+    public void assignInstructor(Long sectionId, Long instructorId) {
+        sectionDAO.assignInstructor(sectionId, instructorId);
+    }
+
+    @Override
+    public void removeInstructor(Long sectionId) {
+        sectionDAO.removeInstructor(sectionId);
+    }
+}

@@ -40,5 +40,16 @@ public class AdminSectionController {
         sectionService.deleteSection(id);
         return ResponseEntity.noContent().build();
     }
-}
 
+    @PostMapping("/{sectionId}/assign-instructor/{instructorId}")
+    public ResponseEntity<Void> assignInstructorToSection(@PathVariable Long sectionId, @PathVariable Long instructorId) {
+        sectionService.assignInstructor(sectionId, instructorId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{sectionId}/remove-instructor")
+    public ResponseEntity<Void> removeInstructorFromSection(@PathVariable Long sectionId) {
+        sectionService.removeInstructor(sectionId);
+        return ResponseEntity.ok().build();
+    }
+}

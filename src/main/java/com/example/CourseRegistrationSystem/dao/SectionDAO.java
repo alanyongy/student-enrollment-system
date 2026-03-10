@@ -9,5 +9,6 @@ public interface SectionDAO {
     Section save(Section section);
     Section update(Section section);
     void delete(Long id);
+    void assignInstructor(Long sectionId, Long instructorId);
+    void removeInstructor(Long sectionId);
 }
-

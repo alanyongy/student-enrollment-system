@@ -1,23 +1,12 @@
 package com.example.CourseRegistrationSystem.entity;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "semesters")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Semester {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "semester_id")
@@ -31,4 +20,45 @@ public class Semester {
 
     @Column(name = "end_date")
     private LocalDate endDate;
+
+    public Semester() {}
+
+    public Semester(Long semesterId, String termName, LocalDate startDate, LocalDate endDate) {
+        this.semesterId = semesterId;
+        this.termName = termName;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public Long getSemesterId() {
+        return semesterId;
+    }
+
+    public void setSemesterId(Long semesterId) {
+        this.semesterId = semesterId;
+    }
+
+    public String getTermName() {
+        return termName;
+    }
+
+    public void setTermName(String termName) {
+        this.termName = termName;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
 }

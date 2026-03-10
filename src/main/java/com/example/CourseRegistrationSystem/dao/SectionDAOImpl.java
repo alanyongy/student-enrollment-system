@@ -1,5 +1,6 @@
 package com.example.CourseRegistrationSystem.dao;
 
+import com.example.CourseRegistrationSystem.entity.Instructor;
 import com.example.CourseRegistrationSystem.entity.Section;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -43,5 +44,22 @@ public class SectionDAOImpl implements SectionDAO {
             entityManager.remove(section);
         }
     }
-}
 
+    @Override
+    public void assignInstructor(Long sectionId, Long instructorId) {
+        Section section = findById(sectionId);
+        if (section == null) throw new RuntimeException("Section not found");
+        Instructor instructor = entityManager.find(Instructor.class, instructorId);
+        if (instructor == null) throw new RuntimeException("Instructor not found");
+        section.setInstructor(instructor);
+        entityManager.merge(section);
+    }
+
+    @Override
+    public void removeInstructor(Long sectionId) {
+        Section section = findById(sectionId);
+        if (section == null) throw new RuntimeException("Section not found");
+        section.setInstructor(null);
+        entityManager.merge(section);
+    }
+}
