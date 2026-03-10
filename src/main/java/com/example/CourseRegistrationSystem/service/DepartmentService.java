@@ -9,4 +9,6 @@ public interface DepartmentService {
     Department createDepartment(Department department);
     Department updateDepartment(Long id, Department department);
     void deleteDepartment(Long id);
+    void assignProgramToDepartment(Long departmentId, Long programId);
+    void removeProgramFromDepartment(Long departmentId, Long programId);
 }

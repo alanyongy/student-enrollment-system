@@ -15,6 +15,7 @@ import lombok.Setter;
 @SuppressWarnings({"unused"})
 public class ProgramCourseAccess {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "access_id")
@@ -27,4 +28,30 @@ public class ProgramCourseAccess {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
+
+    public Long getAccessId() {
+        return accessId;
+    }
+
+    public void setAccessId(Long accessId) {
+        this.accessId = accessId;
+    }
+
+    public Program getProgram() {
+        return program;
+    }
+
+    public void setProgram(Program program) {
+        this.program = program;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+
 }

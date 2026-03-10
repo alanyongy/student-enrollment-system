@@ -2,6 +2,7 @@ package com.example.CourseRegistrationSystem.service;
 
 import com.example.CourseRegistrationSystem.dao.DepartmentDAO;
 import com.example.CourseRegistrationSystem.entity.Department;
+import com.example.CourseRegistrationSystem.entity.Program;
 import com.example.CourseRegistrationSystem.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,9 +13,11 @@ import java.util.List;
 public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentDAO departmentDAO;
+    private final ProgramService programService;
 
-    public DepartmentServiceImpl(DepartmentDAO departmentDAO) {
+    public DepartmentServiceImpl(DepartmentDAO departmentDAO, ProgramService programService) {
         this.departmentDAO = departmentDAO;
+        this.programService = programService;
     }
 
     @Transactional(readOnly = true)
@@ -55,5 +58,25 @@ public class DepartmentServiceImpl implements DepartmentService {
         Department department = departmentDAO.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Department not found with id " + id));
         departmentDAO.delete(department);
+    }
+
+    @Override
+    public void assignProgramToDepartment(Long departmentId, Long programId) {
+        Program program = programService.getProgramById(programId);
+        Department department = departmentDAO.findById(departmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Department not found with id " + departmentId));
+        program.setDepartment(department);
+        programService.updateProgram(programId, program);
+    }
+
+    @Override
+    public void removeProgramFromDepartment(Long departmentId, Long programId) {
+        Program program = programService.getProgramById(programId);
+        if (program.getDepartment() != null && program.getDepartment().getDeptId().equals(departmentId)) {
+            program.setDepartment(null);
+            programService.updateProgram(programId, program);
+        } else {
+            throw new ResourceNotFoundException("Program with id " + programId + " is not assigned to department with id " + departmentId);
+        }
     }
 }

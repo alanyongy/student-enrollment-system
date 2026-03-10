@@ -11,4 +11,6 @@ public interface SectionService {
     void deleteSection(Long id);
     void assignInstructor(Long sectionId, Long instructorId);
     void removeInstructor(Long sectionId);
+    void assignCourse(Long sectionId, Long courseId);
+    void removeCourse(Long sectionId, Long courseId);
 }

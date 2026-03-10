@@ -1,6 +1,7 @@
 package com.example.CourseRegistrationSystem.controller;
 
 import com.example.CourseRegistrationSystem.entity.Semester;
+import com.example.CourseRegistrationSystem.service.SemesterSectionService;
 import com.example.CourseRegistrationSystem.service.SemesterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,8 @@ public class AdminSemesterController {
 
     @Autowired
     private SemesterService semesterService;
+    @Autowired
+    private SemesterSectionService semesterSectionService;
 
     @GetMapping
     public ResponseEntity<List<Semester>> getAllSemesters() {
@@ -33,6 +36,18 @@ public class AdminSemesterController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSemester(@PathVariable Long id) {
         semesterService.deleteSemester(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{semesterId}/sections/{sectionId}")
+    public ResponseEntity<Void> addSectionToSemester(@PathVariable Long semesterId, @PathVariable Long sectionId) {
+        semesterSectionService.addSemesterSection(semesterId, sectionId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{semesterId}/sections/{sectionId}")
+    public ResponseEntity<Void> removeSectionFromSemester(@PathVariable Long semesterId, @PathVariable Long sectionId) {
+        semesterSectionService.removeSemesterSection(semesterId, sectionId);
         return ResponseEntity.noContent().build();
     }
 }

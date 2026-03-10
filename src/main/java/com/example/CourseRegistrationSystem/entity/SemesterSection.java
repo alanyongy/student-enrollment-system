@@ -27,4 +27,28 @@ public class SemesterSection {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "section_id", nullable = false)
     private Section section;
+
+    public Long getSemesterSectionId() {
+        return semesterSectionId;
+    }
+
+    public void setSemesterSectionId(Long semesterSectionId) {
+        this.semesterSectionId = semesterSectionId;
+    }
+
+    public Semester getSemester() {
+        return semester;
+    }
+
+    public void setSemester(Semester semester) {
+        this.semester = semester;
+    }
+
+    public Section getSection() {
+        return section;
+    }
+
+    public void setSection(Section section) {
+        this.section = section;
+    }
 }

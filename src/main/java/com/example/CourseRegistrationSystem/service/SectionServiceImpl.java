@@ -1,6 +1,7 @@
 package com.example.CourseRegistrationSystem.service;
 
 import com.example.CourseRegistrationSystem.dao.SectionDAO;
+import com.example.CourseRegistrationSystem.entity.Course;
 import com.example.CourseRegistrationSystem.entity.Section;
 import com.example.CourseRegistrationSystem.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ public class SectionServiceImpl implements SectionService {
 
     @Autowired
     private SectionDAO sectionDAO;
+
+    @Autowired
+    private CourseService courseService;
 
     @Override
     public List<Section> getAllSections() {
@@ -57,5 +61,21 @@ public class SectionServiceImpl implements SectionService {
     @Override
     public void removeInstructor(Long sectionId) {
         sectionDAO.removeInstructor(sectionId);
+    }
+
+    @Override
+    public void assignCourse(Long sectionId, Long courseId) {
+        Section section = getSectionById(sectionId);
+        Course course = courseService.getCourse(courseId);
+        section.setCourse(course);
+        sectionDAO.update(section);
+    }
+
+    @Override
+    public void removeCourse(Long sectionId, Long courseId) {
+        Section section = getSectionById(sectionId);
+        Course course = courseService.getCourse(courseId);
+        section.setCourse(null);
+        sectionDAO.update(section);
     }
 }

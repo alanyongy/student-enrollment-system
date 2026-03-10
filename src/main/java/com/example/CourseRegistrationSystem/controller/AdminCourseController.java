@@ -3,6 +3,7 @@ package com.example.CourseRegistrationSystem.controller;
 import com.example.CourseRegistrationSystem.entity.Course;
 import com.example.CourseRegistrationSystem.service.CoursePrerequisiteService;
 import com.example.CourseRegistrationSystem.service.CourseService;
+import com.example.CourseRegistrationSystem.service.ProgramCourseAccessService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +16,12 @@ public class AdminCourseController {
 
     private final CourseService courseService;
     private final CoursePrerequisiteService coursePrerequisiteService;
+    private final ProgramCourseAccessService programCourseAccessService;
 
-    public AdminCourseController(CourseService courseService, CoursePrerequisiteService coursePrerequisiteService) {
+    public AdminCourseController(CourseService courseService, CoursePrerequisiteService coursePrerequisiteService, ProgramCourseAccessService programCourseAccessService) {
         this.courseService = courseService;
         this.coursePrerequisiteService = coursePrerequisiteService;
+        this.programCourseAccessService = programCourseAccessService;
     }
 
     @GetMapping
@@ -80,4 +83,19 @@ public class AdminCourseController {
         courseService.removeDepartment(courseId);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/{courseId}/give-access-to-program/{programId}")
+    public ResponseEntity<Void> giveCourseAccessToProgram(@PathVariable Long courseId, @PathVariable Long programId) {
+        programCourseAccessService.addCourseToProgram(courseId, programId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{courseId}/remove-access-from-program/{programId}")
+    public ResponseEntity<Void> removeCourseAccessFromProgram(@PathVariable Long courseId, @PathVariable Long programId) {
+        programCourseAccessService.removeCourseFromProgram(courseId, programId);
+        return ResponseEntity.ok().build();
+    }
+
+
+
 }

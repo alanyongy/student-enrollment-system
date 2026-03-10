@@ -45,6 +45,22 @@ public class AdminDepartmentController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/{departmentId}/programs/{programId}")
+    public ResponseEntity<Void> assignProgramToDepartment(
+            @PathVariable Long departmentId,
+            @PathVariable Long programId) {
+        departmentService.assignProgramToDepartment(departmentId, programId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{departmentId}/programs/{programId}")
+    public ResponseEntity<Void> removeProgramFromDepartment(
+            @PathVariable Long departmentId,
+            @PathVariable Long programId) {
+        departmentService.removeProgramFromDepartment(departmentId, programId);
+        return ResponseEntity.ok().build();
+    }
+
 
 }
 
