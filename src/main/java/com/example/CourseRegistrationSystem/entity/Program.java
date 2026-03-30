@@ -4,6 +4,9 @@ import java.util.Set;
 
 import com.example.CourseRegistrationSystem.enums.ProgramType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "programs")
@@ -14,18 +17,23 @@ public class Program {
     @Column(name = "program_id")
     private Long programId;
 
-    @Column(name = "program_name")
+    @NotBlank(message = "Program name is required")
+    @Size(max = 150, message = "Program name must be at most 150 characters")
+    @Column(name = "program_name", nullable = false, length = 150)
     private String programName;
 
-    @Column(name = "description")
+    @Size(max = 500, message = "Description must be at most 500 characters")
+    @Column(name = "description", length = 500)
     private String description;
 
+    @NotNull(message = "Department is required")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dept_id", nullable = false)
     private Department department;
 
+    @NotNull(message = "Program type is required")
     @Enumerated(EnumType.STRING)
-    @Column(name = "program_type")
+    @Column(name = "program_type", nullable = false, length = 50)
     private ProgramType programType;
 
     public Program() {}

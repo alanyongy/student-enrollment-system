@@ -3,6 +3,8 @@ package com.example.CourseRegistrationSystem.entity;
 import java.time.LocalDate;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "semesters")
@@ -12,12 +14,15 @@ public class Semester {
     @Column(name = "semester_id")
     private Long semesterId;
 
+    @NotBlank(message = "Term name cannot be blank")
     @Column(name = "term_name")
     private String termName;
 
+    @NotNull(message = "Start date cannot be null")
     @Column(name = "start_date")
     private LocalDate startDate;
 
+    @NotNull(message = "End date cannot be null")
     @Column(name = "end_date")
     private LocalDate endDate;
 

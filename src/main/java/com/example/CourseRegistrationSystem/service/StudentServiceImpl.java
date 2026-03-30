@@ -2,16 +2,14 @@ package com.example.CourseRegistrationSystem.service;
 
 import com.example.CourseRegistrationSystem.dao.CourseDAO;
 import com.example.CourseRegistrationSystem.dao.StudentDAO;
-import com.example.CourseRegistrationSystem.entity.Course;
 import com.example.CourseRegistrationSystem.entity.Student;
-
+import com.example.CourseRegistrationSystem.entity.Undergrad;
 import com.example.CourseRegistrationSystem.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Year;
 import java.util.List;
-
-
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -43,6 +41,24 @@ public class StudentServiceImpl implements StudentService {
     public Student createStudent(Student student) {
 
         student.setPersonId(null);
+
+        // base defaults for ALL student subclasses so validation on Student passes
+        if (student.getEnrollmentYear() == null) {
+            student.setEnrollmentYear(Year.now().getValue());
+        }
+        if (student.getAcademicStatus() == null || student.getAcademicStatus().isBlank()) {
+            student.setAcademicStatus("ACTIVE");
+        }
+        if (student.getCreditsEarned() == null) {
+            student.setCreditsEarned(0);
+        }
+
+        // extra defaults only for Undergrad
+        if (student instanceof Undergrad undergrad) {
+            if (undergrad.getYearOfStudy() == null) {
+                undergrad.setYearOfStudy(1);
+            }
+        }
 
         return studentDAO.save(student);
     }

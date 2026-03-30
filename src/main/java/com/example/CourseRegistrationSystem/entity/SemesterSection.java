@@ -1,6 +1,7 @@
 package com.example.CourseRegistrationSystem.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,10 +21,12 @@ public class SemesterSection {
     @Column(name = "semester_section_id")
     private Long semesterSectionId;
 
+    @NotNull(message = "Semester cannot be null for a semester section")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "semester_id", nullable = false)
     private Semester semester;
 
+    @NotNull(message = "Section cannot be null for a semester section")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "section_id", nullable = false)
     private Section section;

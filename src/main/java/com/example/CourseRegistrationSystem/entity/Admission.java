@@ -1,5 +1,6 @@
 package com.example.CourseRegistrationSystem.entity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,10 +43,12 @@ public class Admission {
         this.program = program;
     }
 
+    @NotNull(message = "Student cannot be null for an admission")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
+    @NotNull(message = "Student cannot be null for an admission")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "program_id", nullable = false)
     private Program program;

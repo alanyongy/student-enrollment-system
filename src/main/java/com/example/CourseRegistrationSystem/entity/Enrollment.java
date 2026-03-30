@@ -2,6 +2,7 @@ package com.example.CourseRegistrationSystem.entity;
 
 import com.example.CourseRegistrationSystem.enums.StatusType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,10 +27,12 @@ public class Enrollment {
     @Enumerated(EnumType.STRING)
     private StatusType status;
 
+    @NotNull(message = "Student cannot be null for an enrollment")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
+    @NotNull(message = "Section cannot be null for an enrollment")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "section_id", nullable = false)
     private Section section;

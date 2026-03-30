@@ -1,6 +1,7 @@
 package com.example.CourseRegistrationSystem.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,10 +22,12 @@ public class ProgramCourseAccess {
     @Column(name = "access_id")
     private Long accessId;
 
+    @NotNull(message = "Program cannot be null for program course access")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "program_id", nullable = false)
     private Program program;
 
+    @NotNull(message = "Course cannot be null for program course access")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
