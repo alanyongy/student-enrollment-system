@@ -1,37 +1,48 @@
 package com.example.CourseRegistrationSystem.repository;
 
 import com.example.CourseRegistrationSystem.dto.SignupRequest;
+import com.example.CourseRegistrationSystem.entity.Administrator;
+import com.example.CourseRegistrationSystem.entity.Person;
+import com.example.CourseRegistrationSystem.entity.Student;
+import com.example.CourseRegistrationSystem.entity.Undergrad;
 import com.example.CourseRegistrationSystem.service.AuthService;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class TestUserLoader {
 
     @Bean
-    CommandLineRunner init(AuthService authService, UserRepository userRepository) {
+    CommandLineRunner init(AuthService authService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
 
             if (!userRepository.existsByEmail("student@example.com")) {
-                SignupRequest student = new SignupRequest();
+                Undergrad student = new Undergrad();
                 student.setFirstName("Test");
                 student.setLastName("Student");
                 student.setEmail("student@example.com");
-                student.setPassword("student123");
+                student.setPassword(passwordEncoder.encode("student123"));
 
-                authService.signup(student);
+                student.setCreditsEarned(1);
+                student.setAcademicStatus("test");
+                student.setYearOfStudy(1);
+                student.setEnrollmentYear(2026);
+
+                userRepository.save(student);
             }
 
             if (!userRepository.existsByEmail("admin@example.com")) {
-                SignupRequest admin = new SignupRequest();
+                Person admin = new Administrator();
                 admin.setFirstName("Test");
                 admin.setLastName("Admin");
                 admin.setEmail("admin@example.com");
-                admin.setPassword("admin123");
+                admin.setPassword(passwordEncoder.encode("admin123"));
 
-                authService.signup(admin);
+                userRepository.save(admin);
             }
         };
     }
