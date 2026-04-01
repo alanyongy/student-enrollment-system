@@ -38,6 +38,6 @@ class AuthServiceImpl implements AuthService {
 
         Person user = optionalUser.get();
         JwtService jwtService = new JwtService();
-        return jwtService.generateToken(user.getEmail());
+        return jwtService.generateToken(user);
     }
 }

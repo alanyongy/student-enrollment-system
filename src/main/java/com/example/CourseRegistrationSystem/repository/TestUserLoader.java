@@ -5,6 +5,7 @@ import com.example.CourseRegistrationSystem.entity.Administrator;
 import com.example.CourseRegistrationSystem.entity.Person;
 import com.example.CourseRegistrationSystem.entity.Student;
 import com.example.CourseRegistrationSystem.entity.Undergrad;
+import com.example.CourseRegistrationSystem.enums.SecurityRole;
 import com.example.CourseRegistrationSystem.service.AuthService;
 
 import org.springframework.boot.CommandLineRunner;
@@ -31,6 +32,7 @@ public class TestUserLoader {
                 student.setAcademicStatus("test");
                 student.setYearOfStudy(1);
                 student.setEnrollmentYear(2026);
+                student.setRole(SecurityRole.STUDENT);
 
                 userRepository.save(student);
             }
@@ -41,6 +43,7 @@ public class TestUserLoader {
                 admin.setLastName("Admin");
                 admin.setEmail("admin@example.com");
                 admin.setPassword(passwordEncoder.encode("admin123"));
+                admin.setRole(SecurityRole.ADMIN);
 
                 userRepository.save(admin);
             }

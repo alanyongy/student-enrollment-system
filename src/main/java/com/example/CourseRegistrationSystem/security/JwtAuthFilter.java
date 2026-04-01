@@ -1,10 +1,11 @@
 package com.example.CourseRegistrationSystem.security;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -33,14 +34,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         String authHeader = request.getHeader("Authorization");
-
         String path = request.getRequestURI();
+
+        // Skip login endpoint
         if (path.startsWith("/api/auth")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        System.out.println("Auth header: " + request.getHeader("Authorization") + " path=" + request.getRequestURI());
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -53,13 +54,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
+                //Load user details (optional, e.g., for password checks)
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                //Extract role from JWT and map to Spring authority
+                String role = jwtService.extractRole(token); // "STUDENT" or "ADMIN"
+                List<SimpleGrantedAuthority> authorities = List.of(
+                        new SimpleGrantedAuthority("ROLE_" + role)
+                );
 
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(
                                 userDetails,
                                 null,
-                                userDetails.getAuthorities()
+                                authorities
                         );
 
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -67,6 +75,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         } catch (Exception e) {
+            e.printStackTrace(); 
         }
 
         filterChain.doFilter(request, response);
