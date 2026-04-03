@@ -27,7 +27,11 @@ public class InstructorDAOImpl implements InstructorDAO{
             // did not include password or role
 
         if (!allowedSortFields.contains(sortBy)) {
+<<<<<<< HEAD
             sortBy = "personId"; // default sort field
+=======
+            sortBy = "instructorId"; // default sort field
+>>>>>>> ed31924 (pagination and sorting for Instructor, Program, and Section)
         }
 
         if (!direction.equalsIgnoreCase("asc") && !direction.equalsIgnoreCase("desc")) {
@@ -36,9 +40,16 @@ public class InstructorDAOImpl implements InstructorDAO{
 
         String jpql = "FROM Instructor i ORDER BY i." + sortBy + " " + direction;
         
+<<<<<<< HEAD
         TypedQuery<Instructor> query = entityManager.createQuery(jpql, Instructor.class);
         
         // pagination
+=======
+        TypedQuery<Instructor> query = entityManager
+                .createQuery("FROM Instructor", Instructor.class);
+        
+            // pagination
+>>>>>>> ed31924 (pagination and sorting for Instructor, Program, and Section)
         query.setFirstResult(page * size);
         query.setMaxResults(size);
                 
