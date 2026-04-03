@@ -20,10 +20,10 @@ public class AdminSemesterController {
 
     @GetMapping
     public ResponseEntity<List<Semester>> getAllSemesters(
-        @RequestParam(defaultValue = "0" , required = false) int page,
-        @RequestParam(defaultValue = "10", required = false) int size,
-        @RequestParam(defaultValue = "semesterId", required = false) String sortBy,
-        @RequestParam(defaultValue = "asc", required = false) String direction
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "semesterId") String sortBy,
+        @RequestParam(defaultValue = "asc") String direction
     ) {
         return ResponseEntity.ok(semesterService.getAllSemesters(page, size, sortBy, direction));
     }
