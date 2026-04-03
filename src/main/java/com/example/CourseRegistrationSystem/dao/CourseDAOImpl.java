@@ -29,8 +29,8 @@ public class CourseDAOImpl implements CourseDAO{
     @Override
     public List<Course> findAll(int page, int size, String sortBy, String direction) {
         
-        // for validation
-        List<String> allowedSortFields = List.of("courseNumber", "description", "credits", "department");
+        // for sorting validation
+        List<String> allowedSortFields = List.of("courseId", "courseNumber", "description", "credits", "department");
 
         if (!allowedSortFields.contains(sortBy)) {
             sortBy = "courseId"; // default sort field
@@ -44,6 +44,7 @@ public class CourseDAOImpl implements CourseDAO{
         
         TypedQuery<Course> query = entityManager.createQuery(jpql, Course.class);
 
+        // pagination
         query.setFirstResult(page * size);
         query.setMaxResults(size);
 
