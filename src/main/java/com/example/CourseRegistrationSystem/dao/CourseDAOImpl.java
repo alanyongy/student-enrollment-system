@@ -5,6 +5,8 @@ import com.example.CourseRegistrationSystem.entity.Department;
 import com.example.CourseRegistrationSystem.entity.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Transactional
 public class CourseDAOImpl implements CourseDAO{
 
     private final EntityManager entityManager;
@@ -84,5 +87,39 @@ public class CourseDAOImpl implements CourseDAO{
         }
         course.setDepartment(null);
         return entityManager.merge(course);
+    }
+
+    @Override
+    public List<Course> findBySemesterId(Long semesterId) {
+        String jpql = "SELECT DISTINCT c FROM Course c " +
+                    "JOIN c.sections s " +
+                    "WHERE s.semester.semesterId = :semesterId";
+
+        return entityManager.createQuery(jpql, Course.class)
+                .setParameter("semesterId", semesterId)
+                .getResultList();
+    }
+
+    @Override
+    public List<Course> findAllBySemester(Long semesterId) {
+        TypedQuery<Course> query = entityManager.createQuery(
+            "SELECT DISTINCT c FROM Course c JOIN c.sections s WHERE s.semester.semesterId = :semesterId",
+            Course.class
+        );
+        query.setParameter("semesterId", semesterId);
+        return query.getResultList();
+    }
+
+    @Override
+    public Optional<Course> findByIdAndSemester(Long courseId, Long semesterId) {
+        TypedQuery<Course> query = entityManager.createQuery(
+            "SELECT DISTINCT c FROM Course c JOIN c.sections s " +
+            "WHERE c.courseId = :courseId AND s.semester.semesterId = :semesterId",
+            Course.class
+        );
+        query.setParameter("courseId", courseId);
+        query.setParameter("semesterId", semesterId);
+
+        return query.getResultList().stream().findFirst();
     }
 }

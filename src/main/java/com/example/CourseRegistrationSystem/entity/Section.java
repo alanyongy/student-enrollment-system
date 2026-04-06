@@ -34,21 +34,27 @@ public class Section {
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
-
     @NotNull(message = "Instructor cannot be null for a section")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "instructor_id", nullable = false)
     private Instructor instructor;
 
+    @NotNull(message = "Semester cannot be null for a section")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "semester_id", nullable = false)
+    private Semester semester;
+
     public Section() {}
 
-    public Section(Long sectionId, String scheduleTime, String location, Integer capacity, Course course, Instructor instructor) {
+    public Section(Long sectionId, String scheduleTime, String location, Integer capacity,
+                   Course course, Instructor instructor, Semester semester) {
         this.sectionId = sectionId;
         this.scheduleTime = scheduleTime;
         this.location = location;
         this.capacity = capacity;
         this.course = course;
         this.instructor = instructor;
+        this.semester = semester;
     }
 
     public Long getSectionId() {
@@ -97,5 +103,13 @@ public class Section {
 
     public void setInstructor(Instructor instructor) {
         this.instructor = instructor;
+    }
+
+    public Semester getSemester() {
+        return semester;
+    }
+
+    public void setSemester(Semester semester) {
+        this.semester = semester;
     }
 }
