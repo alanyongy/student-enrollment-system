@@ -21,8 +21,8 @@ public class InstructorServiceImpl implements InstructorService{
 
     @Transactional(readOnly = true)
     @Override
-    public List<Instructor> getInstructors() {
-        return instructorDAO.findAll();
+    public List<Instructor> getInstructors(int page, int size, String sortBy, String direction) {
+        return instructorDAO.findAll(page, size, sortBy, direction);
     }
 
     @Transactional(readOnly = true)

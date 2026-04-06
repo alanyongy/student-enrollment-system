@@ -23,8 +23,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Student> getStudents() {
-        return studentDAO.findAll();
+    public List<Student> getStudents(int page, int size, String sortBy, String direction) {
+        return studentDAO.findAll(page, size, sortBy, direction);
     }
 
     @Transactional(readOnly = true)

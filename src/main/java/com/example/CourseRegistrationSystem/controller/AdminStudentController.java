@@ -33,9 +33,14 @@ public class AdminStudentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Student>> getStudents() {
+    public ResponseEntity<List<Student>> getStudents(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "personId") String sortBy,
+        @RequestParam(defaultValue = "asc") String direction
+    ) {
 
-        return ResponseEntity.ok(studentService.getStudents());
+        return ResponseEntity.ok(studentService.getStudents(page, size, sortBy, direction));
     }
 
     @GetMapping("/{id}")

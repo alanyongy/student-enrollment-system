@@ -19,9 +19,14 @@ public class AdminInstructorController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Instructor>> getInstructors() {
+    public ResponseEntity<List<Instructor>> getInstructors(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "personId") String sortBy,
+        @RequestParam(defaultValue = "asc") String direction
+    ) {
 
-        return ResponseEntity.ok(instructorService.getInstructors());
+        return ResponseEntity.ok(instructorService.getInstructors(page, size, sortBy, direction));
     }
 
     @GetMapping("/{id}")

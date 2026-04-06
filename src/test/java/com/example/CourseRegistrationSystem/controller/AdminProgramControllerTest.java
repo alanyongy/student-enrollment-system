@@ -36,8 +36,8 @@ public class AdminProgramControllerTest {
     @Test
     void testGetAllPrograms() {
         List<Program> programs = Arrays.asList(new Program(), new Program());
-        when(programService.getAllPrograms()).thenReturn(programs);
-        ResponseEntity<List<Program>> response = adminProgramController.getAllPrograms();
+        when(programService.getAllPrograms(0, 10, "programId", "asc")).thenReturn(programs);
+        ResponseEntity<List<Program>> response = adminProgramController.getAllPrograms(0, 10, "programId", "asc");
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, response.getBody().size());
     }

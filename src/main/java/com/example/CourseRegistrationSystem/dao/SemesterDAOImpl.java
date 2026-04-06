@@ -1,8 +1,10 @@
 package com.example.CourseRegistrationSystem.dao;
 
+import com.example.CourseRegistrationSystem.entity.Instructor;
 import com.example.CourseRegistrationSystem.entity.Semester;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
@@ -16,8 +18,28 @@ public class SemesterDAOImpl implements SemesterDAO {
     private EntityManager entityManager;
 
     @Override
-    public List<Semester> findAll() {
-        return entityManager.createQuery("FROM Semester", Semester.class).getResultList();
+    public List<Semester> findAll(int page, int size, String sortBy, String direction) {
+    
+        // for sorting validation
+        List<String> allowedSortFields = List.of("semesterId", "termName", "startDate", "endDate"); 
+
+        if (!allowedSortFields.contains(sortBy)) {
+            sortBy = "semesterId"; // default sort field
+        }
+
+        if (!direction.equalsIgnoreCase("asc") && !direction.equalsIgnoreCase("desc")) {
+            direction = "asc"; // default direction
+        }
+
+        String jpql = "FROM Semester s ORDER BY s." + sortBy + " " + direction;
+        
+        TypedQuery<Semester> query = entityManager.createQuery(jpql, Semester.class);
+        
+        // pagination
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+                
+        return query.getResultList();
     }
 
     @Override

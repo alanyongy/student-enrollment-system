@@ -24,8 +24,26 @@ public class CourseDAOImpl implements CourseDAO{
         this.entityManager = entityManager;
     }
     @Override
-    public List<Course> findAll() {
-        TypedQuery<Course> query = entityManager.createQuery("FROM Course", Course.class);
+    public List<Course> findAll(int page, int size, String sortBy, String direction) {
+        
+        // for sorting validation
+        List<String> allowedSortFields = List.of("courseId", "courseNumber", "description", "credits", "department");
+
+        if (!allowedSortFields.contains(sortBy)) {
+            sortBy = "courseId"; // default sort field
+        }
+
+        if (!direction.equalsIgnoreCase("asc") && !direction.equalsIgnoreCase("desc")) {
+            direction = "asc"; // default direction
+        }
+
+        String jpql = "FROM Course c ORDER BY c." + sortBy + " " + direction;
+        
+        TypedQuery<Course> query = entityManager.createQuery(jpql, Course.class);
+
+        // pagination
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
 
         return query.getResultList();
     }

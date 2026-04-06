@@ -1,5 +1,6 @@
 package com.example.CourseRegistrationSystem.dao;
 
+import com.example.CourseRegistrationSystem.entity.Semester;
 import com.example.CourseRegistrationSystem.entity.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -22,11 +23,28 @@ public class StudentDAOImpl implements StudentDAO {
 
 
     @Override
-    public List<Student> findAll() {
+    public List<Student> findAll(int page, int size, String sortBy, String direction) {
+        
+        // for sorting validation
+        List<String> allowedSortFields = List.of("personId", "firstName", "middleName", "lastName", "email", "phoneNumber", "dateOfBirth", "enrollmentYear", "academicStatus", "creditsEarned"); 
+            // did not include password or role, or gpa (transient)
 
-        TypedQuery<Student> query =
-                entityManager.createQuery("FROM Student", Student.class);
+        if (!allowedSortFields.contains(sortBy)) {
+            sortBy = "personId"; // default sort field
+        }
 
+        if (!direction.equalsIgnoreCase("asc") && !direction.equalsIgnoreCase("desc")) {
+            direction = "asc"; // default direction
+        }
+
+        String jpql = "FROM Student s ORDER BY s." + sortBy + " " + direction;
+        
+        TypedQuery<Student> query = entityManager.createQuery(jpql, Student.class);
+        
+        // pagination
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+                
         return query.getResultList();
     }
 

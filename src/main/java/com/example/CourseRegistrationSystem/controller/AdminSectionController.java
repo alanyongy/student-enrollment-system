@@ -16,8 +16,13 @@ public class AdminSectionController {
     private SectionService sectionService;
 
     @GetMapping
-    public ResponseEntity<List<Section>> getAllSections() {
-        return ResponseEntity.ok(sectionService.getAllSections());
+    public ResponseEntity<List<Section>> getAllSections(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "sectionId") String sortBy,
+        @RequestParam(defaultValue = "asc") String direction
+    ) {
+        return ResponseEntity.ok(sectionService.getAllSections(page, size, sortBy, direction));
     }
 
     @GetMapping("/{id}")

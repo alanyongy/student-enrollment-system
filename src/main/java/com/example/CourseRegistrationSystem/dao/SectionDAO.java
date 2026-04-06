@@ -4,7 +4,7 @@ import com.example.CourseRegistrationSystem.entity.Section;
 import java.util.List;
 
 public interface SectionDAO {
-    List<Section> findAll();
+    List<Section> findAll(int page, int size, String sortBy, String direction);
     Section findById(Long id);
     Section save(Section section);
     Section update(Section section);

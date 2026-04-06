@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface StudentDAO {
 
-    List<Student> findAll();
+    List<Student> findAll(int page, int size, String sortBy, String direction);
 
     Optional<Student> findById(Long id);
 

@@ -33,8 +33,8 @@ public class AdminStudentControllerTest {
     @Test
     void testGetStudents() {
         List<Student> students = Arrays.asList(new Undergrad(), new Undergrad());
-        when(studentService.getStudents()).thenReturn(students);
-        ResponseEntity<List<Student>> response = adminStudentController.getStudents();
+        when(studentService.getStudents(0, 10, "personId", "asc")).thenReturn(students);
+        ResponseEntity<List<Student>> response = adminStudentController.getStudents(0, 10, "personId", "asc");
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, response.getBody().size());
     }

@@ -5,7 +5,7 @@ import com.example.CourseRegistrationSystem.entity.Course;
 import java.util.List;
 
 public interface CourseService {
-    List<Course> getCourses();
+    List<Course> getCourses(int page, int size, String sortyBy, String direction);
 
     Course getCourse(Long id);
 

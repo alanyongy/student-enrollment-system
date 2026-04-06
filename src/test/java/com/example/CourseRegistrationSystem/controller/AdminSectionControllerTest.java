@@ -32,8 +32,8 @@ public class AdminSectionControllerTest {
     @Test
     void testGetAllSections() {
         List<Section> sections = Arrays.asList(new Section(), new Section());
-        when(sectionService.getAllSections()).thenReturn(sections);
-        ResponseEntity<List<Section>> response = adminSectionController.getAllSections();
+        when(sectionService.getAllSections(0, 10, "sectionId", "asc")).thenReturn(sections);
+        ResponseEntity<List<Section>> response = adminSectionController.getAllSections(0, 10, "sectionId", "asc");
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, response.getBody().size());
     }

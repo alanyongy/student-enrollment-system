@@ -1,10 +1,12 @@
 package com.example.CourseRegistrationSystem.dao;
 
 import com.example.CourseRegistrationSystem.entity.Instructor;
+import com.example.CourseRegistrationSystem.entity.Program;
 import com.example.CourseRegistrationSystem.entity.Section;
 import com.example.CourseRegistrationSystem.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
@@ -18,8 +20,29 @@ public class SectionDAOImpl implements SectionDAO {
     private EntityManager entityManager;
 
     @Override
-    public List<Section> findAll() {
-        return entityManager.createQuery("FROM Section", Section.class).getResultList();
+    public List<Section> findAll(int page, int size, String sortBy, String direction) {
+        
+        // sorting and validation
+        List<String> allowedSortFields = List.of("sectionId", "scheduleTime", "location", "capacity"); 
+            // didn't include course or instructor as they're objects
+
+        if (!allowedSortFields.contains(sortBy)) {
+            sortBy = "sectionId"; // default sort field
+        }
+
+        if (!direction.equalsIgnoreCase("asc") && !direction.equalsIgnoreCase("desc")) {
+            direction = "asc"; // default sort direction
+        }
+
+        String jpql = "FROM Section s ORDER BY s." + sortBy + " " + direction.toUpperCase();
+
+        TypedQuery<Section> query = entityManager.createQuery(jpql, Section.class);
+
+        // pagination
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+
+        return query.getResultList();
     }
 
     @Override

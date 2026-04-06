@@ -22,8 +22,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Department> getAllDepartments() {
-        return departmentDAO.findAll();
+    public List<Department> getAllDepartments(int page, int size, String sortBy, String direction) {
+        return departmentDAO.findAll(page, size, sortBy, direction);
     }
 
     @Transactional(readOnly = true)

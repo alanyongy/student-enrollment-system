@@ -19,8 +19,13 @@ public class AdminSemesterController {
     private SemesterSectionService semesterSectionService;
 
     @GetMapping
-    public ResponseEntity<List<Semester>> getAllSemesters() {
-        return ResponseEntity.ok(semesterService.getAllSemesters());
+    public ResponseEntity<List<Semester>> getAllSemesters(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "semesterId") String sortBy,
+        @RequestParam(defaultValue = "asc") String direction
+    ) {
+        return ResponseEntity.ok(semesterService.getAllSemesters(page, size, sortBy, direction));
     }
 
     @PostMapping

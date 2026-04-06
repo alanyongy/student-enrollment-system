@@ -25,8 +25,8 @@ public class CourseServiceImpl implements CourseService{
 
     @Transactional(readOnly = true)
     @Override
-    public List<Course> getCourses() {
-        return courseDAO.findAll();
+    public List<Course> getCourses(int page, int size, String sortBy, String direction) {
+        return courseDAO.findAll(page, size, sortBy, direction);
     }
 
     @Transactional(readOnly = true)
