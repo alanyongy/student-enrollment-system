@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface StudentService {
 
-    List<Student> getStudents();
+    List<Student> getStudents(int page, int size, String sortBy, String direction);
 
     Student getStudent(Long id);
 

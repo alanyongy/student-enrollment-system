@@ -15,8 +15,8 @@ public class SemesterServiceImpl implements SemesterService {
     private SemesterDAO semesterDAO;
 
     @Override
-    public List<Semester> getAllSemesters() {
-        return semesterDAO.findAll();
+    public List<Semester> getAllSemesters(int page, int size, String sortBy, String direction) {
+        return semesterDAO.findAll(page, size, sortBy, direction);
     }
 
     @Override

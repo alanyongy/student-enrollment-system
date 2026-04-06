@@ -15,8 +15,8 @@ public class ProgramServiceImpl implements ProgramService {
     private ProgramDAO programDAO;
 
     @Override
-    public List<Program> getAllPrograms() {
-        return programDAO.findAll();
+    public List<Program> getAllPrograms(int page, int size, String sortBy, String direction) {
+        return programDAO.findAll(page, size, sortBy, direction);
     }
 
     @Override

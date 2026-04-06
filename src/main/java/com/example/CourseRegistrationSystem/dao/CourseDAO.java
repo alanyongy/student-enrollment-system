@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface CourseDAO {
 
-    List<Course> findAll();
+    List<Course> findAll(int page, int size, String sortBy, String direction);
 
     Optional<Course> findById(Long id);
 

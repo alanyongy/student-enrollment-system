@@ -32,8 +32,8 @@ public class AdminCourseControllerTest {
     @Test
     void testGetCourses() {
         List<Course> courses = Arrays.asList(new Course(), new Course());
-        when(courseService.getCourses()).thenReturn(courses);
-        ResponseEntity<List<Course>> response = adminCourseController.getCourses();
+        when(courseService.getCourses(0, 10, "courseId", "asc")).thenReturn(courses);
+        ResponseEntity<List<Course>> response = adminCourseController.getCourses(0, 10, "courseId", "asc");
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, response.getBody().size());
     }

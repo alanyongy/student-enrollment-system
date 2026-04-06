@@ -25,9 +25,14 @@ public class AdminCourseController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Course>> getCourses() {
+    public ResponseEntity<List<Course>> getCourses(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size,
+            @RequestParam(defaultValue = "courseId") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction
+        ) {
 
-        return ResponseEntity.ok(courseService.getCourses());
+        return ResponseEntity.ok(courseService.getCourses(page, size, sortBy, direction));
     }
 
     @GetMapping("/{id}")

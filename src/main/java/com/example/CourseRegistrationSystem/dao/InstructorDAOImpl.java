@@ -20,9 +20,28 @@ public class InstructorDAOImpl implements InstructorDAO{
         this.entityManager = entityManager;
     }
     @Override
-    public List<Instructor> findAll() {
-        TypedQuery<Instructor> query = entityManager
-                .createQuery("FROM Instructor", Instructor.class);
+    public List<Instructor> findAll(int page, int size, String sortBy, String direction) {
+        
+        // for sorting validation
+        List<String> allowedSortFields = List.of("personId", "firstName", "middleName", "lastName", "email", "phoneNumber", "dateOfBirth", "yearsOfExperience", "expertiseTopics"); 
+            // did not include password or role
+
+        if (!allowedSortFields.contains(sortBy)) {
+            sortBy = "personId"; // default sort field
+        }
+
+        if (!direction.equalsIgnoreCase("asc") && !direction.equalsIgnoreCase("desc")) {
+            direction = "asc"; // default direction
+        }
+
+        String jpql = "FROM Instructor i ORDER BY i." + sortBy + " " + direction;
+        
+        TypedQuery<Instructor> query = entityManager.createQuery(jpql, Instructor.class);
+        
+        // pagination
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+                
         return query.getResultList();
     }
 

@@ -16,8 +16,13 @@ public class AdminProgramController {
     private ProgramService programService;
 
     @GetMapping
-    public ResponseEntity<List<Program>> getAllPrograms() {
-        return ResponseEntity.ok(programService.getAllPrograms());
+    public ResponseEntity<List<Program>> getAllPrograms(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "programId") String sortBy,
+        @RequestParam(defaultValue = "asc") String direction
+    ) {
+        return ResponseEntity.ok(programService.getAllPrograms(page, size, sortBy, direction));
     }
 
     @GetMapping("/{id}")

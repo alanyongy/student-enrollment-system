@@ -33,8 +33,8 @@ public class AdminDepartmentControllerTest {
     @Test
     void testGetAllDepartments() {
         List<Department> departments = Arrays.asList(new Department(), new Department());
-        when(departmentService.getAllDepartments()).thenReturn(departments);
-        ResponseEntity<List<Department>> response = adminDepartmentController.getAllDepartments();
+        when(departmentService.getAllDepartments(0, 10, "deptId", "asc")).thenReturn(departments);
+        ResponseEntity<List<Department>> response = adminDepartmentController.getAllDepartments(0, 10, "deptId", "asc");
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, response.getBody().size());
     }

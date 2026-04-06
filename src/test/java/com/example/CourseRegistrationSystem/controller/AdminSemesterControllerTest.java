@@ -36,8 +36,8 @@ public class AdminSemesterControllerTest {
     @Test
     void testGetAllSemesters() {
         List<Semester> semesters = Arrays.asList(new Semester(), new Semester());
-        when(semesterService.getAllSemesters()).thenReturn(semesters);
-        ResponseEntity<List<Semester>> response = adminSemesterController.getAllSemesters();
+        when(semesterService.getAllSemesters(0, 10, "semesterId", "asc")).thenReturn(semesters);
+        ResponseEntity<List<Semester>> response = adminSemesterController.getAllSemesters(0, 10, "semesterId", "asc");
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, response.getBody().size());
     }

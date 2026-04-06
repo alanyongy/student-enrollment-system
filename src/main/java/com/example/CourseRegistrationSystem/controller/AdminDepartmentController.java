@@ -19,8 +19,13 @@ public class AdminDepartmentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Department>> getAllDepartments() {
-        return ResponseEntity.ok(departmentService.getAllDepartments());
+    public ResponseEntity<List<Department>> getAllDepartments(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "deptId") String sortBy,
+        @RequestParam(defaultValue = "asc") String direction
+    ) {
+        return ResponseEntity.ok(departmentService.getAllDepartments(page, size, sortBy, direction));
     }
 
     @GetMapping("/{id}")

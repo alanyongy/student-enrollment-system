@@ -19,8 +19,8 @@ public class SectionServiceImpl implements SectionService {
     private CourseService courseService;
 
     @Override
-    public List<Section> getAllSections() {
-        return sectionDAO.findAll();
+    public List<Section> getAllSections(int page, int size, String sortBy, String direction) {
+        return sectionDAO.findAll(page, size, sortBy, direction);
     }
 
     @Override

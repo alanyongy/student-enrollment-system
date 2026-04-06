@@ -32,8 +32,8 @@ public class AdminInstructorControllerTest {
     @Test
     void testGetInstructors() {
         List<Instructor> instructors = Arrays.asList(new Instructor(), new Instructor());
-        when(instructorService.getInstructors()).thenReturn(instructors);
-        ResponseEntity<List<Instructor>> response = adminInstructorController.getInstructors();
+        when(instructorService.getInstructors(0, 10, "personId", "asc")).thenReturn(instructors);
+        ResponseEntity<List<Instructor>> response = adminInstructorController.getInstructors(0, 10, "personId", "asc");
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, response.getBody().size());
     }

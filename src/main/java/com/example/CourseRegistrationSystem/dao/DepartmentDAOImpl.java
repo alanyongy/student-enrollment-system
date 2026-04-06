@@ -20,8 +20,28 @@ public class DepartmentDAOImpl implements DepartmentDAO {
     }
 
     @Override
-    public List<Department> findAll() {
-        TypedQuery<Department> query = entityManager.createQuery("FROM Department", Department.class);
+    public List<Department> findAll(int page, int size, String sortBy, String direction) {
+        
+        // for validation
+        List<String> allowedSortFields = List.of("deptId", "deptName", "deptEmail", "phoneNumber", "officeLocation");
+
+        if (!allowedSortFields.contains(sortBy)) {
+            sortBy = "deptId"; // default sort field
+        }
+
+        if (!direction.equalsIgnoreCase("asc") && !direction.equalsIgnoreCase("desc")) {
+            direction = "asc"; // default direction
+        }
+
+        String jpql = "FROM Department d ORDER BY d." + sortBy + " " + direction;
+        
+        
+        TypedQuery<Department> query = entityManager.createQuery(jpql, Department.class);
+        
+        // pagination
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+
         return query.getResultList();
     }
 

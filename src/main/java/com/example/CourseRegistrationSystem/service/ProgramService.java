@@ -4,7 +4,7 @@ import com.example.CourseRegistrationSystem.entity.Program;
 import java.util.List;
 
 public interface ProgramService {
-    List<Program> getAllPrograms();
+    List<Program> getAllPrograms(int page, int size, String sortBy, String direction);
     Program getProgramById(Long id);
     Program createProgram(Program program);
     Program updateProgram(Long id, Program program);
