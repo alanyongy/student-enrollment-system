@@ -65,5 +65,20 @@ public class SemesterDAOImpl implements SemesterDAO {
             entityManager.remove(semester);
         }
     }
+
+    @Override
+    public List<Semester> findByStudentId(Long studentId) {
+        String sql = """
+        SELECT DISTINCT s.*
+        FROM semesters s
+        JOIN semester_sections ss ON ss.semester_id = s.semester_id
+        JOIN enrollments e ON e.semester_section_id = ss.semester_section_id
+        WHERE e.student_id = ?
+        """;
+
+        TypedQuery<Semester> query = entityManager.createQuery(sql, Semester.class);
+        query.setParameter(1, studentId);
+        return query.getResultList();
+    }
 }
 

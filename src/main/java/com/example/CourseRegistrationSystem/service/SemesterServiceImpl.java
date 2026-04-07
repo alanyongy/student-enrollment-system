@@ -14,6 +14,7 @@ public class SemesterServiceImpl implements SemesterService {
     @Autowired
     private SemesterDAO semesterDAO;
 
+
     @Override
     public List<Semester> getAllSemesters(int page, int size, String sortBy, String direction) {
         return semesterDAO.findAll(page, size, sortBy, direction);
@@ -45,6 +46,12 @@ public class SemesterServiceImpl implements SemesterService {
     @Override
     public void deleteSemester(Long id) {
         semesterDAO.delete(id);
+    }
+
+    @Override
+    public List<Semester> getSemestersForStudent(Long studentId) {
+        return semesterDAO.findByStudentId(studentId);
+
     }
 }
 

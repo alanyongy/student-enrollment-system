@@ -9,5 +9,7 @@ public interface SemesterDAO {
     Semester save(Semester semester);
     Semester update(Semester semester);
     void delete(Long id);
+
+    List<Semester> findByStudentId(Long studentId);
 }
 

@@ -76,7 +76,7 @@ public class TestRepositoryInjector {
             }
 
             // --- SEMESTERS ---
-            if (semesterDAO.findAll().isEmpty()) {
+            if (semesterDAO.findAll(0, 10, "semesterId","asc").isEmpty()) {
                 Semester fall2026 = new Semester();
                 fall2026.setTermName("Fall 2026");
                 fall2026.setStartDate(LocalDate.of(2026, 9, 1));
@@ -91,8 +91,8 @@ public class TestRepositoryInjector {
             }
 
             // --- COURSES & SECTIONS ---
-            if (courseDAO.findAll().isEmpty()) {
-                Semester fall2026 = semesterDAO.findAll().get(0);
+            if (courseDAO.findAll(0, 10, "courseId","asc").isEmpty()) {
+                Semester fall2026 = semesterDAO.findAll(0, 10, "semesterId","asc" ).get(0);
 
                 Department cs = new Department();
                 cs.setOfficeLocation("cs office location");

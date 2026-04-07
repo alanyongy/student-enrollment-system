@@ -10,6 +10,8 @@ import com.example.CourseRegistrationSystem.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class CompletedCourseServiceImpl implements CompletedCourseService {
     private final CompletedCourseDAO completedCourseDAO;
@@ -45,6 +47,19 @@ public class CompletedCourseServiceImpl implements CompletedCourseService {
             throw new ResourceNotFoundException("Completed course not found for student.");
         }
         completedCourseDAO.deleteByStudentAndCourse(studentId, courseId);
+    }
+
+    @Override
+    public List<CompletedCourse> getCompletedCoursesByStudentId(Long personId) {
+        Student student = studentDAO.findById(personId)
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found with id " + personId));
+
+        List<CompletedCourse> completedCourses = completedCourseDAO.findByStudentId(personId);
+        if (completedCourses.isEmpty()) {
+            throw new ResourceNotFoundException("No completed courses found for student with id " + personId);
+        }
+        return completedCourses;
+
     }
 }
 

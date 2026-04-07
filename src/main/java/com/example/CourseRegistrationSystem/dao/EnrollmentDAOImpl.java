@@ -8,6 +8,8 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Repository
 @Transactional
@@ -46,5 +48,33 @@ public class EnrollmentDAOImpl implements EnrollmentDAO{
         } else {
             throw new IllegalArgumentException("Enrollment not found for student ID " + studentId + " and section ID " + sectionId);
         }
+    }
+
+    @Override
+    public boolean existsByStudentAndSection(Long studentId, Long sectionId) {
+        String jpql = "SELECT COUNT(e) FROM Enrollment e WHERE e.student.personId = :studentId AND e.section.sectionId = :sectionId";
+        Long count = entityManager.createQuery(jpql, Long.class)
+                .setParameter("studentId", studentId)
+                .setParameter("sectionId", sectionId)
+                .getSingleResult();
+        return count != null && count > 0;
+    }
+
+    @Override
+    public List<Enrollment> findByStudentAndSemester(Long studentId, Long semesterId) {
+        String jpql = "SELECT e FROM Enrollment e WHERE e.student.personId = :studentId AND e.section.semester.semesterId = :semesterId";
+        return entityManager.createQuery(jpql, Enrollment.class)
+                .setParameter("studentId", studentId)
+                .setParameter("semesterId", semesterId)
+                .getResultList();
+    }
+
+    @Override
+    public long countBySection(Long sectionId) {
+        String jpql = "SELECT COUNT(e) FROM Enrollment e WHERE e.section.sectionId = :sectionId";
+        Long count = entityManager.createQuery(jpql, Long.class)
+                .setParameter("sectionId", sectionId)
+                .getSingleResult();
+        return count != null ? count : 0L;
     }
 }

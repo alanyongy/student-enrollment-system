@@ -1,16 +1,18 @@
 package com.example.CourseRegistrationSystem.controller;
 
+import com.example.CourseRegistrationSystem.dao.CompletedCourseDAO;
 import com.example.CourseRegistrationSystem.dao.CourseDAO;
 import com.example.CourseRegistrationSystem.dto.CourseDTO;
-import com.example.CourseRegistrationSystem.entity.Course;
-import com.example.CourseRegistrationSystem.entity.Person;
-import com.example.CourseRegistrationSystem.entity.Student;
+import com.example.CourseRegistrationSystem.entity.*;
 import com.example.CourseRegistrationSystem.exception.ResourceNotFoundException;
 import com.example.CourseRegistrationSystem.repository.UserRepository;
+import com.example.CourseRegistrationSystem.service.CompletedCourseService;
+import com.example.CourseRegistrationSystem.service.CoursePrerequisiteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,10 +22,17 @@ public class StudentCourseController {
 
     private final UserRepository userRepository;
     private final CourseDAO courseDAO;
+    private final CoursePrerequisiteService prerequisiteService;
+    private final CompletedCourseService completedCourseService;
 
-    public StudentCourseController(UserRepository userRepository, CourseDAO courseDAO) {
+    public StudentCourseController(UserRepository userRepository,
+                                   CourseDAO courseDAO,
+                                   CoursePrerequisiteService prerequisiteService,
+                                   CompletedCourseService completedCourseService) {
         this.userRepository = userRepository;
         this.courseDAO = courseDAO;
+        this.prerequisiteService = prerequisiteService;
+        this.completedCourseService = completedCourseService;
     }
 
     // GET /api/student/courses?semesterId={id}
@@ -56,10 +65,23 @@ public class StudentCourseController {
     ) {
         Student student = getAuthenticatedStudent(authentication);
 
-        //TODO: replace with actual eligibility logic
-        boolean eligible = true;
 
-        return ResponseEntity.ok(eligible);
+        List<Course> completedCourses = completedCourseService.getCompletedCoursesByStudentId(student.getPersonId())
+                .stream()
+                .map(CompletedCourse::getCourse)
+                .toList();
+
+        List<Course> prerequisites = prerequisiteService.getPrerequisitesForCourse(courseId)
+                .stream()
+                .map(CoursePrerequisite::getCourse)
+                .toList();
+
+        if (!new HashSet<>(completedCourses).containsAll(prerequisites)) {
+            return ResponseEntity.ok(false);
+        }
+
+
+        return ResponseEntity.ok(true);
     }
 
     private Student getAuthenticatedStudent(Authentication authentication) {
@@ -83,5 +105,20 @@ public class StudentCourseController {
         dto.setCredits(course.getCredits());
         dto.setDepartmentName(course.getDepartment() != null ? course.getDepartment().getDeptName() : null);
         return dto;
+    }
+
+    @GetMapping("completed-courses")
+    public ResponseEntity<List<CourseDTO>> getCompletedCourses(Authentication authentication) {
+        Student student = getAuthenticatedStudent(authentication);
+
+        List<Course> completedCourses = completedCourseService.getCompletedCoursesByStudentId(student.getPersonId())
+                .stream()
+                .map(CompletedCourse::getCourse)
+                .toList();
+
+        List<CourseDTO> dtos = completedCourses.stream()
+                .map(this::mapToDto)
+                .toList();
+        return ResponseEntity.ok(dtos);
     }
 }
