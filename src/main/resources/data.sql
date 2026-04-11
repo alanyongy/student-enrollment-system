@@ -52,6 +52,46 @@ VALUES (10, 'Mason', 'Lee', 'Anderson', 'student6@example.com',
         '$2a$10$M67C/BLkfotfl14WbFSh8Out/6ReJxaLunI.WsdTPNS66.VLmJ9KG',
         '4035550010', '2005-03-08', 'STUDENT');
 
+INSERT INTO persons (person_id, first_name, middle_name, last_name, email, password, phone_number, date_of_birth, security_role)
+VALUES (11, 'Lucas', 'Andrew', 'Brown', 'student7@example.com',
+        '$2a$10$M67C/BLkfotfl14WbFSh8Out/6ReJxaLunI.WsdTPNS66.VLmJ9KG',
+        '4035550011', '2004-05-21', 'STUDENT');
+
+INSERT INTO persons (person_id, first_name, middle_name, last_name, email, password, phone_number, date_of_birth, security_role)
+VALUES (12, 'Mia', 'Elise', 'Martin', 'student8@example.com',
+ '$2a$10$M67C/BLkfotfl14WbFSh8Out/6ReJxaLunI.WsdTPNS66.VLmJ9KG',
+ '4035550012', '2005-11-02', 'STUDENT');
+
+INSERT INTO persons (person_id, first_name, middle_name, last_name, email, password, phone_number, date_of_birth, security_role)
+VALUES (13, 'Ethan', 'David', 'Singh', 'student9@example.com',
+ '$2a$10$M67C/BLkfotfl14WbFSh8Out/6ReJxaLunI.WsdTPNS66.VLmJ9KG',
+ '4035550013', '2003-03-18', 'STUDENT');
+
+INSERT INTO persons (person_id, first_name, middle_name, last_name, email, password, phone_number, date_of_birth, security_role)
+VALUES (14, 'Chloe', 'Anne', 'Taylor', 'student10@example.com',
+ '$2a$10$M67C/BLkfotfl14WbFSh8Out/6ReJxaLunI.WsdTPNS66.VLmJ9KG',
+ '4035550014', '2006-07-09', 'STUDENT');
+
+INSERT INTO persons (person_id, first_name, middle_name, last_name, email, password, phone_number, date_of_birth, security_role)
+VALUES (15, 'Noah', 'Benjamin', 'Ali', 'student11@example.com',
+ '$2a$10$M67C/BLkfotfl14WbFSh8Out/6ReJxaLunI.WsdTPNS66.VLmJ9KG',
+ '4035550015', '2004-09-30', 'STUDENT');
+
+INSERT INTO persons (person_id, first_name, middle_name, last_name, email, password, phone_number, date_of_birth, security_role)
+VALUES (16, 'Drake', 'Alexander', 'Moore', 'instructor4@example.com',
+ '$2a$10$M67C/BLkfotfl14WbFSh8Out/6ReJxaLunI.WsdTPNS66.VLmJ9KG',
+ '4035550016', '1978-01-15', 'STUDENT');
+
+INSERT INTO persons (person_id, first_name, middle_name, last_name, email, password, phone_number, date_of_birth, security_role)
+VALUES (17, 'Sophia', 'Nicole', 'Hernandez', 'instructor5@example.com',
+ '$2a$10$M67C/BLkfotfl14WbFSh8Out/6ReJxaLunI.WsdTPNS66.VLmJ9KG',
+ '4035550017', '1982-04-28', 'STUDENT');
+
+INSERT INTO persons (person_id, first_name, middle_name, last_name, email, password, phone_number, date_of_birth, security_role)
+VALUES (18, 'Daniel', 'Christopher', 'Kim', 'instructor6@example.com',
+ '$2a$10$M67C/BLkfotfl14WbFSh8Out/6ReJxaLunI.WsdTPNS66.VLmJ9KG',
+ '4035550018', '1975-10-11', 'STUDENT');
+
 -- ========================
 -- SUBCLASS TABLES (JOINED)
 -- ========================
