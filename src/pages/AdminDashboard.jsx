@@ -16,13 +16,8 @@ export default function AdminDashboard() {
   const cards = [
     {
       title: "Students",
-      description: "View, add, edit, and remove students",
+      description: "Manage student accounts and profiles",
       path: "/admin-students",
-    },
-    {
-      title: "Courses",
-      description: "Manage course offerings and details",
-      path: "/admin-courses",
     },
     {
       title: "Instructors",
@@ -30,9 +25,83 @@ export default function AdminDashboard() {
       path: "/admin-instructors",
     },
     {
+      title: "Administrators",
+      description: "Manage admin users",
+      path: "/admin-administrators",
+    },
+  
+    //Academic Structure
+    {
+      title: "Departments",
+      description: "Manage academic departments",
+      path: "/admin-departments",
+    },
+    {
+      title: "Programs",
+      description: "Manage degree programs",
+      path: "/admin-programs",
+    },
+    {
+      title: "Courses",
+      description: "Manage course catalog",
+      path: "/admin-courses",
+    },
+    {
+      title: "Sections",
+      description: "Manage course sections",
+      path: "/admin-sections",
+    },
+    {
+      title: "Semesters",
+      description: "Manage academic semesters",
+      path: "/admin-semesters",
+    },
+  
+    //Enrollment & Academic Activity
+    {
       title: "Enrollments",
-      description: "View course enrollments",
+      description: "Manage student course enrollments",
       path: "/admin-enrollments",
+    },
+    {
+      title: "Admissions",
+      description: "Manage student admissions",
+      path: "/admin-admissions",
+    },
+  
+    //Relationship / Constraint Tables
+    {
+      title: "Course Prerequisites",
+      description: "Manage course prerequisite rules",
+      path: "/admin-course-prerequisites",
+    },
+    {
+      title: "Program Course Access",
+      description: "Control program access to courses",
+      path: "/admin-program-course-access",
+    },
+    {
+      title: "Semester Sections",
+      description: "Link sections to semesters",
+      path: "/admin-semester-sections",
+    },
+  
+    //Students by type
+    {
+      title: "Undergraduate Students",
+      description: "Manage undergraduate students",
+      path: "/admin-undergraduates",
+    },
+    {
+      title: "Postgraduate Students",
+      description: "Manage postgraduate students",
+      path: "/admin-postgraduates",
+    },
+
+    {
+      title: "Departments & Programs Map",
+      description: "View program-to-department structure",
+      path: "/admin-org-structure",
     },
   ];
 
