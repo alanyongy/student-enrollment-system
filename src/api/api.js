@@ -1,5 +1,23 @@
 const API_BASE = "http://localhost:8080";
 
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: API_BASE,
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
+export default api;
+
 export async function loginStudent(email, password) {
   const res = await fetch(`${API_BASE}/api/student/login`, {
     method: "POST",
