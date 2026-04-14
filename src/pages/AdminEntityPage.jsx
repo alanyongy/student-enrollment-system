@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 
 import { adminEntities } from "../config/adminEntities";
 import api from "../api/api";
@@ -10,17 +9,19 @@ import Input from "../components/Input";
 
 export default function AdminEntityPage() {
   const { entity } = useParams();
-  const config = adminEntities[entity];
   const navigate = useNavigate();
-  
+
+  const config = adminEntities?.[entity];
+
   const [rows, setRows] = useState([]);
   const [form, setForm] = useState({});
   const [editingId, setEditingId] = useState(null);
 
-  // Load data
+  // Load data when entity/config changes
   useEffect(() => {
-    if (config) fetchData();
-  }, [entity]);
+    if (!config) return;
+    fetchData();
+  }, [entity, config]);
 
   const fetchData = async () => {
     const res = await api.get(config.endpoint);
@@ -29,28 +30,27 @@ export default function AdminEntityPage() {
 
   // Create / Update
   const handleSubmit = async () => {
-    if (editingId) {
+    if (!config) return;
+    if (editingId !== null) {
       await api.put(`${config.endpoint}/${editingId}`, form);
+      setEditingId(null); // exit edit mode
     } else {
       await api.post(config.endpoint, form);
     }
 
     setForm({});
-    setEditingId(null);
     fetchData();
   };
 
   // Edit
   const handleEdit = (row) => {
     setForm(row);
-    setEditingId(row.id);
+    setEditingId(Object.values(row)[0]);
   };
 
   // Delete
   const handleDelete = async (row) => {
-    const entityID = Object.values(row)[0]; // first column value is id
-
-    await api.delete(`${config.endpoint}/${entityID}`);
+    await api.delete(`${config.endpoint}/${Object.values(row)[0]}`);
     fetchData();
   };
 
@@ -65,6 +65,7 @@ export default function AdminEntityPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-6">
       <motion.div
+        key={entity}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -76,31 +77,30 @@ export default function AdminEntityPage() {
           shadow-2xl
         "
       >
+        {/* Header */}
         <div className="flex items-center justify-between mb-6">
-  
-            <h1 className="text-2xl font-bold text-white">
-                {config.title}
-            </h1>
-            
-            <button
-                onClick={() => navigate("/admin-dashboard")}
-                className="
-                px-4 py-2
-                rounded-lg
-                bg-white/10 hover:bg-white/20
-                text-white
-                border border-white/10
-                transition
-                "
-            >
-                ← Back
-            </button>
+          <h1 className="text-2xl font-bold text-white">
+            {config.title}
+          </h1>
 
+          <button
+            onClick={() => navigate("/admin-dashboard")}
+            className="
+              px-4 py-2
+              rounded-lg
+              bg-white/10 hover:bg-white/20
+              text-white
+              border border-white/10
+              transition
+            "
+          >
+            ← Back
+          </button>
         </div>
-  
-        {/* FORM CARD */}
+
+        {/* FORM */}
         <div className="mb-6 p-4 rounded-xl bg-white/5 border border-white/10">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 items-center">
             {config.columns.map((col) =>
               col.key !== "id" ? (
                 <Input
@@ -116,14 +116,27 @@ export default function AdminEntityPage() {
                 />
               ) : null
             )}
-  
+
             <Button onClick={handleSubmit}>
-              {editingId ? "Update" : "Create"}
+              {editingId !== null ? "Update" : "Create"}
             </Button>
+
+            {/* Cancel button */}
+            {editingId !== null && (
+            <Button
+                className="!bg-red-600 hover:!bg-red-500"
+                onClick={() => {
+                setForm({});
+                setEditingId(null);
+                }}
+            >
+                Cancel
+            </Button>
+            )}
           </div>
         </div>
-  
-        {/* TABLE CARD */}
+
+        {/* TABLE */}
         <div className="rounded-xl bg-white/5 border border-white/10 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -137,11 +150,11 @@ export default function AdminEntityPage() {
                   <th className="p-3">Actions</th>
                 </tr>
               </thead>
-  
+
               <tbody>
                 {rows.map((row) => (
                   <tr
-                    key={Object.values(row)[0]} // safer than row.id
+                    key={Object.values(row)[0]}
                     className="border-b border-white/5 hover:bg-white/10 transition"
                   >
                     {config.columns.map((col) => (
@@ -149,12 +162,12 @@ export default function AdminEntityPage() {
                         {row[col.key]}
                       </td>
                     ))}
-  
+
                     <td className="p-3 flex gap-2">
                       <Button onClick={() => handleEdit(row)}>
                         Edit
                       </Button>
-  
+
                       <Button
                         className="bg-red-600 hover:bg-red-500"
                         onClick={() => handleDelete(row)}

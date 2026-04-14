@@ -50,7 +50,8 @@ export default function Login() {
       }
 
       // store role for UI logic later
-      localStorage.setItem("role", role);
+      const decoded = JSON.parse(atob(token.split(".")[1]));
+      localStorage.setItem("role", decoded.roles);
 
       // 👇 ROLE-BASED ROUTING
       if (role === "ADMIN") {

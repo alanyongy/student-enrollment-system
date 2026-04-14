@@ -4,11 +4,13 @@ export const adminEntities = {
       endpoint: "api/admin/students",
       columns: [
         { key: "personId", label: "ID" },
-        { key: "firstName", label: "Name" },
+        { key: "firstName", label: "First Name" },
+        { key: "lastName", label: "Last Name"},
         { key: "email", label: "Email" },
       ],
     },
   
+    //TODO: set columns and corresponding keys for remaining entities (match key to var names in backend entity files)
     instructors: {
       title: "Instructors",
       endpoint: "api/admin/instructors",
