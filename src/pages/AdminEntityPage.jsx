@@ -16,44 +16,164 @@ export default function AdminEntityPage() {
   const [rows, setRows] = useState([]);
   const [form, setForm] = useState({});
   const [editingId, setEditingId] = useState(null);
+  const [relationOptions, setRelationOptions] = useState({});
 
-  // Load data when entity/config changes
+  // -----------------------------
+  // LOAD DATA
+  // -----------------------------
   useEffect(() => {
     if (!config) return;
+
+    console.log("📦 CONFIG:", config);
+
     fetchData();
+    loadRelations();
   }, [entity, config]);
 
   const fetchData = async () => {
     const res = await api.get(config.endpoint);
+
+    console.log("📥 FETCH DATA:", res.data);
+
     setRows(res.data);
   };
 
-  // Create / Update
-  const handleSubmit = async () => {
+  // -----------------------------
+  // LOAD RELATIONS
+  // -----------------------------
+  const loadRelations = async () => {
     if (!config) return;
-    if (editingId !== null) {
-      await api.put(`${config.endpoint}/${editingId}`, form);
-      setEditingId(null); // exit edit mode
-    } else {
-      await api.post(config.endpoint, form);
+
+    const relFields = config.columns.filter(
+      (col) => col.type === "relation"
+    );
+
+    const results = {};
+
+    for (const field of relFields) {
+      const relConfig = adminEntities[field.entity];
+      if (!relConfig) continue;
+
+      const res = await api.get(relConfig.endpoint);
+
+      console.log(
+        `🔗 RELATION LOAD [${field.entity}]`,
+        res.data
+      );
+
+      results[field.entity] = res.data;
     }
 
+    setRelationOptions(results);
+  };
+
+  // -----------------------------
+  // CREATE / UPDATE
+  // -----------------------------
+  const handleSubmit = async () => {
+    console.log("🟡 FORM BEFORE SUBMIT:", form);
+  
+    const payload = { ...form };
+  
+    config.columns.forEach((col) => {
+      if (col.type === "relation") {
+        const value = payload[col.key];
+    
+        const parsed = parseInt(value, 10);
+        const relConfig = adminEntities[col.entity];
+        const idKey = relConfig?.idKey;
+    
+        console.log(`🔍 RELATION FIX [${col.key}]`, {
+          raw: value,
+          parsed,
+          idKey
+        });
+    
+        if (
+          value === "" ||
+          value === null ||
+          value === undefined ||
+          Number.isNaN(parsed)
+        ) {
+          payload[col.key] = null;
+        } else {
+          payload[col.key] = {
+            [idKey]: parsed,   // ✅ BACK TO NESTED OBJECTS
+          };
+        }
+      }
+    });
+  
+    console.log("🚀 FINAL PAYLOAD:", payload);
+    console.log(JSON.stringify(payload, null, 2));
+  
+    if (editingId !== null) {
+      console.log("✏️ PUT:", editingId);
+      await api.put(`${config.endpoint}/${editingId}`, payload);
+      setEditingId(null);
+    } else {
+      console.log("➕ POST");
+      console.log("📡 API POST URL:", config.endpoint);
+      await api.post(config.endpoint, payload);
+    }
+  
     setForm({});
     fetchData();
   };
 
-  // Edit
+  // -----------------------------
+  // EDIT
+  // -----------------------------
   const handleEdit = (row) => {
-    setForm(row);
-    setEditingId(Object.values(row)[0]);
+    console.log("✏️ RAW ROW:", row);
+
+    const cleaned = {};
+
+    const idKey = config.idKey;
+
+    config.columns.forEach((col) => {
+      if (col.type === "relation") {
+        const relIdKey =
+          adminEntities[col.entity]?.idKey || "id";
+
+        const extracted =
+          row[col.key]?.[relIdKey] ??
+          row[col.key]?.id ??
+          "";
+
+        console.log(
+          `🔄 EDIT RELATION [${col.key}] ->`,
+          extracted
+        );
+
+        cleaned[col.key] = extracted;
+      } else {
+        cleaned[col.key] = row[col.key];
+      }
+    });
+
+    setForm(cleaned);
+
+    setEditingId(row[idKey]);
+
+    console.log("🧼 CLEANED FORM:", cleaned);
   };
 
-  // Delete
+  // -----------------------------
+  // DELETE
+  // -----------------------------
   const handleDelete = async (row) => {
-    await api.delete(`${config.endpoint}/${Object.values(row)[0]}`);
+    const idKey = config.idKey;
+
+    console.log("🗑 DELETE:", row);
+
+    await api.delete(`${config.endpoint}/${row[idKey]}`);
     fetchData();
   };
 
+  // -----------------------------
+  // GUARD
+  // -----------------------------
   if (!config) {
     return (
       <div className="p-6 text-red-500">
@@ -62,125 +182,169 @@ export default function AdminEntityPage() {
     );
   }
 
+  // -----------------------------
+  // FIELD RENDERER
+  // -----------------------------
+  const renderField = (col) => {
+    if (col.key === "id") return null;
+
+    if (col.type === "relation") {
+      const relIdKey =
+        adminEntities[col.entity]?.idKey || "id";
+
+      return (
+        <div key={col.key} className="flex flex-col gap-1 w-full md:w-96">
+          <label className="text-sm text-gray-300">
+            {col.label}
+          </label>
+
+          <select
+            value={form[col.key] ?? ""}
+            onChange={(e) => {
+              const value = e.target.value;
+
+              console.log(
+                `🟢 SELECT [${col.key}] ->`,
+                value
+              );
+
+              setForm((prev) => ({
+                ...prev,
+                [col.key]: value === "" ? "" : value,
+              }));
+            }}
+            className="bg-white/10 text-white p-2 rounded border border-white/10"
+          >
+            <option value="">
+              Select {col.label}
+            </option>
+
+            {relationOptions[col.entity]?.map((item) => {
+              const value = item[relIdKey];
+
+              console.log(
+                `🔵 OPTION [${col.key}]`,
+                item
+              );
+
+              return (
+                <option
+                  key={value}
+                  value={String(value)}
+                >
+                  {item[col.displayKey] || value}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+      );
+    }
+
+    return (
+      <div key={col.key} className="flex flex-col gap-1 w-full md:w-96">
+        <label className="text-sm text-gray-300">
+          {col.label}
+        </label>
+
+        <Input
+          value={form[col.key] || ""}
+          onChange={(e) =>
+            setForm((prev) => ({
+              ...prev,
+              [col.key]: e.target.value,
+            }))
+          }
+        />
+      </div>
+    );
+  };
+
+  // -----------------------------
+  // UI
+  // -----------------------------
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-6">
       <motion.div
         key={entity}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="
-          max-w-6xl mx-auto
-          p-6 rounded-2xl
-          bg-white/5 backdrop-blur-xl
-          border border-white/10
-          shadow-2xl
-        "
+        className="max-w-6xl mx-auto p-6 rounded-2xl bg-white/5 border border-white/10"
       >
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-white">
+        <div className="flex justify-between mb-6">
+          <h1 className="text-white text-2xl font-bold">
             {config.title}
           </h1>
 
           <button
             onClick={() => navigate("/admin-dashboard")}
-            className="
-              px-4 py-2
-              rounded-lg
-              bg-white/10 hover:bg-white/20
-              text-white
-              border border-white/10
-              transition
-            "
+            className="px-4 py-2 bg-white/10 text-white rounded"
           >
-            ← Back
+            Back
           </button>
         </div>
 
-        {/* FORM */}
-        <div className="mb-6 p-4 rounded-xl bg-white/5 border border-white/10">
-          <div className="flex flex-wrap gap-2 items-center">
-            {config.columns.map((col) =>
-              col.key !== "id" ? (
-                <Input
-                  key={col.key}
-                  placeholder={col.label}
-                  value={form[col.key] || ""}
-                  onChange={(e) =>
-                    setForm({
-                      ...form,
-                      [col.key]: e.target.value,
-                    })
-                  }
-                />
-              ) : null
-            )}
+        <div className="flex flex-col gap-4 mb-6">
+          {config.columns.map(renderField)}
 
+          <div className="flex gap-2">
             <Button onClick={handleSubmit}>
-              {editingId !== null ? "Update" : "Create"}
+              {editingId ? "Update" : "Create"}
             </Button>
 
-            {/* Cancel button */}
-            {editingId !== null && (
-            <Button
-                className="!bg-red-600 hover:!bg-red-500"
+            {editingId && (
+              <Button
+                className="bg-red-600"
                 onClick={() => {
-                setForm({});
-                setEditingId(null);
+                  setForm({});
+                  setEditingId(null);
                 }}
-            >
+              >
                 Cancel
-            </Button>
+              </Button>
             )}
           </div>
         </div>
 
-        {/* TABLE */}
-        <div className="rounded-xl bg-white/5 border border-white/10 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="text-left text-gray-300 border-b border-white/10">
-                  {config.columns.map((col) => (
-                    <th key={col.key} className="p-3">
-                      {col.label}
-                    </th>
-                  ))}
-                  <th className="p-3">Actions</th>
-                </tr>
-              </thead>
+        <table className="w-full text-white">
+          <thead>
+            <tr>
+              {config.columns.map((c) => (
+                <th key={c.key}>{c.label}</th>
+              ))}
+              <th>Actions</th>
+            </tr>
+          </thead>
 
-              <tbody>
-                {rows.map((row) => (
-                  <tr
-                    key={Object.values(row)[0]}
-                    className="border-b border-white/5 hover:bg-white/10 transition"
-                  >
-                    {config.columns.map((col) => (
-                      <td key={col.key} className="p-3 text-gray-200">
-                        {row[col.key]}
-                      </td>
-                    ))}
-
-                    <td className="p-3 flex gap-2">
-                      <Button onClick={() => handleEdit(row)}>
-                        Edit
-                      </Button>
-
-                      <Button
-                        className="bg-red-600 hover:bg-red-500"
-                        onClick={() => handleDelete(row)}
-                      >
-                        Delete
-                      </Button>
-                    </td>
-                  </tr>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row[config.idKey]}>
+                {config.columns.map((col) => (
+                  <td key={col.key}>
+                    {col.type === "relation"
+                      ? row[col.key]?.[
+                          adminEntities[col.entity]?.displayKey
+                        ] || row[col.key]?.id
+                      : row[col.key]}
+                  </td>
                 ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+
+                <td>
+                  <Button onClick={() => handleEdit(row)}>
+                    Edit
+                  </Button>
+
+                  <Button
+                    onClick={() => handleDelete(row)}
+                    className="bg-red-600"
+                  >
+                    Delete
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </motion.div>
     </div>
   );
