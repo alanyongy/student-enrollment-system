@@ -158,8 +158,8 @@ export const adminEntities = {
       ],
     },
 
-    
-    // need
+
+    // need (endpoint planned)
     /*
       ### Mark Course Completed (COMPLETED)
       - POST /api/admin/students/{studentId}/completed/{courseId}
@@ -174,7 +174,7 @@ export const adminEntities = {
 
 
 
-    // don't need?
+    // don't need? (no endpoint planned)
     // no endpoint
     /*
     "program-course-access": {
