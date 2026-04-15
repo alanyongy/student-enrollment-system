@@ -102,13 +102,38 @@ export const adminEntities = {
     idKey: "enrollmentId",
     columns: [
       { key: "enrollmentId", label: "Enrollment ID" },
+  
+      {
+        key: "student",
+        label: "Student",
+        type: "relation",
+        entity: "students",
+        display: (s) => `${s.firstName} ${s.lastName}`,
+      },
+  
+      {
+        key: "section",
+        label: "Section",
+        type: "relation",
+        entity: "sections",
+        displayKey: "sectionId",
+      },
+  
+      {
+        key: "section",
+        label: "Course",
+        type: "relation",
+        entity: "courses",
+        displayKey: "course.courseName",
+      },
+  
       { key: "status", label: "Enrollment Status" },
     ],
   },
 
   admissions: {
     title: "Admissions",
-    endpoint: "/api/admin/admission",
+    endpoint: "/api/admin/admissions",
     idKey: "admissionId",
     columns: [
       { key: "admissionId", label: "ID", type: "id" },

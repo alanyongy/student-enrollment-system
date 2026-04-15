@@ -10,11 +10,6 @@ export const adminCards = [
       description: "Manage instructor profiles",
       path: "/admin/instructors",
     },
-    {
-      title: "Administrators",
-      description: "Manage admin users",
-      path: "/admin/administrators",
-    },
   
     //Academic Structure
     {
