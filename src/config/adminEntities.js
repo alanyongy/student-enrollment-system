@@ -1,129 +1,149 @@
 export const adminEntities = {
-    students: {
-      title: "Students",
-      endpoint: "api/admin/students",
-      columns: [
-        { key: "personId", label: "ID" },
-        { key: "firstName", label: "First Name" },
-        { key: "lastName", label: "Last Name"},
-        { key: "email", label: "Email" },
-      ],
-    },
-  
-    //TODO: set columns and corresponding keys for remaining entities (match key to var names in backend entity files)
-    instructors: {
-      title: "Instructors",
-      endpoint: "api/admin/instructors",
-      columns: [
-        { key: "id", label: "ID" },
-        { key: "name", label: "Name" },
-        { key: "email", label: "Email" },
-      ],
-    },
-  
-    administrators: {
-      title: "Administrators",
-      endpoint: "api/admin/administrators",
-      columns: [
-        { key: "id", label: "ID" },
-        { key: "name", label: "Name" },
-        { key: "email", label: "Email" },
-      ],
-    },
-  
-    departments: {
-      title: "Departments",
-      endpoint: "api/admin/departments",
-      columns: [
-        { key: "id", label: "ID" },
-        { key: "name", label: "Name" },
-      ],
-    },
-  
-    programs: {
-      title: "Programs",
-      endpoint: "api/admin/programs",
-      columns: [
-        { key: "id", label: "ID" },
-        { key: "name", label: "Name" },
-      ],
-    },
-  
-    courses: {
-      title: "Courses",
-      endpoint: "api/admin/courses",
-      columns: [
-        { key: "id", label: "ID" },
-        { key: "code", label: "Code" },
-        { key: "name", label: "Name" },
-      ],
-    },
-  
-    sections: {
-      title: "Sections",
-      endpoint: "api/admin/sections",
-      columns: [
-        { key: "id", label: "ID" },
-        { key: "sectionNumber", label: "Section #" },
-      ],
-    },
-  
-    semesters: {
-      title: "Semesters",
-      endpoint: "api/admin/semesters",
-      columns: [
-        { key: "id", label: "ID" },
-        { key: "name", label: "Name" },
-      ],
-    },
-  
-    enrollments: {
-      title: "Enrollments",
-      endpoint: "api/admin/enrollments",
-      columns: [
-        { key: "id", label: "ID" },
-        { key: "studentId", label: "Student ID" },
-        { key: "sectionId", label: "Section ID" },
-      ],
-    },
-  
-    admissions: {
-      title: "Admissions",
-      endpoint: "api/admin/admissions",
-      columns: [
-        { key: "id", label: "ID" },
-        { key: "studentId", label: "Student ID" },
-        { key: "status", label: "Status" },
-      ],
-    },
-  
-    "course-prerequisites": {
-      title: "Course Prerequisites",
-      endpoint: "api/admin/course-prerequisites",
-      columns: [
-        { key: "id", label: "ID" },
-        { key: "courseId", label: "Course" },
-        { key: "prerequisiteId", label: "Prerequisite" },
-      ],
-    },
-  
-    "program-course-access": {
-      title: "Program Course Access",
-      endpoint: "api/admin/program-course-access",
-      columns: [
-        { key: "id", label: "ID" },
-        { key: "programId", label: "Program" },
-        { key: "courseId", label: "Course" },
-      ],
-    },
-  
-    "semester-sections": {
-      title: "Semester Sections",
-      endpoint: "api/admin/semester-sections",
-      columns: [
-        { key: "id", label: "ID" },
-        { key: "semesterId", label: "Semester" },
-        { key: "sectionId", label: "Section" },
-      ],
-    },
-  };
+  students: {
+    title: "Students",
+    endpoint: "api/admin/students",
+    idKey: "personId",
+    columns: [
+      { key: "personId", label: "ID" },
+      { key: "firstName", label: "First Name" },
+      { key: "lastName", label: "Last Name" },
+      { key: "email", label: "Email" },
+    ],
+  },
+
+  instructors: {
+    title: "Instructors",
+    endpoint: "api/admin/instructors",
+    idKey: "personId",
+    columns: [
+      { key: "personId", label: "ID" },
+      { key: "firstName", label: "First Name" },
+      { key: "lastName", label: "Last Name" },
+      { key: "email", label: "Email" },
+    ],
+  },
+
+  administrators: {
+    title: "Administrators",
+    endpoint: "api/admin/administrators",
+    idKey: "personId",
+    columns: [
+      { key: "personId", label: "ID" },
+      { key: "firstName", label: "First Name" },
+      { key: "lastName", label: "Last Name" },
+      { key: "email", label: "Email" },
+    ],
+  },
+
+  departments: {
+    title: "Departments",
+    endpoint: "api/admin/departments",
+    idKey: "deptId",
+    columns: [
+      { key: "deptId", label: "Department ID" },
+      { key: "deptName", label: "Department Name" },
+      { key: "deptEmail", label: "Department Email" },
+      { key: "phoneNumber", label: "Phone Number" },
+      { key: "officeLocation", label: "Office Location" },
+    ],
+  },
+
+  programs: {
+    title: "Programs",
+    endpoint: "api/admin/programs",
+    idKey: "programId",
+    columns: [
+      { key: "programId", label: "Program ID" },
+      { key: "programName", label: "Program Name" },
+      { key: "description", label: "Description" },
+      { key: "programType", label: "Program Type" },
+    ],
+  },
+
+  courses: {
+    title: "Courses",
+    endpoint: "api/admin/courses",
+    idKey: "courseId",
+    columns: [
+      { key: "courseId", label: "Course ID" },
+      { key: "courseNumber", label: "Course Number" },
+      { key: "description", label: "Description" },
+      { key: "credits", label: "Credits" },
+    ],
+  },
+
+  sections: {
+    title: "Sections",
+    endpoint: "api/admin/sections",
+    idKey: "sectionId",
+    columns: [
+      { key: "sectionId", label: "Section ID" },
+      { key: "scheduleTime", label: "Scheduled Time" },
+      { key: "location", label: "Location" },
+      { key: "capacity", label: "Capacity" },
+    ],
+  },
+
+  semesters: {
+    title: "Semesters",
+    endpoint: "api/admin/semesters",
+    idKey: "semesterId",
+    columns: [
+      { key: "semesterId", label: "Semester ID" },
+      { key: "termName", label: "Term Name" },
+      { key: "startDate", label: "Start Date" },
+      { key: "endDate", label: "End Date" },
+    ],
+  },
+
+  enrollments: {
+    title: "Enrollments",
+    endpoint: "api/admin/enrollments",
+    idKey: "enrollmentId",
+    columns: [
+      { key: "enrollmentId", label: "Enrollment ID" },
+      { key: "status", label: "Enrollment Status" },
+    ],
+  },
+
+  admissions: {
+    title: "Admissions",
+    endpoint: "/api/admin/admission",
+    idKey: "admissionId",
+    columns: [
+      { key: "admissionId", label: "ID", type: "id" },
+      {
+        key: "student",
+        label: "Student",
+        type: "relation",
+        entity: "students",
+        displayKey: "firstName",
+      },
+      {
+        key: "program",
+        label: "Program",
+        type: "relation",
+        entity: "programs",
+        displayKey: "programName",
+      },
+    ],
+  },
+
+  "course-prerequisites": {
+    title: "Course Prerequisites",
+    endpoint: "api/admin/course-prerequisites",
+    idKey: "prerequisiteId",
+    columns: [
+      { key: "prerequisiteId", label: "Prerequisite ID" },
+    ],
+  },
+
+  "program-course-access": {
+    title: "Program Course Access",
+    endpoint: "api/admin/program-course-access",
+    idKey: "accessId",
+    columns: [
+      { key: "accessId", label: "Access ID" },
+    ],
+  },
+};
