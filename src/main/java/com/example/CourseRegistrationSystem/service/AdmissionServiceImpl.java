@@ -38,5 +38,15 @@ public class AdmissionServiceImpl implements AdmissionService {
     public List<Admission> findAdmissionsByProgram(Program program) {
         return admissionDAO.findAdmissionsByProgram(program);
     }
+
+    @Override
+    public List<Admission> getAllAdmissions() {
+        return admissionDAO.getAllAdmissions();
+    }
+
+    @Override
+    public Admission getById(Long id) {
+        return admissionDAO.getById(id);
+    }
 }
 

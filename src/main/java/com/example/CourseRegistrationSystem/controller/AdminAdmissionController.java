@@ -6,6 +6,9 @@ import com.example.CourseRegistrationSystem.entity.Admission;
 import com.example.CourseRegistrationSystem.service.StudentService;
 import com.example.CourseRegistrationSystem.service.AdmissionService;
 import com.example.CourseRegistrationSystem.service.ProgramService;
+
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +41,7 @@ public class AdminAdmissionController {
 
         if (admission.getStudent() == null ||
             admission.getStudent().getPersonId() == null) {
-            throw new IllegalArgumentException("studentId is required");
+            throw new IllegalArgumentException("personId is required");
         }
 
         if (admission.getProgram() == null ||
@@ -46,10 +49,10 @@ public class AdminAdmissionController {
             throw new IllegalArgumentException("programId is required");
         }
 
-        Long studentId = admission.getStudent().getPersonId();
+        Long personId = admission.getStudent().getPersonId();
         Long programId = admission.getProgram().getProgramId();
 
-        Student student = studentService.getStudent(studentId);
+        Student student = studentService.getStudent(personId);
         Program program = programService.getProgramById(programId);
 
         Admission saved = admissionService.admitStudentToProgram(student, program);
@@ -59,17 +62,23 @@ public class AdminAdmissionController {
                 .body(saved);
     }
 
-    @DeleteMapping("/{studentId}/{programId}")
+    @DeleteMapping("/{admissionId}")
     public ResponseEntity<Void> removeStudentFromProgram(
-            @PathVariable Long studentId,
-            @PathVariable Long programId
+            @PathVariable Long admissionId
     ) {
-
-        Student student = studentService.getStudent(studentId);
-        Program program = programService.getProgramById(programId);
-
+    
+        Admission admission = admissionService.getById(admissionId);
+    
+        Student student = admission.getStudent();
+        Program program = admission.getProgram();
+    
         admissionService.removeStudentFromProgram(student, program);
-
+    
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Admission>> getAllAdmissions() {
+        return ResponseEntity.ok(admissionService.getAllAdmissions());
     }
 }

@@ -3,6 +3,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.example.CourseRegistrationSystem.enums.ProgramType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,6 +31,7 @@ public class Program {
     @NotNull(message = "Department is required")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dept_id", nullable = false)
+    @JsonBackReference
     private Department department;
 
     @NotNull(message = "Program type is required")

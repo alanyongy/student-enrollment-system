@@ -53,5 +53,26 @@ public class AdmissionDAOImpl implements AdmissionDAO {
                 .setParameter("program", program)
                 .getResultList();
     }
+
+    @Override
+    public List<Admission> getAllAdmissions() {
+        String jpql = "SELECT a FROM Admission a JOIN FETCH a.student JOIN FETCH a.program";
+
+        return entityManager.createQuery(jpql, Admission.class)
+                .getResultList();
+    }
+
+    @Override
+    public Admission getById(Long admissionId) {
+        String jpql =
+            "SELECT a FROM Admission a " +
+            "JOIN FETCH a.student " +
+            "JOIN FETCH a.program " +
+            "WHERE a.admissionId = :admissionId";
+
+        return entityManager.createQuery(jpql, Admission.class)
+                .setParameter("admissionId", admissionId)
+                .getSingleResult();
+    }
 }
 

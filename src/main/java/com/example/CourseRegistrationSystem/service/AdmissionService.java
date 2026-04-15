@@ -10,5 +10,7 @@ public interface AdmissionService {
     void removeStudentFromProgram(Student student, Program program);
     List<Admission> findAdmissionsByStudent(Student student);
     List<Admission> findAdmissionsByProgram(Program program);
+    List<Admission> getAllAdmissions();
+    Admission getById(Long id);
 }
 
