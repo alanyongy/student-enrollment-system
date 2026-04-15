@@ -89,7 +89,6 @@ export const adminEntities = {
         // { key: "course", label: "Course ID"},
         // { key: "instructor", label: "Instructor ID"},
         // { key: "semester", label: "Semester ID"},
-        // there is no section number btw
       ],
     },
   
@@ -110,7 +109,7 @@ export const adminEntities = {
       - POST   /api/admin/students/{studentId}/enroll/{sectionId}
       - DELETE /api/admin/students/{studentId}/drop/{sectionId}
     
-      just use students?
+      just use students? add button for "enroll student in section"
     */
     enrollments: {
       title: "Enrollments",
@@ -128,7 +127,7 @@ export const adminEntities = {
       ### Admit Student to Program (ADMITTED)
       - POST /api/admin/students/{studentId}/admit/{programId}
     
-      just use students?
+      just use students? add button for "admit student to program"
       */
     admissions: {
       title: "Admissions",
@@ -146,7 +145,7 @@ export const adminEntities = {
       - POST   /api/admin/courses/{courseId}/prerequisites/{prereqId}
       - DELETE /api/admin/courses/{courseId}/prerequisites/{prereqId}
     
-      just use course?
+      just use course? add button for "add course prerequisite"
       */
     "course-prerequisites": {
       title: "Course Prerequisites",
@@ -158,23 +157,43 @@ export const adminEntities = {
       ],
     },
 
-
-    // need (endpoint planned)
+    // no endpoint
     /*
       ### Mark Course Completed (COMPLETED)
       - POST /api/admin/students/{studentId}/completed/{courseId}
-      just use students?
+      just use students? add button for "add completed course"
+    */
+    "completed-courses": {
+      title: "Completed Courses",
+      endpoint: "api/admin/completed-courses",
+      columns: [
+        { key: "completedCourseId", label: "Completed Course ID"},
+        // { key: "student", label: "Student ID"},
+        // { key: "course", label: "Course ID"},
+      ],
+    },
 
+    // no endpoint
+    // no entity even
+    /*
       ### Set Course Required for Program (GIVES_ACCESS / is_required)
       - POST   /api/admin/programs/{programId}/required-courses/{courseId}
       - DELETE /api/admin/programs/{programId}/required-courses/{courseId}
-      just use programs?
-      
+      just use programs? add button for "set course required"
     */
+    "required-courses": {
+      title: "Required Courses",
+      endpoint: "api/admin/required-courses",
+      columns: [
+        //{},
+      ],
+    },
+
 
 
 
     // don't need? (no endpoint planned)
+
     // no endpoint
     /*
     "program-course-access": {
