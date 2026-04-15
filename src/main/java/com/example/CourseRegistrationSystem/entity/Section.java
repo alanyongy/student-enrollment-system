@@ -1,5 +1,8 @@
 package com.example.CourseRegistrationSystem.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -34,9 +37,9 @@ public class Section {
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
-    @NotNull(message = "Instructor cannot be null for a section")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "instructor_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "instructor_id", nullable = true)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Instructor instructor;
 
     @NotNull(message = "Semester cannot be null for a section")

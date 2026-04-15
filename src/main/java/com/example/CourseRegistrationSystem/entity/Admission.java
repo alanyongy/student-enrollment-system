@@ -27,6 +27,8 @@ public class Admission {
         this.admissionId = admissionId;
     }
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_id", nullable = false)
     public Student getStudent() {
         return student;
     }

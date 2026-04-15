@@ -1,0 +1,75 @@
+package com.example.CourseRegistrationSystem.controller;
+
+import com.example.CourseRegistrationSystem.entity.Student;
+import com.example.CourseRegistrationSystem.entity.Program;
+import com.example.CourseRegistrationSystem.entity.Admission;
+import com.example.CourseRegistrationSystem.service.StudentService;
+import com.example.CourseRegistrationSystem.service.AdmissionService;
+import com.example.CourseRegistrationSystem.service.ProgramService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/admin/admission")
+public class AdminAdmissionController {
+
+    private final StudentService studentService;
+    private final AdmissionService admissionService;
+    private final ProgramService programService;
+
+    public AdminAdmissionController(
+            StudentService studentService,
+            AdmissionService admissionService,
+            ProgramService programService
+    ) {
+        this.studentService = studentService;
+        this.admissionService = admissionService;
+        this.programService = programService;
+    }
+
+    // -----------------------------
+    // CREATE ADMISSION
+    // -----------------------------
+    @PostMapping
+    public ResponseEntity<Admission> admitStudentToProgram(
+            @RequestBody Admission admission
+    ) {
+
+        if (admission.getStudent() == null ||
+            admission.getStudent().getPersonId() == null) {
+            throw new IllegalArgumentException("studentId is required");
+        }
+
+        if (admission.getProgram() == null ||
+            admission.getProgram().getProgramId() == null) {
+            throw new IllegalArgumentException("programId is required");
+        }
+
+        Long studentId = admission.getStudent().getPersonId();
+        Long programId = admission.getProgram().getProgramId();
+
+        Student student = studentService.getStudent(studentId);
+        Program program = programService.getProgramById(programId);
+
+        Admission saved = admissionService.admitStudentToProgram(student, program);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(saved);
+    }
+
+    @DeleteMapping("/{studentId}/{programId}")
+    public ResponseEntity<Void> removeStudentFromProgram(
+            @PathVariable Long studentId,
+            @PathVariable Long programId
+    ) {
+
+        Student student = studentService.getStudent(studentId);
+        Program program = programService.getProgramById(programId);
+
+        admissionService.removeStudentFromProgram(student, program);
+
+        return ResponseEntity.noContent().build();
+    }
+}

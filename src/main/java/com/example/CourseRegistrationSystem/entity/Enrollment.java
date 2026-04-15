@@ -1,6 +1,8 @@
 package com.example.CourseRegistrationSystem.entity;
 
 import com.example.CourseRegistrationSystem.enums.StatusType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -27,9 +29,9 @@ public class Enrollment {
     @Enumerated(EnumType.STRING)
     private StatusType status;
 
-    @NotNull(message = "Student cannot be null for an enrollment")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
+    @JsonBackReference
     private Student student;
 
     @NotNull(message = "Section cannot be null for an enrollment")

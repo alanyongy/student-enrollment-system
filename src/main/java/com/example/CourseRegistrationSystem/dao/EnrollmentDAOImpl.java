@@ -38,7 +38,7 @@ public class EnrollmentDAOImpl implements EnrollmentDAO{
 
     @Override
     public void dropStudentFromSection(Long studentId, Long sectionId) {
-        String jpql = "SELECT e FROM Enrollment e WHERE e.student.personId = :studentId AND e.section.sectionId = :sectionId";
+        String jpql = "SELECT e FROM Enrollment e WHERE e.student.id = :studentId AND e.section.id = :sectionId";
         Enrollment enrollment = entityManager.createQuery(jpql, Enrollment.class)
                 .setParameter("studentId", studentId)
                 .setParameter("sectionId", sectionId)

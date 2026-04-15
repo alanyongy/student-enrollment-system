@@ -1,5 +1,9 @@
 package com.example.CourseRegistrationSystem.entity;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +18,19 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public abstract class Student extends Person {
+
+public class Student extends Person {
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Enrollment> enrollments;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Admission> admissions;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<CompletedCourse> completedCourses;
 
     @NotNull(message = "Enrollment year cannot be null")
     @Positive(message = "Enrollment year must be a valid year")

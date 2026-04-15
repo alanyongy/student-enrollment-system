@@ -22,9 +22,9 @@ public class JwtService {
         String role;
 
         if (user instanceof Student) {
-            role = "STUDENT";
+            role = "ROLE_STUDENT";
         } else if (user instanceof Administrator) {
-            role = "ADMIN";
+            role = "ROLE_ADMIN";
         } else {
             throw new RuntimeException("Unknown user type");
         }

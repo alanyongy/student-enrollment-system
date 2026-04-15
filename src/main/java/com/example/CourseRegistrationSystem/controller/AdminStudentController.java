@@ -49,6 +49,7 @@ public class AdminStudentController {
         return ResponseEntity.ok(studentService.getStudent(id));
     }
 
+    
     @PostMapping
     public ResponseEntity<Student> createStudent(@RequestBody Student student) {
 
@@ -72,13 +73,26 @@ public class AdminStudentController {
 
         return ResponseEntity.noContent().build();
     }
-
-    @PostMapping("/{studentId}/admit/{programId}")
-    public ResponseEntity<Admission> admitStudentToProgram(@PathVariable Long studentId, @PathVariable Long programId) {
+    @PostMapping("/admission")
+    public ResponseEntity<Admission> admitStudentToProgram(@RequestBody Admission admission) {
+    
+        if (admission.getStudent() == null || admission.getStudent().getPersonId() == null) {
+            throw new IllegalArgumentException("studentId is required");
+        }
+    
+        if (admission.getProgram() == null || admission.getProgram().getProgramId() == null) {
+            throw new IllegalArgumentException("programId is required");
+        }
+    
+        Long studentId = admission.getStudent().getPersonId();
+        Long programId = admission.getProgram().getProgramId();
+    
         Student student = studentService.getStudent(studentId);
         Program program = programService.getProgramById(programId);
-        Admission admission = admissionService.admitStudentToProgram(student, program);
-        return ResponseEntity.status(HttpStatus.CREATED).body(admission);
+    
+        Admission saved = admissionService.admitStudentToProgram(student, program);
+    
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @DeleteMapping("/{studentId}/remove-program/{programId}")

@@ -58,9 +58,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
                 //Extract role from JWT and map to Spring authority
-                String role = jwtService.extractRole(token); // "STUDENT" or "ADMIN"
+                String role = jwtService.extractRole(token); // "ROLE_STUDENT" or "ROLE_ADMIN"
                 List<SimpleGrantedAuthority> authorities = List.of(
-                        new SimpleGrantedAuthority("ROLE_" + role)
+                        new SimpleGrantedAuthority(role)
                 );
 
                 UsernamePasswordAuthenticationToken auth =
@@ -69,10 +69,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                 null,
                                 authorities
                         );
-
+                
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
+                
             }
         } catch (Exception e) {
             e.printStackTrace(); 

@@ -43,7 +43,6 @@ public abstract class Person {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @NotBlank(message = "Password cannot be blank")
     @Column(name = "password")
     private String password;
 
