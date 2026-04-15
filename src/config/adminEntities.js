@@ -106,7 +106,6 @@ export const adminEntities = {
     ],
   },
 
-  // ✅ fully replaced with second version (as requested)
   admissions: {
     title: "Admissions",
     endpoint: "/api/admin/admission",
