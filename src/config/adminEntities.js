@@ -2,11 +2,11 @@ export const adminEntities = {
   students: {
     title: "Students",
     endpoint: "api/admin/students",
-    idKey: "personId", 
+    idKey: "personId",
     columns: [
       { key: "personId", label: "ID" },
-      { key: "firstName", label: "First name" },
-      { key: "lastName", label: "Last name" },
+      { key: "firstName", label: "First Name" },
+      { key: "lastName", label: "Last Name" },
       { key: "email", label: "Email" },
     ],
   },
@@ -16,8 +16,21 @@ export const adminEntities = {
     endpoint: "api/admin/instructors",
     idKey: "personId",
     columns: [
-      { key: "id", label: "ID" },
-      { key: "name", label: "Name" },
+      { key: "personId", label: "ID" },
+      { key: "firstName", label: "First Name" },
+      { key: "lastName", label: "Last Name" },
+      { key: "email", label: "Email" },
+    ],
+  },
+
+  administrators: {
+    title: "Administrators",
+    endpoint: "api/admin/administrators",
+    idKey: "personId",
+    columns: [
+      { key: "personId", label: "ID" },
+      { key: "firstName", label: "First Name" },
+      { key: "lastName", label: "Last Name" },
       { key: "email", label: "Email" },
     ],
   },
@@ -27,8 +40,11 @@ export const adminEntities = {
     endpoint: "api/admin/departments",
     idKey: "deptId",
     columns: [
-      { key: "id", label: "ID" },
-      { key: "name", label: "Name" },
+      { key: "deptId", label: "Department ID" },
+      { key: "deptName", label: "Department Name" },
+      { key: "deptEmail", label: "Department Email" },
+      { key: "phoneNumber", label: "Phone Number" },
+      { key: "officeLocation", label: "Office Location" },
     ],
   },
 
@@ -37,8 +53,10 @@ export const adminEntities = {
     endpoint: "api/admin/programs",
     idKey: "programId",
     columns: [
-      { key: "id", label: "ID" }, 
-      { key: "name", label: "Name" },
+      { key: "programId", label: "Program ID" },
+      { key: "programName", label: "Program Name" },
+      { key: "description", label: "Description" },
+      { key: "programType", label: "Program Type" },
     ],
   },
 
@@ -47,9 +65,10 @@ export const adminEntities = {
     endpoint: "api/admin/courses",
     idKey: "courseId",
     columns: [
-      { key: "id", label: "ID" }, // ⚠️ may not match backend
-      { key: "code", label: "Code" },
-      { key: "name", label: "Name" },
+      { key: "courseId", label: "Course ID" },
+      { key: "courseNumber", label: "Course Number" },
+      { key: "description", label: "Description" },
+      { key: "credits", label: "Credits" },
     ],
   },
 
@@ -58,8 +77,10 @@ export const adminEntities = {
     endpoint: "api/admin/sections",
     idKey: "sectionId",
     columns: [
-      { key: "id", label: "ID" },
-      { key: "sectionNumber", label: "Section #" },
+      { key: "sectionId", label: "Section ID" },
+      { key: "scheduleTime", label: "Scheduled Time" },
+      { key: "location", label: "Location" },
+      { key: "capacity", label: "Capacity" },
     ],
   },
 
@@ -68,8 +89,10 @@ export const adminEntities = {
     endpoint: "api/admin/semesters",
     idKey: "semesterId",
     columns: [
-      { key: "id", label: "ID" },
-      { key: "name", label: "Name" },
+      { key: "semesterId", label: "Semester ID" },
+      { key: "termName", label: "Term Name" },
+      { key: "startDate", label: "Start Date" },
+      { key: "endDate", label: "End Date" },
     ],
   },
 
@@ -78,19 +101,18 @@ export const adminEntities = {
     endpoint: "api/admin/enrollments",
     idKey: "enrollmentId",
     columns: [
-      { key: "id", label: "ID" },
-      { key: "studentId", label: "Student ID" },
-      { key: "sectionId", label: "Section ID" },
+      { key: "enrollmentId", label: "Enrollment ID" },
+      { key: "status", label: "Enrollment Status" },
     ],
   },
 
+  // ✅ fully replaced with second version (as requested)
   admissions: {
     title: "Admissions",
     endpoint: "/api/admin/admission",
     idKey: "admissionId",
     columns: [
       { key: "admissionId", label: "ID", type: "id" },
-
       {
         key: "student",
         label: "Student",
@@ -98,7 +120,6 @@ export const adminEntities = {
         entity: "students",
         displayKey: "firstName",
       },
-
       {
         key: "program",
         label: "Program",
@@ -114,9 +135,7 @@ export const adminEntities = {
     endpoint: "api/admin/course-prerequisites",
     idKey: "prerequisiteId",
     columns: [
-      { key: "id", label: "ID" },
-      { key: "courseId", label: "Course" },
-      { key: "prerequisiteId", label: "Prerequisite" },
+      { key: "prerequisiteId", label: "Prerequisite ID" },
     ],
   },
 
@@ -125,20 +144,7 @@ export const adminEntities = {
     endpoint: "api/admin/program-course-access",
     idKey: "accessId",
     columns: [
-      { key: "id", label: "ID" },
-      { key: "programId", label: "Program" },
-      { key: "courseId", label: "Course" },
-    ],
-  },
-
-  "semester-sections": {
-    title: "Semester Sections",
-    endpoint: "api/admin/semester-sections",
-    idKey: "semesterSectionId",
-    columns: [
-      { key: "id", label: "ID" },
-      { key: "semesterId", label: "Semester" },
-      { key: "sectionId", label: "Section" },
+      { key: "accessId", label: "Access ID" },
     ],
   },
 };
