@@ -3,6 +3,7 @@ import Login from "../pages/Login";
 import AdminDashboard from "../pages/AdminDashboard";
 import StudentDashboard from "../pages/StudentDashboard";
 import AdminEntityPage from "../pages/AdminEntityPage";
+import StudentProfile from "../pages/StudentProfile";
 
 export default function AppRoutes() {
   return (
@@ -13,6 +14,7 @@ export default function AppRoutes() {
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/student-dashboard" element={<StudentDashboard />} />
       <Route path="/admin/:entity" element={<AdminEntityPage />} />
+      <Route path="/profile" element={<StudentProfile />} />
       <Route path="*" element={<Login />} />
     </Routes>
   );
