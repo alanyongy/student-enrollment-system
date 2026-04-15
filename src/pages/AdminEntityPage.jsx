@@ -18,6 +18,11 @@ export default function AdminEntityPage() {
   const [editingId, setEditingId] = useState(null);
   const [relationOptions, setRelationOptions] = useState({});
 
+  const getValue = (obj, path) => {
+    if (!obj || !path) return undefined;
+    return path.split(".").reduce((acc, key) => acc?.[key], obj);
+  };
+
   // -----------------------------
   // LOAD DATA
   // -----------------------------
@@ -33,9 +38,15 @@ export default function AdminEntityPage() {
   const fetchData = async () => {
     const res = await api.get(config.endpoint);
 
-    console.log("FETCH DATA:", res.data);
+    console.log("FETCH DATA RAW:", res.data);
 
-    setRows(res.data);
+    const data = Array.isArray(res.data)
+      ? res.data
+      : res.data?.data || [];
+
+    console.log("NORMALIZED ROWS:", data);
+
+    setRows(data);
   };
 
   // -----------------------------
@@ -61,7 +72,9 @@ export default function AdminEntityPage() {
         res.data
       );
 
-      results[field.entity] = res.data;
+      results[field.entity] = Array.isArray(res.data)
+        ? res.data
+        : res.data?.data || [];
     }
 
     setRelationOptions(results);
@@ -71,51 +84,42 @@ export default function AdminEntityPage() {
   // CREATE / UPDATE
   // -----------------------------
   const handleSubmit = async () => {
-    console.log("🟡 FORM BEFORE SUBMIT:", form);
-  
     const payload = { ...form };
-  
+
     config.columns.forEach((col) => {
       if (col.type === "relation") {
         const value = payload[col.key];
     
         const parsed = parseInt(value, 10);
+    
         const relConfig = adminEntities[col.entity];
-        const idKey = relConfig?.idKey;
+        const idKey = relConfig?.idKey || "id";
     
         console.log(`RELATION FIX [${col.key}]`, {
           raw: value,
           parsed,
-          idKey
+          idKey,
         });
     
-        if (
-          value === "" ||
-          value === null ||
-          value === undefined ||
-          Number.isNaN(parsed)
-        ) {
+        if (!value || Number.isNaN(parsed)) {
           payload[col.key] = null;
         } else {
           payload[col.key] = {
-            [idKey]: parsed, 
+            [idKey]: parsed,
           };
         }
       }
     });
-  
+
     console.log("FINAL PAYLOAD:", payload);
-    console.log(JSON.stringify(payload, null, 2));
-  
+
     if (editingId !== null) {
-      console.log("PUT:", editingId);
       await api.put(`${config.endpoint}/${editingId}`, payload);
       setEditingId(null);
     } else {
-      console.log("API POST URL:", config.endpoint);
       await api.post(config.endpoint, payload);
     }
-  
+
     setForm({});
     fetchData();
   };
@@ -124,47 +128,31 @@ export default function AdminEntityPage() {
   // EDIT
   // -----------------------------
   const handleEdit = (row) => {
-    console.log("RAW ROW:", row);
-
     const cleaned = {};
-
-    const idKey = config.idKey;
 
     config.columns.forEach((col) => {
       if (col.type === "relation") {
-        const relIdKey =
-          adminEntities[col.entity]?.idKey || "id";
-
-        const extracted =
-          row[col.key]?.[relIdKey] ??
+        cleaned[col.key] =
           row[col.key]?.id ??
+          row[col.key] ??
           "";
-
-        console.log(
-          `EDIT RELATION [${col.key}] ->`,
-          extracted
-        );
-
-        cleaned[col.key] = extracted;
       } else {
         cleaned[col.key] = row[col.key];
       }
     });
 
     setForm(cleaned);
-
-    setEditingId(row[idKey]);
+    setEditingId(row[config.idKey]);
   };
 
   // -----------------------------
   // DELETE
   // -----------------------------
   const handleDelete = async (row) => {
-    const idKey = config.idKey;
+    await api.delete(
+      `${config.endpoint}/${row[config.idKey]}`
+    );
 
-    console.log("DELETE:", row);
-
-    await api.delete(`${config.endpoint}/${row[idKey]}`);
     fetchData();
   };
 
@@ -190,56 +178,47 @@ export default function AdminEntityPage() {
         adminEntities[col.entity]?.idKey || "id";
 
       return (
-        <div key={col.key} className="flex flex-col gap-1 w-full md:w-96">
+        <div
+          key={col.key}
+          className="flex flex-col gap-1 w-full md:w-96"
+        >
           <label className="text-sm text-gray-300">
             {col.label}
           </label>
 
           <select
             value={form[col.key] ?? ""}
-            onChange={(e) => {
-              const value = e.target.value;
-
-              console.log(
-                `🟢 SELECT [${col.key}] ->`,
-                value
-              );
-
+            onChange={(e) =>
               setForm((prev) => ({
                 ...prev,
-                [col.key]: value === "" ? "" : value,
-              }));
-            }}
+                [col.key]: e.target.value,
+              }))
+            }
             className="bg-white/10 text-white p-2 rounded border border-white/10"
           >
             <option value="">
               Select {col.label}
             </option>
 
-            {relationOptions[col.entity]?.map((item) => {
-              const value = item[relIdKey];
-
-              console.log(
-                `🔵 OPTION [${col.key}]`,
-                item
-              );
-
-              return (
-                <option
-                  key={value}
-                  value={String(value)}
-                >
-                  {item[col.displayKey] || value}
-                </option>
-              );
-            })}
+            {relationOptions[col.entity]?.map((item) => (
+              <option
+                key={item[relIdKey]}
+                value={item[relIdKey]}
+              >
+                {getValue(item, col.displayKey) ||
+                  item[relIdKey]}
+              </option>
+            ))}
           </select>
         </div>
       );
     }
 
     return (
-      <div key={col.key} className="flex flex-col gap-1 w-full md:w-96">
+      <div
+        key={col.key}
+        className="flex flex-col gap-1 w-full md:w-96"
+      >
         <label className="text-sm text-gray-300">
           {col.label}
         </label>
@@ -268,19 +247,23 @@ export default function AdminEntityPage() {
         animate={{ opacity: 1, y: 0 }}
         className="max-w-6xl mx-auto p-6 rounded-2xl bg-white/5 border border-white/10"
       >
+        {/* HEADER */}
         <div className="flex justify-between mb-6">
           <h1 className="text-white text-2xl font-bold">
             {config.title}
           </h1>
 
           <button
-            onClick={() => navigate("/admin-dashboard")}
+            onClick={() =>
+              navigate("/admin-dashboard")
+            }
             className="px-4 py-2 bg-white/10 text-white rounded"
           >
             Back
           </button>
         </div>
 
+        {/* FORM */}
         <div className="flex flex-col gap-4 mb-6">
           {config.columns.map(renderField)}
 
@@ -303,11 +286,14 @@ export default function AdminEntityPage() {
           </div>
         </div>
 
+        {/* TABLE */}
         <table className="w-full text-white">
           <thead>
             <tr>
               {config.columns.map((c) => (
-                <th key={c.key}>{c.label}</th>
+                <th key={c.key} className="p-3 text-left align-middle">
+                {c.label}
+                </th>
               ))}
               <th>Actions</th>
             </tr>
@@ -315,28 +301,30 @@ export default function AdminEntityPage() {
 
           <tbody>
             {rows.map((row) => (
-              <tr key={row[config.idKey]}>
+              <tr
+                key={row[config.idKey]}
+              >
                 {config.columns.map((col) => (
-                  <td key={col.key}>
-                    {col.type === "relation"
-                      ? row[col.key]?.[
-                          adminEntities[col.entity]?.displayKey
-                        ] || row[col.key]?.id
-                      : row[col.key]}
+                  <td key={col.key} className="p-3 text-left align-middle">
+                  {col.type === "relation"
+                    ? getValue(row[col.key], col.displayKey) || row[col.key]?.id
+                    : row[col.key]}
                   </td>
                 ))}
 
-                <td>
-                  <Button onClick={() => handleEdit(row)}>
-                    Edit
-                  </Button>
+                <td className="p-3">
+                  <div className="flex items-center gap-2">
+                    <Button onClick={() => handleEdit(row)}>
+                      Edit
+                    </Button>
 
-                  <Button
-                    onClick={() => handleDelete(row)}
-                    className="bg-red-600"
-                  >
-                    Delete
-                  </Button>
+                    <Button
+                      onClick={() => handleDelete(row)}
+                      className="bg-red-600"
+                    >
+                      Delete
+                    </Button>
+                  </div>
                 </td>
               </tr>
             ))}
