@@ -7,10 +7,13 @@ import AdminEntityPage from "../pages/AdminEntityPage";
 export default function AppRoutes() {
   return (
     <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/admin-login" element={<Login />} />
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/student-dashboard" element={<StudentDashboard />} />
-      <Route path="*" element={<Login />} />
       <Route path="/admin/:entity" element={<AdminEntityPage />} />
+      <Route path="*" element={<Login />} />
     </Routes>
   );
 }
