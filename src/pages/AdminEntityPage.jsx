@@ -24,7 +24,7 @@ export default function AdminEntityPage() {
   useEffect(() => {
     if (!config) return;
 
-    console.log("📦 CONFIG:", config);
+    console.log("CONFIG:", config);
 
     fetchData();
     loadRelations();
@@ -33,7 +33,7 @@ export default function AdminEntityPage() {
   const fetchData = async () => {
     const res = await api.get(config.endpoint);
 
-    console.log("📥 FETCH DATA:", res.data);
+    console.log("FETCH DATA:", res.data);
 
     setRows(res.data);
   };
@@ -57,7 +57,7 @@ export default function AdminEntityPage() {
       const res = await api.get(relConfig.endpoint);
 
       console.log(
-        `🔗 RELATION LOAD [${field.entity}]`,
+        `RELATION LOAD [${field.entity}]`,
         res.data
       );
 
@@ -83,7 +83,7 @@ export default function AdminEntityPage() {
         const relConfig = adminEntities[col.entity];
         const idKey = relConfig?.idKey;
     
-        console.log(`🔍 RELATION FIX [${col.key}]`, {
+        console.log(`RELATION FIX [${col.key}]`, {
           raw: value,
           parsed,
           idKey
@@ -98,22 +98,21 @@ export default function AdminEntityPage() {
           payload[col.key] = null;
         } else {
           payload[col.key] = {
-            [idKey]: parsed,   // ✅ BACK TO NESTED OBJECTS
+            [idKey]: parsed, 
           };
         }
       }
     });
   
-    console.log("🚀 FINAL PAYLOAD:", payload);
+    console.log("FINAL PAYLOAD:", payload);
     console.log(JSON.stringify(payload, null, 2));
   
     if (editingId !== null) {
-      console.log("✏️ PUT:", editingId);
+      console.log("PUT:", editingId);
       await api.put(`${config.endpoint}/${editingId}`, payload);
       setEditingId(null);
     } else {
-      console.log("➕ POST");
-      console.log("📡 API POST URL:", config.endpoint);
+      console.log("API POST URL:", config.endpoint);
       await api.post(config.endpoint, payload);
     }
   
@@ -125,7 +124,7 @@ export default function AdminEntityPage() {
   // EDIT
   // -----------------------------
   const handleEdit = (row) => {
-    console.log("✏️ RAW ROW:", row);
+    console.log("RAW ROW:", row);
 
     const cleaned = {};
 
@@ -142,7 +141,7 @@ export default function AdminEntityPage() {
           "";
 
         console.log(
-          `🔄 EDIT RELATION [${col.key}] ->`,
+          `EDIT RELATION [${col.key}] ->`,
           extracted
         );
 
@@ -155,8 +154,6 @@ export default function AdminEntityPage() {
     setForm(cleaned);
 
     setEditingId(row[idKey]);
-
-    console.log("🧼 CLEANED FORM:", cleaned);
   };
 
   // -----------------------------
@@ -165,7 +162,7 @@ export default function AdminEntityPage() {
   const handleDelete = async (row) => {
     const idKey = config.idKey;
 
-    console.log("🗑 DELETE:", row);
+    console.log("DELETE:", row);
 
     await api.delete(`${config.endpoint}/${row[idKey]}`);
     fetchData();
