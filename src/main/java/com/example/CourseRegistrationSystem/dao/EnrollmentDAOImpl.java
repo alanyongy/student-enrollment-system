@@ -77,4 +77,19 @@ public class EnrollmentDAOImpl implements EnrollmentDAO{
                 .getSingleResult();
         return count != null ? count : 0L;
     }
+
+    @Override
+    public List<Enrollment> findAllEnrollments() {
+
+        String jpql = """
+            SELECT e FROM Enrollment e
+            JOIN FETCH e.student s
+            JOIN FETCH e.section sec
+            JOIN FETCH sec.course c
+            JOIN FETCH c.department
+        """;
+
+        return entityManager.createQuery(jpql, Enrollment.class)
+                .getResultList();
+    }
 }

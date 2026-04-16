@@ -13,4 +13,5 @@ public interface EnrollmentDAO {
         List<Enrollment> findByStudentAndSemester(Long studentId, Long semesterId);
 
         long countBySection(Long sectionId);
+        List<Enrollment> findAllEnrollments();
 }
