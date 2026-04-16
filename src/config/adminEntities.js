@@ -108,7 +108,7 @@ export const adminEntities = {
         label: "Student",
         type: "relation",
         entity: "students",
-        display: (s) => `${s.firstName} ${s.lastName}`,
+        displayKey: "firstName",
       },
   
       {
@@ -120,11 +120,11 @@ export const adminEntities = {
       },
   
       {
-        key: "section",
+        key: "course",
         label: "Course",
         type: "relation",
         entity: "courses",
-        displayKey: "course.courseName",
+        displayKey: "courseName",
       },
   
       { key: "status", label: "Enrollment Status" },
