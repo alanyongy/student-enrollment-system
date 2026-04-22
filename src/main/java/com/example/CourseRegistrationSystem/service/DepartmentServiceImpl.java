@@ -1,6 +1,9 @@
 package com.example.CourseRegistrationSystem.service;
 
+import com.example.CourseRegistrationSystem.dao.CourseDAO;
 import com.example.CourseRegistrationSystem.dao.DepartmentDAO;
+import com.example.CourseRegistrationSystem.dao.ProgramDAO;
+import com.example.CourseRegistrationSystem.entity.Course;
 import com.example.CourseRegistrationSystem.entity.Department;
 import com.example.CourseRegistrationSystem.entity.Program;
 import com.example.CourseRegistrationSystem.exception.ResourceNotFoundException;
@@ -14,10 +17,12 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentDAO departmentDAO;
     private final ProgramService programService;
+    private final CourseDAO courseDAO;
 
-    public DepartmentServiceImpl(DepartmentDAO departmentDAO, ProgramService programService) {
+    public DepartmentServiceImpl(DepartmentDAO departmentDAO, ProgramService programService, CourseDAO courseDAO) {
         this.departmentDAO = departmentDAO;
         this.programService = programService;
+        this.courseDAO = courseDAO;
     }
 
     @Transactional(readOnly = true)
@@ -53,11 +58,18 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Transactional
-    @Override
-    public void deleteDepartment(Long id) {
-        Department department = departmentDAO.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Department not found with id " + id));
-        departmentDAO.delete(department);
+    public void deleteDepartment(Long deptId) {
+
+        Department dept = departmentDAO.findById(deptId)
+            .orElseThrow(() -> new ResourceNotFoundException("Department not found"));
+
+        List<Course> courses = courseDAO.findByDepartment(deptId);
+        courses.forEach(c -> {
+            c.setDepartment(null);
+            courseDAO.save(c);
+        });
+
+        departmentDAO.delete(dept);
     }
 
     @Override

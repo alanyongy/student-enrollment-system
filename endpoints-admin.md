@@ -65,8 +65,10 @@
 - DELETE /api/admin/sections/{sectionId}/remove-instructor
 
 ### Add Course Prerequisite (PRE_REQ_OF)
-- POST   /api/admin/courses/{courseId}/prerequisites/{prereqId}
-- DELETE /api/admin/courses/{courseId}/prerequisites/{prereqId}
+- GET    /api/admin/courses/prerequisites
+- POST   /api/admin/courses/prerequisites
+- PUT    /api/admin/courses/prerequisites{prereqId}
+- DELETE /api/admin/courses/prerequisites/{prereqId}
 
 ### Add Course to Department (OFFERS)
 - POST /api/admin/departments/{deptId}/courses/{courseId}

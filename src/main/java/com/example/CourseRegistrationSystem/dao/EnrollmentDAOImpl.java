@@ -5,8 +5,12 @@ import com.example.CourseRegistrationSystem.entity.Section;
 import com.example.CourseRegistrationSystem.entity.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -80,16 +84,25 @@ public class EnrollmentDAOImpl implements EnrollmentDAO{
 
     @Override
     public List<Enrollment> findAllEnrollments() {
-
         String jpql = """
             SELECT e FROM Enrollment e
             JOIN FETCH e.student s
             JOIN FETCH e.section sec
             JOIN FETCH sec.course c
-            JOIN FETCH c.department
         """;
 
         return entityManager.createQuery(jpql, Enrollment.class)
                 .getResultList();
+    }
+
+    @Override
+    public void dropEnrollment(Long enrollmentId) {
+        Enrollment enrollment = entityManager.find(Enrollment.class, enrollmentId);
+
+        if (enrollment != null) {
+            entityManager.remove(enrollment);
+        } else {
+            throw new IllegalArgumentException("Enrollment not found with ID: " + enrollmentId);
+        }
     }
 }

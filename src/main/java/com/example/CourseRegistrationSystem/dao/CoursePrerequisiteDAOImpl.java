@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CoursePrerequisiteDAOImpl implements CoursePrerequisiteDAO {
@@ -47,6 +48,36 @@ public class CoursePrerequisiteDAOImpl implements CoursePrerequisiteDAO {
             CoursePrerequisite.class);
         query.setParameter("course", course);
         return query.getResultList();
+    }
+
+    @Override
+    public List<CoursePrerequisite> findAll() {
+    
+        String jpql = """
+            SELECT DISTINCT cp
+            FROM CoursePrerequisite cp
+            JOIN FETCH cp.course
+            JOIN FETCH cp.prerequisiteCourse
+        """;
+    
+        return entityManager.createQuery(jpql, CoursePrerequisite.class)
+                .getResultList();
+    }
+
+    @Override
+    public Optional<CoursePrerequisite> findById(Long id) {
+        CoursePrerequisite cp = entityManager.find(CoursePrerequisite.class, id);
+        return Optional.ofNullable(cp);
+    }
+
+    @Override
+    public CoursePrerequisite save(CoursePrerequisite cp) {
+        return entityManager.merge(cp);
+    }
+
+    @Override
+    public void delete(CoursePrerequisite cp) {
+        entityManager.remove(cp);
     }
 }
 

@@ -24,4 +24,6 @@ public interface CourseDAO {
     List<Course> findAllBySemester(Long semesterId);
 
     Optional<Course> findByIdAndSemester(Long courseId, Long semesterId);
+
+    List<Course> findByDepartment(Long deptId);
 }

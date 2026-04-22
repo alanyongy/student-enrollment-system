@@ -1,6 +1,7 @@
 package com.example.CourseRegistrationSystem.controller;
 
 import com.example.CourseRegistrationSystem.entity.Course;
+import com.example.CourseRegistrationSystem.entity.CoursePrerequisite;
 import com.example.CourseRegistrationSystem.service.CoursePrerequisiteService;
 import com.example.CourseRegistrationSystem.service.CourseService;
 import com.example.CourseRegistrationSystem.service.ProgramCourseAccessService;
@@ -65,27 +66,36 @@ public class AdminCourseController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{courseId}/prerequisites/{prereqId}")
-    public ResponseEntity<?> addCoursePrerequisite(@PathVariable Long courseId, @PathVariable Long prereqId) {
-        coursePrerequisiteService.addPrerequisite(courseId, prereqId);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    @GetMapping("/course-prerequisites")
+    public ResponseEntity<List<CoursePrerequisite>> getAll() {
+        return ResponseEntity.ok(coursePrerequisiteService.getAll());
+    }
+    
+    @PostMapping("/course-prerequisites")
+    public ResponseEntity<?> create(@RequestBody CoursePrerequisite req) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(coursePrerequisiteService.create(req));
     }
 
-    @DeleteMapping("/{courseId}/prerequisites/{prereqId}")
-    public ResponseEntity<?> removeCoursePrerequisite(@PathVariable Long courseId, @PathVariable Long prereqId) {
-        coursePrerequisiteService.removePrerequisite(courseId, prereqId);
+    @PutMapping("/course-prerequisites/{prereqId}")
+    public ResponseEntity<?> update(
+            @PathVariable Long prereqId,
+            @RequestBody CoursePrerequisite req
+    ) {
+        return ResponseEntity.ok(
+            coursePrerequisiteService.update(prereqId, req)
+        );
+    }
+
+    @DeleteMapping("/course-prerequisites/{prereqId}")
+    public ResponseEntity<?> delete(@PathVariable Long prereqId) {
+        coursePrerequisiteService.delete(prereqId);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{courseId}/assign-department/{deptId}")
     public ResponseEntity<Void> assignDepartmentToCourse(@PathVariable Long courseId, @PathVariable Long deptId) {
         courseService.assignDepartment(courseId, deptId);
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping("/{courseId}/remove-department")
-    public ResponseEntity<Void> removeDepartmentFromCourse(@PathVariable Long courseId) {
-        courseService.removeDepartment(courseId);
         return ResponseEntity.ok().build();
     }
 

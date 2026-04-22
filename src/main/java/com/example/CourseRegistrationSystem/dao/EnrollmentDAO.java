@@ -7,6 +7,7 @@ import java.util.List;
 public interface EnrollmentDAO {
         void enrollStudentInSection(Long studentId, Long sectionId);
         void dropStudentFromSection(Long studentId, Long sectionId);
+        void dropEnrollment(Long EnrollmentId);
 
         boolean existsByStudentAndSection(Long studentId, Long sectionId);
 

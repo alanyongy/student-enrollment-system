@@ -7,5 +7,6 @@ import com.example.CourseRegistrationSystem.entity.Enrollment;
 public interface EnrollmentService {
         void enrollStudentInCourse(Long studentId, Long courseId);
         void dropStudentFromCourse(Long studentId, Long courseId);
+        void dropEnrollment(Long enrollmentId);
         List<Enrollment> getAllEnrollments();
 }

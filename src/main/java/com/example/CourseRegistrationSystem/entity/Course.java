@@ -9,6 +9,11 @@ import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name = "courses")
 public class Course {
@@ -27,14 +32,26 @@ public class Course {
     @Column(name = "description")
     private String description;
 
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CompletedCourse> completedCourses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProgramCourseAccess> programCourseAccesses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CoursePrerequisite> prerequisites = new ArrayList<>();
+
+    @OneToMany(mappedBy = "prerequisiteCourse", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CoursePrerequisite> requiredFor = new ArrayList<>();
+
     @NotNull(message = "Credits cannot be null")
     @Min(value = 3, message = "Credits must be at least 3")
     @Column(name = "credits")
     private Integer credits;
 
-    @NotNull(message = "Department cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dept_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "dept_id")
+    @JsonIgnoreProperties({"programs"})
     private Department department;
 
     // Weak-entity relationship: one course has many sections

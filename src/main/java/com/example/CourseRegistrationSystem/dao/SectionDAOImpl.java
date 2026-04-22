@@ -34,7 +34,13 @@ public class SectionDAOImpl implements SectionDAO {
             direction = "asc"; // default sort direction
         }
 
-        String jpql = "FROM Section s ORDER BY s." + sortBy + " " + direction.toUpperCase();
+        String jpql = """
+            SELECT DISTINCT s
+            FROM Section s
+            LEFT JOIN FETCH s.semester
+            LEFT JOIN FETCH s.instructor
+            LEFT JOIN FETCH s.course
+            ORDER BY s.""" + sortBy + " " + direction;
 
         TypedQuery<Section> query = entityManager.createQuery(jpql, Section.class);
 

@@ -23,7 +23,7 @@ public class AdminStudentController {
     private final StudentService studentService;
     private final AdmissionService admissionService;
     private final ProgramService programService;
-    private final EnrollmentService enrollmentservice;
+    private final EnrollmentService enrollmentService;
     private final CompletedCourseService completedCourseService;
     private final ProgramDAO programDAO;
 
@@ -31,7 +31,7 @@ public class AdminStudentController {
         this.studentService = studentService;
         this.admissionService = admissionService;
         this.programService = programService;
-        this.enrollmentservice = enrollmentservice;
+        this.enrollmentService = enrollmentservice;
         this.completedCourseService = completedCourseService;
         this.programDAO = programDAO;
     }
@@ -139,19 +139,19 @@ public class AdminStudentController {
 
     @PostMapping("/enrollments")
     public ResponseEntity<Void> enrollStudentInSection(@PathVariable Long studentId, @PathVariable Long sectionId) {
-        enrollmentservice.enrollStudentInCourse(studentId, sectionId);
+        enrollmentService.enrollStudentInCourse(studentId, sectionId);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/enrollments/{sectionId}")
-    public ResponseEntity<Void> removeStudentFromSection(@PathVariable Long studentId, @PathVariable Long sectionId) {
-        enrollmentservice.dropStudentFromCourse(studentId, sectionId);
+    @DeleteMapping("/enrollments/{enrollmentId}")
+    public ResponseEntity<Void> dropStudent(@PathVariable Long enrollmentId) {
+        enrollmentService.dropEnrollment(enrollmentId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/enrollments")
     public ResponseEntity<List<Enrollment>> getAllEnrollments() {
-        return ResponseEntity.ok(enrollmentservice.getAllEnrollments());
+        return ResponseEntity.ok(enrollmentService.getAllEnrollments());
     }
 
     @PostMapping("/students/{studentId}/completed/{courseId}")
