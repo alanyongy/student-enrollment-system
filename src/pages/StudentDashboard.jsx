@@ -917,7 +917,7 @@ export default function StudentDashboard() {
               Course Registration System
             </p>
             <h2 className="text-3xl font-bold text-white">
-              Build your semester around sections, not just courses.
+
             </h2>
             <p className="mt-3 max-w-2xl text-white/70">
               Pick a semester from your enrollment year onward, review your

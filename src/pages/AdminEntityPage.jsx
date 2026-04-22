@@ -132,9 +132,11 @@ export default function AdminEntityPage() {
 
     config.columns.forEach((col) => {
       if (col.type === "relation") {
-        cleaned[col.key] =
-          row[col.key]?.id ??
-          row[col.key] ??
+        const relIdKey = adminEntities[col.entity]?.idKey || "id";
+        cleaned[col.key] = 
+          row[col.key]?.[relIdKey] || 
+          getValue(row, col.displayKey.replace(/\.[^.]+$/, `.${relIdKey}`)) ||
+          row[col.key] || 
           "";
       } else {
         cleaned[col.key] = row[col.key];
@@ -172,20 +174,13 @@ export default function AdminEntityPage() {
   // -----------------------------
   const renderField = (col) => {
     if (col.key === "id") return null;
-
+  
     if (col.type === "relation") {
-      const relIdKey =
-        adminEntities[col.entity]?.idKey || "id";
-
+      const relIdKey = adminEntities[col.entity]?.idKey || "id";
+  
       return (
-        <div
-          key={col.key}
-          className="flex flex-col gap-1 w-full md:w-96"
-        >
-          <label className="text-sm text-gray-300">
-            {col.label}
-          </label>
-
+        <div key={col.key} className="flex flex-col gap-1 w-full md:w-96">
+          <label className="text-sm text-gray-400">{col.label}</label>
           <select
             value={form[col.key] ?? ""}
             onChange={(e) =>
@@ -194,35 +189,29 @@ export default function AdminEntityPage() {
                 [col.key]: e.target.value,
               }))
             }
-            className="bg-white/10 text-white p-2 rounded border border-white/10"
+            className="bg-slate-900 text-white p-2 rounded border border-white/20 appearance-none cursor-pointer hover:border-white/40 transition-colors"
           >
-            <option value="">
-              Select {col.label}
-            </option>
-
-            {relationOptions[col.entity]?.map((item) => (
-              <option
-                key={item[relIdKey]}
-                value={item[relIdKey]}
-              >
-                {getValue(item, col.displayKey) ||
-                  item[relIdKey]}
-              </option>
-            ))}
+            <option value="" className="bg-slate-900">Select {col.label}</option>
+  
+            {relationOptions[col.entity]?.map((item) => {
+              // Logic to parse the last field out of the original display key
+              const keys = col.displayKey.split(".");
+              const lastKey = keys[keys.length - 1];
+  
+              return (
+                <option key={item[relIdKey]} value={item[relIdKey]} className="bg-slate-900">
+                  {getValue(item, col.displayKey) || item[lastKey] || item[relIdKey]}
+                </option>
+              );
+            })}
           </select>
         </div>
       );
     }
-
+  
     return (
-      <div
-        key={col.key}
-        className="flex flex-col gap-1 w-full md:w-96"
-      >
-        <label className="text-sm text-gray-300">
-          {col.label}
-        </label>
-
+      <div key={col.key} className="flex flex-col gap-1 w-full md:w-96">
+        <label className="text-sm text-gray-400">{col.label}</label>
         <Input
           value={form[col.key] || ""}
           onChange={(e) =>
@@ -306,9 +295,11 @@ export default function AdminEntityPage() {
               >
                 {config.columns.map((col) => (
                   <td key={col.key} className="p-3 text-left align-middle">
-                  {col.type === "relation"
-                    ? getValue(row[col.key], col.displayKey) || row[col.key]?.id
-                    : row[col.key]}
+                    {col.type === "relation"
+                      ? (getValue(row[col.key], col.displayKey) || // Standard: row.student -> firstName
+                        getValue(row, col.displayKey) ||           // Nested: row -> section.course.courseNumber
+                        row[col.key]?.id)
+                      : row[col.key]}
                   </td>
                 ))}
 

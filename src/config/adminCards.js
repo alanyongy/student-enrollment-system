@@ -61,11 +61,6 @@ export const adminCards = [
       description: "Control program access to courses",
       path: "/admin/program-course-access",
     },
-    {
-      title: "Semester Sections",
-      description: "Link sections to semesters",
-      path: "/admin/semester-sections",
-    },
   
     //Optional structure view
     {

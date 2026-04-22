@@ -19,6 +19,8 @@ export const adminEntities = {
       { key: "personId", label: "ID" },
       { key: "firstName", label: "First Name" },
       { key: "lastName", label: "Last Name" },
+      { key: "yearsOfExperience", label: "Experience (Years)"},
+      { key: "expertiseTopics", label: "Expertise Topics"},
       { key: "email", label: "Email" },
     ],
   },
@@ -57,6 +59,13 @@ export const adminEntities = {
       { key: "programName", label: "Program Name" },
       { key: "description", label: "Description" },
       { key: "programType", label: "Program Type" },
+      {
+        key: "department",
+        label: "Department",
+        type: "relation",
+        entity: "departments",
+        displayKey: "department.deptName",
+      },
     ],
   },
 
@@ -69,6 +78,13 @@ export const adminEntities = {
       { key: "courseNumber", label: "Course Number" },
       { key: "description", label: "Description" },
       { key: "credits", label: "Credits" },
+      {
+        key: "department",
+        label: "Department",
+        type: "relation",
+        entity: "departments",
+        displayKey: "department.deptName",
+      }
     ],
   },
 
@@ -78,9 +94,23 @@ export const adminEntities = {
     idKey: "sectionId",
     columns: [
       { key: "sectionId", label: "Section ID" },
+      {
+        key: "course",
+        label: "Course",
+        type: "relation",
+        entity: "courses",
+        displayKey: "course.courseNumber",
+      },
       { key: "scheduleTime", label: "Scheduled Time" },
       { key: "location", label: "Location" },
       { key: "capacity", label: "Capacity" },
+      {
+        key: "semester",
+        label: "Semester",
+        type: "relation",
+        entity: "semesters",
+        displayKey: "semester.termName",
+      },
     ],
   },
 
@@ -120,11 +150,11 @@ export const adminEntities = {
       },
   
       {
-        key: "course",
+        key: "course_display",
         label: "Course",
         type: "relation",
         entity: "courses",
-        displayKey: "courseName",
+        displayKey: "section.course.courseNumber",
       },
   
       { key: "status", label: "Enrollment Status" },
@@ -156,10 +186,26 @@ export const adminEntities = {
 
   "course-prerequisites": {
     title: "Course Prerequisites",
-    endpoint: "api/admin/course-prerequisites",
+    endpoint: "api/admin/courses/course-prerequisites",
     idKey: "prerequisiteId",
     columns: [
       { key: "prerequisiteId", label: "Prerequisite ID" },
+
+      {
+        key: "course",
+        label: "Course",
+        type: "relation",
+        entity: "courses",
+        displayKey: "course.courseNumber",
+      },
+
+      {
+        key: "prerequisiteCourse",
+        label: "Requires",
+        type: "relation",
+        entity: "courses",
+        displayKey: "prerequisiteCourse.courseNumber",
+      },
     ],
   },
 
