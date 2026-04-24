@@ -18,6 +18,14 @@ export default function AdminEntityPage() {
   const [editingId, setEditingId] = useState(null);
   const [relationOptions, setRelationOptions] = useState({});
 
+  // pagination + sorting
+  const [page, setPage] = useState(0);
+  const [size] = useState(5);
+  const [sortBy, setSortBy] = useState(null);
+  const [sortDir, setSortDir] = useState("asc");
+  const [totalPages, setTotalPages] = useState(null);
+  const [hasNextPage, setHasNextPage] = useState(true);
+
   const getValue = (obj, path) => {
     if (!obj || !path) return undefined;
     return path.split(".").reduce((acc, key) => acc?.[key], obj);
@@ -28,25 +36,42 @@ export default function AdminEntityPage() {
   // -----------------------------
   useEffect(() => {
     if (!config) return;
-
-    console.log("CONFIG:", config);
-
+  
     fetchData();
     loadRelations();
-  }, [entity, config]);
+  }, [entity, config, page, sortBy, sortDir]);
 
   const fetchData = async () => {
-    const res = await api.get(config.endpoint);
-
-    console.log("FETCH DATA RAW:", res.data);
-
+    const res = await api.get(config.endpoint, {
+      params: {
+        page,
+        size,
+        sortBy,
+        direction: sortDir,
+      },
+    });
+  
     const data = Array.isArray(res.data)
       ? res.data
       : res.data?.data || [];
-
-    console.log("NORMALIZED ROWS:", data);
-
+  
     setRows(data);
+  
+    // 🔍 peek next page
+    const nextRes = await api.get(config.endpoint, {
+      params: {
+        page: page + 1,
+        size,
+        sortBy,
+        direction: sortDir,
+      },
+    });
+  
+    const nextData = Array.isArray(nextRes.data)
+      ? nextRes.data
+      : nextRes.data?.data || [];
+  
+    setHasNextPage(nextData.length > 0);
   };
 
   // -----------------------------
@@ -67,11 +92,6 @@ export default function AdminEntityPage() {
 
       const res = await api.get(relConfig.endpoint);
 
-      console.log(
-        `RELATION LOAD [${field.entity}]`,
-        res.data
-      );
-
       results[field.entity] = Array.isArray(res.data)
         ? res.data
         : res.data?.data || [];
@@ -89,18 +109,11 @@ export default function AdminEntityPage() {
     config.columns.forEach((col) => {
       if (col.type === "relation") {
         const value = payload[col.key];
-    
         const parsed = parseInt(value, 10);
-    
+
         const relConfig = adminEntities[col.entity];
         const idKey = relConfig?.idKey || "id";
-    
-        console.log(`RELATION FIX [${col.key}]`, {
-          raw: value,
-          parsed,
-          idKey,
-        });
-    
+
         if (!value || Number.isNaN(parsed)) {
           payload[col.key] = null;
         } else {
@@ -133,10 +146,14 @@ export default function AdminEntityPage() {
     config.columns.forEach((col) => {
       if (col.type === "relation") {
         const relIdKey = adminEntities[col.entity]?.idKey || "id";
-        cleaned[col.key] = 
-          row[col.key]?.[relIdKey] || 
-          getValue(row, col.displayKey.replace(/\.[^.]+$/, `.${relIdKey}`)) ||
-          row[col.key] || 
+
+        cleaned[col.key] =
+          row[col.key]?.[relIdKey] ||
+          getValue(
+            row,
+            col.displayKey.replace(/\.[^.]+$/, `.${relIdKey}`)
+          ) ||
+          row[col.key] ||
           "";
       } else {
         cleaned[col.key] = row[col.key];
@@ -151,16 +168,22 @@ export default function AdminEntityPage() {
   // DELETE
   // -----------------------------
   const handleDelete = async (row) => {
-    await api.delete(
-      `${config.endpoint}/${row[config.idKey]}`
-    );
-
+    await api.delete(`${config.endpoint}/${row[config.idKey]}`);
     fetchData();
   };
 
   // -----------------------------
-  // GUARD
+  // SORT HANDLER
   // -----------------------------
+  const handleSort = (key) => {
+    if (sortBy === key) {
+      setSortDir((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      setSortBy(key);
+      setSortDir("asc");
+    }
+  };
+
   if (!config) {
     return (
       <div className="p-6 text-red-500">
@@ -169,15 +192,12 @@ export default function AdminEntityPage() {
     );
   }
 
-  // -----------------------------
-  // FIELD RENDERER
-  // -----------------------------
   const renderField = (col) => {
     if (col.key === "id") return null;
-  
+
     if (col.type === "relation") {
       const relIdKey = adminEntities[col.entity]?.idKey || "id";
-  
+
       return (
         <div key={col.key} className="flex flex-col gap-1 w-full md:w-96">
           <label className="text-sm text-gray-400">{col.label}</label>
@@ -189,18 +209,19 @@ export default function AdminEntityPage() {
                 [col.key]: e.target.value,
               }))
             }
-            className="bg-slate-900 text-white p-2 rounded border border-white/20 appearance-none cursor-pointer hover:border-white/40 transition-colors"
+            className="bg-slate-900 text-white p-2 rounded border border-white/20"
           >
-            <option value="" className="bg-slate-900">Select {col.label}</option>
-  
+            <option value="">Select {col.label}</option>
+
             {relationOptions[col.entity]?.map((item) => {
-              // Logic to parse the last field out of the original display key
               const keys = col.displayKey.split(".");
               const lastKey = keys[keys.length - 1];
-  
+
               return (
-                <option key={item[relIdKey]} value={item[relIdKey]} className="bg-slate-900">
-                  {getValue(item, col.displayKey) || item[lastKey] || item[relIdKey]}
+                <option key={item[relIdKey]} value={item[relIdKey]}>
+                  {getValue(item, col.displayKey) ||
+                    item[lastKey] ||
+                    item[relIdKey]}
                 </option>
               );
             })}
@@ -208,7 +229,7 @@ export default function AdminEntityPage() {
         </div>
       );
     }
-  
+
     return (
       <div key={col.key} className="flex flex-col gap-1 w-full md:w-96">
         <label className="text-sm text-gray-400">{col.label}</label>
@@ -225,9 +246,6 @@ export default function AdminEntityPage() {
     );
   };
 
-  // -----------------------------
-  // UI
-  // -----------------------------
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-6">
       <motion.div
@@ -243,9 +261,7 @@ export default function AdminEntityPage() {
           </h1>
 
           <button
-            onClick={() =>
-              navigate("/admin-dashboard")
-            }
+            onClick={() => navigate("/admin-dashboard")}
             className="px-4 py-2 bg-white/10 text-white rounded"
           >
             Back
@@ -280,8 +296,17 @@ export default function AdminEntityPage() {
           <thead>
             <tr>
               {config.columns.map((c) => (
-                <th key={c.key} className="p-3 text-left align-middle">
-                {c.label}
+                <th
+                  key={c.key}
+                  className="p-3 text-left cursor-pointer"
+                  onClick={() => handleSort(c.key)}
+                >
+                  {c.label}
+                  {sortBy === c.key
+                    ? sortDir === "asc"
+                      ? " ▲"
+                      : " ▼"
+                    : ""}
                 </th>
               ))}
               <th>Actions</th>
@@ -290,28 +315,25 @@ export default function AdminEntityPage() {
 
           <tbody>
             {rows.map((row) => (
-              <tr
-                key={row[config.idKey]}
-              >
+              <tr key={row[config.idKey]}>
                 {config.columns.map((col) => (
-                  <td key={col.key} className="p-3 text-left align-middle">
+                  <td key={col.key} className="p-3">
                     {col.type === "relation"
-                      ? (getValue(row[col.key], col.displayKey) || // Standard: row.student -> firstName
-                        getValue(row, col.displayKey) ||           // Nested: row -> section.course.courseNumber
-                        row[col.key]?.id)
+                      ? getValue(row[col.key], col.displayKey) ||
+                        getValue(row, col.displayKey) ||
+                        row[col.key]?.id
                       : row[col.key]}
                   </td>
                 ))}
 
                 <td className="p-3">
-                  <div className="flex items-center gap-2">
+                  <div className="flex gap-2">
                     <Button onClick={() => handleEdit(row)}>
                       Edit
                     </Button>
-
                     <Button
-                      onClick={() => handleDelete(row)}
                       className="bg-red-600"
+                      onClick={() => handleDelete(row)}
                     >
                       Delete
                     </Button>
@@ -321,6 +343,35 @@ export default function AdminEntityPage() {
             ))}
           </tbody>
         </table>
+
+        {/* PAGINATION (RESTORED STYLE YOU LIKED) */}
+        <div className="flex justify-center items-center gap-4 mt-6 text-white">
+          <button
+            disabled={page === 0}
+            className="px-3 py-1 bg-white/10 rounded disabled:opacity-40"
+            onClick={() => {
+              setPage((prev) => prev - 1)
+            }}
+          >
+            Prev
+          </button>
+
+          <span>
+            Page {page + 1}
+            {totalPages ? ` / ${totalPages}` : ""}
+          </span>
+
+          <button
+            disabled={!hasNextPage}
+            className="px-3 py-1 bg-white/10 rounded disabled:opacity-40"
+            onClick={() => {
+              if (!hasNextPage) return;
+              setPage((prev) => prev + 1)
+            }}
+          >
+            Next
+          </button>
+        </div>
       </motion.div>
     </div>
   );

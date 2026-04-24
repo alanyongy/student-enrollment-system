@@ -61,11 +61,9 @@ export const adminCards = [
       description: "Control program access to courses",
       path: "/admin/program-course-access",
     },
-  
-    //Optional structure view
     {
-      title: "Org Structure",
-      description: "View program-to-department structure",
-      path: "/admin/org-structure",
+      title: "Course Completions",
+      description: "Manage courses completed by students",
+      path: "/admin/course-completions",
     },
   ];

@@ -105,6 +105,13 @@ export const adminEntities = {
       { key: "location", label: "Location" },
       { key: "capacity", label: "Capacity" },
       {
+        key: "instructor",
+        label: "Instructor",
+        type: "relation",
+        entity: "instructors",
+        displayKey: "instructor.firstName",
+      },
+      {
         key: "semester",
         label: "Semester",
         type: "relation",
@@ -211,10 +218,51 @@ export const adminEntities = {
 
   "program-course-access": {
     title: "Program Course Access",
-    endpoint: "api/admin/program-course-access",
+    endpoint: "api/admin/courses/access",
     idKey: "accessId",
     columns: [
       { key: "accessId", label: "Access ID" },
+
+      {
+        key: "program",
+        label: "Program",
+        type: "relation",
+        entity: "programs",
+        displayKey: "program.programName",
+      },
+
+      {
+        key: "course",
+        label: "Course",
+        type: "relation",
+        entity: "courses",
+        displayKey: "course.courseNumber",
+      },
+    ],
+  },
+
+  "course-completions": {
+    title: "Course Completions",
+    endpoint: "api/admin/completions",
+    idKey: "completedCourseId",
+    columns: [
+      { key: "completedCourseId", label: "Completion ID" },
+  
+      {
+        key: "student",
+        label: "Student",
+        type: "relation",
+        entity: "students",
+        displayKey: "firstName",
+      },
+
+      {
+        key: "course",
+        label: "Course",
+        type: "relation",
+        entity: "courses",
+        displayKey: "course.courseNumber",
+      },
     ],
   },
 };
