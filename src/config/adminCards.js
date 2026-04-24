@@ -62,15 +62,8 @@ export const adminCards = [
       path: "/admin/program-course-access",
     },
     {
-      title: "Semester Sections",
-      description: "Link sections to semesters",
-      path: "/admin/semester-sections",
-    },
-  
-    //Optional structure view
-    {
-      title: "Org Structure",
-      description: "View program-to-department structure",
-      path: "/admin/org-structure",
+      title: "Course Completions",
+      description: "Manage courses completed by students",
+      path: "/admin/course-completions",
     },
   ];
