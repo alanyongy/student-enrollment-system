@@ -83,12 +83,10 @@ public class EnrollmentServiceImpl implements EnrollmentService{
 
         for (Enrollment e : enrollments) {
 
-            // force section initialization
             Section sec = e.getSection();
             if (sec != null) {
-                sec.getSectionId(); // force proxy init
+                sec.getSectionId();
 
-                // IMPORTANT: safe course hydration (prevents missing/partial JSON)
                 Course course = sec.getCourse();
                 if (course != null) {
                     course.getCourseId();
@@ -97,7 +95,6 @@ public class EnrollmentServiceImpl implements EnrollmentService{
                 }
             }
 
-            // force student initialization (safe display fields)
             if (e.getStudent() != null) {
                 e.getStudent().getFirstName();
                 e.getStudent().getLastName();

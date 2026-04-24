@@ -38,9 +38,6 @@ public class AdminAdmissionController {
         this.programService = programService;
     }
 
-    // -----------------------------
-    // CREATE ADMISSION
-    // -----------------------------
     @PostMapping
     public ResponseEntity<Admission> admitStudentToProgram(
             @RequestBody Admission admission
