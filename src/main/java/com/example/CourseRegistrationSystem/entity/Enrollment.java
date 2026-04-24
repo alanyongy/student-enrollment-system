@@ -31,7 +31,6 @@ public class Enrollment {
 
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
-    @JsonBackReference
     private Student student;
 
     @NotNull(message = "Section cannot be null for an enrollment")

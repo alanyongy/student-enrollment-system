@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CoursePrerequisiteDAOImpl implements CoursePrerequisiteDAO {
@@ -47,6 +48,57 @@ public class CoursePrerequisiteDAOImpl implements CoursePrerequisiteDAO {
             CoursePrerequisite.class);
         query.setParameter("course", course);
         return query.getResultList();
+    }
+
+    @Override
+    public List<CoursePrerequisite> findAll(int page, int size, String sortBy, String direction) {
+    
+        List<String> allowedSortFields = List.of("prerequisiteId");
+    
+        if (!allowedSortFields.contains(sortBy)) {
+            sortBy = "prerequisiteId";
+        }
+    
+        if (!direction.equalsIgnoreCase("asc") && !direction.equalsIgnoreCase("desc")) {
+            direction = "asc";
+        }
+    
+        String jpql = """
+            SELECT DISTINCT cp
+            FROM CoursePrerequisite cp
+            JOIN FETCH cp.course
+            JOIN FETCH cp.prerequisiteCourse
+            ORDER BY cp.""" + sortBy + " " + direction;
+    
+        TypedQuery<CoursePrerequisite> query = entityManager.createQuery(jpql, CoursePrerequisite.class);
+    
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+    
+        List<CoursePrerequisite> result = query.getResultList();
+    
+        result.forEach(cp -> {
+            if (cp.getCourse() != null) cp.getCourse().getCourseNumber();
+            if (cp.getPrerequisiteCourse() != null) cp.getPrerequisiteCourse().getCourseNumber();
+        });
+    
+        return result;
+    }
+
+    @Override
+    public Optional<CoursePrerequisite> findById(Long id) {
+        CoursePrerequisite cp = entityManager.find(CoursePrerequisite.class, id);
+        return Optional.ofNullable(cp);
+    }
+
+    @Override
+    public CoursePrerequisite save(CoursePrerequisite cp) {
+        return entityManager.merge(cp);
+    }
+
+    @Override
+    public void delete(CoursePrerequisite cp) {
+        entityManager.remove(cp);
     }
 }
 

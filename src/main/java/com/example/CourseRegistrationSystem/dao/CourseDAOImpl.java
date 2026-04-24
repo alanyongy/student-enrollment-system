@@ -40,22 +40,39 @@ public class CourseDAOImpl implements CourseDAO{
             direction = "asc"; // default direction
         }
 
-        String jpql = "FROM Course c ORDER BY c." + sortBy + " " + direction;
+        String jpql = """
+            SELECT DISTINCT c
+            FROM Course c
+            LEFT JOIN FETCH c.department
+            ORDER BY c.""" + sortBy + " " + direction;
         
         TypedQuery<Course> query = entityManager.createQuery(jpql, Course.class);
+        
 
         // pagination
         query.setFirstResult(page * size);
         query.setMaxResults(size);
 
-        return query.getResultList();
+        List<Course> result = query.getResultList();
+
+        result.forEach(c -> {
+            if (c.getDepartment() != null) {
+                c.getDepartment().getDeptName(); // FORCE INIT
+            }
+        });
+
+        return result;
     }
 
     @Override
     public Optional<Course> findById(Long id) {
-
-        Course course = entityManager.find(Course.class, id);
-        return Optional.ofNullable(course);
+        TypedQuery<Course> query = entityManager.createQuery(
+            "SELECT c FROM Course c LEFT JOIN FETCH c.department WHERE c.courseId = :id",
+            Course.class
+        );
+        query.setParameter("id", id);
+    
+        return query.getResultList().stream().findFirst();
     }
 
     @Override
@@ -91,9 +108,7 @@ public class CourseDAOImpl implements CourseDAO{
 
     @Override
     public List<Course> findBySemesterId(Long semesterId) {
-        String jpql = "SELECT DISTINCT c FROM Course c " +
-                    "JOIN c.sections s " +
-                    "WHERE s.semester.semesterId = :semesterId";
+        String jpql = "SELECT DISTINCT c FROM Course c LEFT JOIN FETCH c.department JOIN c.sections s WHERE s.semester.semesterId = :semesterId";
 
         return entityManager.createQuery(jpql, Course.class)
                 .setParameter("semesterId", semesterId)
@@ -103,7 +118,7 @@ public class CourseDAOImpl implements CourseDAO{
     @Override
     public List<Course> findAllBySemester(Long semesterId) {
         TypedQuery<Course> query = entityManager.createQuery(
-            "SELECT DISTINCT c FROM Course c JOIN c.sections s WHERE s.semester.semesterId = :semesterId",
+            "SELECT DISTINCT c FROM Course c LEFT JOIN FETCH c.department JOIN c.sections s WHERE s.semester.semesterId = :semesterId",
             Course.class
         );
         query.setParameter("semesterId", semesterId);
@@ -121,5 +136,13 @@ public class CourseDAOImpl implements CourseDAO{
         query.setParameter("semesterId", semesterId);
 
         return query.getResultList().stream().findFirst();
+    }
+
+    public List<Course> findByDepartment(Long deptId) {
+        return entityManager.createQuery(
+            "SELECT c FROM Course c WHERE c.department.deptId = :deptId",
+            Course.class
+        ).setParameter("deptId", deptId)
+         .getResultList();
     }
 }

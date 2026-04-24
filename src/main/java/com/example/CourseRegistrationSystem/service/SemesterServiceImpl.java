@@ -1,8 +1,13 @@
 package com.example.CourseRegistrationSystem.service;
 
+import com.example.CourseRegistrationSystem.dao.SectionDAO;
 import com.example.CourseRegistrationSystem.dao.SemesterDAO;
+import com.example.CourseRegistrationSystem.entity.Section;
 import com.example.CourseRegistrationSystem.entity.Semester;
 import com.example.CourseRegistrationSystem.exception.ResourceNotFoundException;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +15,14 @@ import java.util.List;
 
 @Service
 public class SemesterServiceImpl implements SemesterService {
+    private final SemesterDAO semesterDAO;
+    private final SectionDAO sectionDAO;
 
     @Autowired
-    private SemesterDAO semesterDAO;
+    public SemesterServiceImpl(SemesterDAO semesterDAO, SectionDAO sectionDAO) {
+        this.semesterDAO = semesterDAO;
+        this.sectionDAO = sectionDAO;
+    }
 
 
     @Override
@@ -43,9 +53,9 @@ public class SemesterServiceImpl implements SemesterService {
         return semesterDAO.update(existing);
     }
 
-    @Override
-    public void deleteSemester(Long id) {
-        semesterDAO.delete(id);
+    @Transactional
+    public void deleteSemester(Long semesterId) {
+        semesterDAO.delete(semesterId);
     }
 
     @Override

@@ -60,8 +60,8 @@ public class Department {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JsonManagedReference
-    private Set<Program> programs = new HashSet<>();
+    @JsonIgnore
+    private Set<Program> programs;
 
     public Long getDeptId() {
         return deptId;

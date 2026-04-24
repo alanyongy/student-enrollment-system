@@ -40,8 +40,8 @@ public class AdmissionServiceImpl implements AdmissionService {
     }
 
     @Override
-    public List<Admission> getAllAdmissions() {
-        return admissionDAO.getAllAdmissions();
+    public List<Admission> getAllAdmissions(int page, int size, String sortBy, String direction)  {
+        return admissionDAO.getAllAdmissions(page, size, sortBy, direction) ;
     }
 
     @Override

@@ -1,6 +1,10 @@
 package com.example.CourseRegistrationSystem.entity;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -25,6 +29,10 @@ public class Semester {
     @NotNull(message = "End date cannot be null")
     @Column(name = "end_date")
     private LocalDate endDate;
+
+    @OneToMany(mappedBy = "semester", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("semester")
+    private List<Section> sections;
 
     public Semester() {}
 
@@ -65,5 +73,13 @@ public class Semester {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public void setSections(List<Section> sections) {
+        this.sections = sections;
+    }
+    
+    public List<Section> getSections() {
+        return sections;
     }
 }

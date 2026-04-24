@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.example.CourseRegistrationSystem.enums.ProgramType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -30,14 +31,28 @@ public class Program {
 
     @NotNull(message = "Department is required")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dept_id", nullable = false)
-    @JsonBackReference
+    @JoinColumn(name = "dept_id", nullable = true)
+    @JsonIgnoreProperties("programs")
     private Department department;
 
     @NotNull(message = "Program type is required")
     @Enumerated(EnumType.STRING)
     @Column(name = "program_type", nullable = false, length = 50)
     private ProgramType programType;
+
+    @OneToMany(
+        mappedBy = "program",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private Set<Admission> admissions = new HashSet<>();
+
+    @OneToMany(
+        mappedBy = "program",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private Set<ProgramCourseAccess> accesses = new HashSet<>();
 
     public Program() {}
 

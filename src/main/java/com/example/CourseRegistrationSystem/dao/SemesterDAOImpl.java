@@ -1,6 +1,7 @@
 package com.example.CourseRegistrationSystem.dao;
 
 import com.example.CourseRegistrationSystem.entity.Instructor;
+import com.example.CourseRegistrationSystem.entity.Section;
 import com.example.CourseRegistrationSystem.entity.Semester;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

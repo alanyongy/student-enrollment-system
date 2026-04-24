@@ -52,10 +52,14 @@ public class CourseServiceImpl implements CourseService{
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Course not found with id " + id));
         existingCourse.setCourseId(course.getCourseId());
-        existingCourse.setCourseNumber(course.getCourseNumber());
-        existingCourse.setDescription(course.getDescription());
-        existingCourse.setCredits(course.getCredits());
-        existingCourse.setDepartment(course.getDepartment());
+        if (course.getCourseNumber() != null)
+            existingCourse.setCourseNumber(course.getCourseNumber());
+        if (course.getDescription() != null)
+            existingCourse.setDescription(course.getDescription());
+        if (course.getCredits() != null)
+            existingCourse.setCredits(course.getCredits());
+        if (course.getDepartment() != null)
+            existingCourse.setDepartment(course.getDepartment());
 
         return courseDAO.save(existingCourse);
     }

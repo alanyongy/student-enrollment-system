@@ -5,8 +5,13 @@ import com.example.CourseRegistrationSystem.entity.Section;
 import com.example.CourseRegistrationSystem.entity.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -79,17 +84,50 @@ public class EnrollmentDAOImpl implements EnrollmentDAO{
     }
 
     @Override
-    public List<Enrollment> findAllEnrollments() {
-
+    public List<Enrollment> findAllEnrollments(int page, int size, String sortBy, String direction) {
+    
+        List<String> allowedSortFields = List.of(
+                "enrollmentId",
+                "status"
+        );
+    
+        if (!allowedSortFields.contains(sortBy)) {
+            sortBy = "enrollmentId";
+        }
+    
+        if (!direction.equalsIgnoreCase("asc") && !direction.equalsIgnoreCase("desc")) {
+            direction = "asc";
+        }
+    
         String jpql = """
-            SELECT e FROM Enrollment e
+            SELECT e
+            FROM Enrollment e
             JOIN FETCH e.student s
             JOIN FETCH e.section sec
-            JOIN FETCH sec.course c
-            JOIN FETCH c.department
-        """;
-
+            ORDER BY e.""" + sortBy + " " + direction;
+    
         return entityManager.createQuery(jpql, Enrollment.class)
+                .setFirstResult(page * size)
+                .setMaxResults(size)
                 .getResultList();
+    }
+
+    @Override
+    public void dropEnrollment(Long enrollmentId) {
+        Enrollment enrollment = entityManager.find(Enrollment.class, enrollmentId);
+
+        if (enrollment != null) {
+            entityManager.remove(enrollment);
+        } else {
+            throw new IllegalArgumentException("Enrollment not found with ID: " + enrollmentId);
+        }
+    }
+
+    public Enrollment save(Enrollment enrollment) {
+        return entityManager.merge(enrollment);
+    }
+
+    public Enrollment findById(Long id) {
+        return entityManager.find(Enrollment.class, id);
     }
 }

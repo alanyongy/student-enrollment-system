@@ -11,4 +11,5 @@ public interface SectionDAO {
     void delete(Long id);
     void assignInstructor(Long sectionId, Long instructorId);
     void removeInstructor(Long sectionId);
+    List<Section> findBySemesterId(Long semesterId);
 }

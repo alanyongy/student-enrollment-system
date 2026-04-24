@@ -61,5 +61,70 @@ public class CompletedCourseServiceImpl implements CompletedCourseService {
         return completedCourses;
 
     }
+
+    @Override
+    public List<CompletedCourse> getAll(int page, int size, String sortBy, String direction) {
+        return completedCourseDAO.findAll(page, size, sortBy, direction);
+    }
+
+    @Transactional
+    @Override
+    public CompletedCourse create(CompletedCourse req) {
+
+        Long studentId = req.getStudent().getPersonId();
+        Long courseId = req.getCourse().getCourseId();
+
+        CompletedCourse cc = new CompletedCourse();
+
+        cc.setStudent(
+            studentDAO.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("Student not found"))
+        );
+
+        cc.setCourse(
+            courseDAO.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"))
+        );
+
+        return completedCourseDAO.save(cc);
+    }
+
+    @Transactional
+    @Override
+    public CompletedCourse update(Long id, CompletedCourse req) {
+
+        CompletedCourse existing = completedCourseDAO.findById(id);
+
+        if (existing == null) {
+            throw new RuntimeException("Completion not found");
+        }
+
+        Long studentId = req.getStudent().getPersonId();
+        Long courseId = req.getCourse().getCourseId();
+
+        existing.setStudent(
+            studentDAO.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("Student not found"))
+        );
+
+        existing.setCourse(
+            courseDAO.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"))
+        );
+
+        return completedCourseDAO.save(existing);
+    }
+
+    @Transactional
+    @Override
+    public void delete(Long id) {
+        CompletedCourse cc = completedCourseDAO.findById(id);
+
+        if (cc == null) {
+            throw new RuntimeException("Completion not found");
+        }
+
+        completedCourseDAO.delete(cc);
+    }
 }
 

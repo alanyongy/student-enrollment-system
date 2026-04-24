@@ -1,5 +1,6 @@
 package com.example.CourseRegistrationSystem.dao;
 
+import com.example.CourseRegistrationSystem.entity.Section;
 import com.example.CourseRegistrationSystem.entity.Semester;
 import java.util.List;
 

@@ -1,7 +1,15 @@
 package com.example.CourseRegistrationSystem.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -9,6 +17,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class, 
+    property = "sectionId"
+  )
 @Entity
 @Table(name = "sections")
 public class Section {
@@ -42,9 +55,12 @@ public class Section {
     @OnDelete(action = OnDeleteAction.SET_NULL)
     private Instructor instructor;
 
-    @NotNull(message = "Semester cannot be null for a section")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "section", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Enrollment> enrollments = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "semester_id", nullable = false)
+    @JsonIgnoreProperties("sections")
     private Semester semester;
 
     public Section() {}
