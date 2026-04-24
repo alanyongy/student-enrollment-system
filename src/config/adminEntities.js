@@ -150,7 +150,7 @@ export const adminEntities = {
   
       {
         key: "section",
-        label: "Section",
+        label: "Section ID",
         type: "relation",
         entity: "sections",
         displayKey: "sectionId",
@@ -162,6 +162,7 @@ export const adminEntities = {
         type: "relation",
         entity: "courses",
         displayKey: "section.course.courseNumber",
+        readOnly: true,
       },
   
       { key: "status", label: "Enrollment Status" },

@@ -70,6 +70,9 @@ export default function AdminEntityPage() {
       : nextRes.data?.data || [];
   
     setHasNextPage(nextData.length > 0);
+
+    console.log("Fetch Data: ");
+    console.log(data);
   };
 
 
@@ -102,6 +105,7 @@ export default function AdminEntityPage() {
     const payload = { ...form };
 
     config.columns.forEach((col) => {
+      if (col.readOnly) return;
       if (col.type === "relation") {
         const value = payload[col.key];
         const parsed = parseInt(value, 10);
@@ -137,6 +141,7 @@ export default function AdminEntityPage() {
     const cleaned = {};
 
     config.columns.forEach((col) => {
+      if (col.readOnly) return;
       if (col.type === "relation") {
         const relIdKey = adminEntities[col.entity]?.idKey || "id";
 
@@ -259,7 +264,9 @@ export default function AdminEntityPage() {
 
         {/* FORM */}
         <div className="flex flex-col gap-4 mb-6">
-          {config.columns.map(renderField)}
+        {config.columns
+          .filter((col) => !col.readOnly)
+          .map(renderField)}
 
           <div className="flex gap-2">
             <Button onClick={handleSubmit}>
