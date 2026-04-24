@@ -337,6 +337,7 @@ VALUES (7, 'MWF 08:00-08:50', 'ICT 116', 30, 4, 3, 3);
 INSERT INTO sections (section_id, schedule_time, location, capacity, course_id, instructor_id, semester_id)
 VALUES (8, 'TTh 09:30-10:45', 'MS 170', 45, 5, 5, 3);
 
+
 -- ========================
 -- ENROLLMENTS
 -- ========================

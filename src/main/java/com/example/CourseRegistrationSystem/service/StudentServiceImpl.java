@@ -66,28 +66,65 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     @Override
     public Student updateStudent(Long id, Student student) {
-
-        Student existingStudent = studentDAO.findById(id)
+    
+        Student existing = studentDAO.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Student not found with id " + id));
-
-        student.setPersonId(existingStudent.getPersonId());
-
-        existingStudent.setFirstName(student.getFirstName());
-        existingStudent.setMiddleName(student.getMiddleName());
-        existingStudent.setLastName(student.getLastName());
-        existingStudent.setEmail(student.getEmail());
-        existingStudent.setPassword(student.getPassword());
-        existingStudent.setPhoneNumber(student.getPhoneNumber());
-        existingStudent.setDateOfBirth(student.getDateOfBirth());
-
-        existingStudent.setEnrollmentYear(student.getEnrollmentYear());
-        existingStudent.setAcademicStatus(student.getAcademicStatus());
-        existingStudent.setCreditsEarned(student.getCreditsEarned());
-
-        return studentDAO.save(existingStudent);
+    
+        // base fields
+        existing.setFirstName(
+                student.getFirstName() != null ? student.getFirstName() : existing.getFirstName()
+        );
+    
+        existing.setMiddleName(
+                student.getMiddleName() != null ? student.getMiddleName() : existing.getMiddleName()
+        );
+    
+        existing.setLastName(
+                student.getLastName() != null ? student.getLastName() : existing.getLastName()
+        );
+    
+        existing.setEmail(
+                student.getEmail() != null ? student.getEmail() : existing.getEmail()
+        );
+    
+        existing.setPassword(
+                student.getPassword() != null ? student.getPassword() : existing.getPassword()
+        );
+    
+        existing.setPhoneNumber(
+                student.getPhoneNumber() != null ? student.getPhoneNumber() : existing.getPhoneNumber()
+        );
+    
+        existing.setDateOfBirth(
+                student.getDateOfBirth() != null ? student.getDateOfBirth() : existing.getDateOfBirth()
+        );
+    
+        // undergrad-specific fields
+        if (existing instanceof Undergrad existingUg && student instanceof Undergrad incomingUg) {
+    
+            existingUg.setAcademicStatus(
+                    incomingUg.getAcademicStatus() != null
+                            ? incomingUg.getAcademicStatus()
+                            : existingUg.getAcademicStatus()
+            );
+    
+            existingUg.setCreditsEarned(
+                    incomingUg.getCreditsEarned() != null
+                            ? incomingUg.getCreditsEarned()
+                            : existingUg.getCreditsEarned()
+            );
+    
+            existingUg.setEnrollmentYear(
+                    incomingUg.getEnrollmentYear() != null
+                            ? incomingUg.getEnrollmentYear()
+                            : existingUg.getEnrollmentYear()
+            );
+        }
+    
+        return studentDAO.save(existing);
     }
-
+    
     @Transactional
     @Override
     public void deleteStudent(Long id) {
