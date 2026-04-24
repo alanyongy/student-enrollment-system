@@ -11,7 +11,7 @@ public interface CoursePrerequisiteService {
 
     List<CoursePrerequisite> getPrerequisitesForCourse(Long courseId);
 
-    List<CoursePrerequisite> getAll();
+    List<CoursePrerequisite> getAll(int page, int size, String sortBy, String direction);
     CoursePrerequisite create(CoursePrerequisite req);
     CoursePrerequisite update(Long id, CoursePrerequisite req);
     void delete(Long id);

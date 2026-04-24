@@ -59,9 +59,9 @@ public class CoursePrerequisiteServiceImpl implements CoursePrerequisiteService 
     
     @Override
     @Transactional(readOnly = true)
-    public List<CoursePrerequisite> getAll() {
+    public List<CoursePrerequisite> getAll(int page, int size, String sortBy, String direction)  {
     
-        List<CoursePrerequisite> list = coursePrerequisiteDAO.findAll();
+        List<CoursePrerequisite> list = coursePrerequisiteDAO.findAll(page, size, sortBy, direction) ;
     
         list.forEach(cp -> {
             cp.setCourse(safeCourse(cp.getCourse()));

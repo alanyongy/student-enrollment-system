@@ -10,5 +10,9 @@ public interface CompletedCourseDAO {
     void deleteByStudentAndCourse(Long studentId, Long courseId);
     Optional<CompletedCourse> findByStudentAndCourse(Long studentId, Long courseId);
     List<CompletedCourse> findByStudentId(Long studentId);
+
+    List<CompletedCourse> findAll(int page, int size, String sortBy, String direction);
+    CompletedCourse findById(Long id);
+    void delete(CompletedCourse completion);
 }
 

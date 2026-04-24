@@ -30,7 +30,7 @@ public class Semester {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @OneToMany(mappedBy = "semester")
+    @OneToMany(mappedBy = "semester", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("semester")
     private List<Section> sections;
 

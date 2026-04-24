@@ -2,6 +2,7 @@ package com.example.CourseRegistrationSystem.service;
 
 import com.example.CourseRegistrationSystem.dao.SectionDAO;
 import com.example.CourseRegistrationSystem.entity.Course;
+import com.example.CourseRegistrationSystem.entity.Instructor;
 import com.example.CourseRegistrationSystem.entity.Section;
 import com.example.CourseRegistrationSystem.entity.Semester;
 import com.example.CourseRegistrationSystem.exception.ResourceNotFoundException;
@@ -18,6 +19,9 @@ public class SectionServiceImpl implements SectionService {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private InstructorService instructorService;
     private SemesterService semesterService;
 
     public SectionServiceImpl(CourseService courseService, SemesterService semesterService){
@@ -56,6 +60,13 @@ public class SectionServiceImpl implements SectionService {
         existing.setScheduleTime(req.getScheduleTime());
         existing.setLocation(req.getLocation());
         existing.setCapacity(req.getCapacity());
+
+        if (req.getInstructor() != null) {
+            Instructor instructor = instructorService.getInstructor(req.getInstructor().getPersonId());
+            existing.setInstructor(instructor);
+        } else {
+            existing.setInstructor(null); // optional, if you allow removing instructor
+        }
 
         return sectionDAO.save(existing);
     }

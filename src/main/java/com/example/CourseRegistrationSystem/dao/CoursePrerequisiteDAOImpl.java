@@ -51,17 +51,38 @@ public class CoursePrerequisiteDAOImpl implements CoursePrerequisiteDAO {
     }
 
     @Override
-    public List<CoursePrerequisite> findAll() {
+    public List<CoursePrerequisite> findAll(int page, int size, String sortBy, String direction) {
+    
+        List<String> allowedSortFields = List.of("prerequisiteId");
+    
+        if (!allowedSortFields.contains(sortBy)) {
+            sortBy = "prerequisiteId";
+        }
+    
+        if (!direction.equalsIgnoreCase("asc") && !direction.equalsIgnoreCase("desc")) {
+            direction = "asc";
+        }
     
         String jpql = """
             SELECT DISTINCT cp
             FROM CoursePrerequisite cp
             JOIN FETCH cp.course
             JOIN FETCH cp.prerequisiteCourse
-        """;
+            ORDER BY cp.""" + sortBy + " " + direction;
     
-        return entityManager.createQuery(jpql, CoursePrerequisite.class)
-                .getResultList();
+        TypedQuery<CoursePrerequisite> query = entityManager.createQuery(jpql, CoursePrerequisite.class);
+    
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+    
+        List<CoursePrerequisite> result = query.getResultList();
+    
+        result.forEach(cp -> {
+            if (cp.getCourse() != null) cp.getCourse().getCourseNumber();
+            if (cp.getPrerequisiteCourse() != null) cp.getPrerequisiteCourse().getCourseNumber();
+        });
+    
+        return result;
     }
 
     @Override

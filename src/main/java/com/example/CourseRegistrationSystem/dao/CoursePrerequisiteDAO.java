@@ -11,7 +11,7 @@ public interface CoursePrerequisiteDAO {
     void removePrerequisite(Course course, Course prerequisiteCourse);
     List<CoursePrerequisite> getPrerequisites(Course course);
 
-    List<CoursePrerequisite> findAll();
+    List<CoursePrerequisite> findAll(int page, int size, String sortBy, String direction);
     Optional<CoursePrerequisite> findById(Long id);
     CoursePrerequisite save(CoursePrerequisite cp);
     void delete(CoursePrerequisite cp);

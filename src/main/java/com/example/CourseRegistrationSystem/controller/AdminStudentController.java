@@ -4,6 +4,8 @@ import com.example.CourseRegistrationSystem.entity.Student;
 import com.example.CourseRegistrationSystem.entity.Program;
 import com.example.CourseRegistrationSystem.dao.ProgramDAO;
 import com.example.CourseRegistrationSystem.entity.Admission;
+import com.example.CourseRegistrationSystem.entity.CompletedCourse;
+import com.example.CourseRegistrationSystem.entity.Department;
 import com.example.CourseRegistrationSystem.entity.Enrollment;
 import com.example.CourseRegistrationSystem.service.StudentService;
 import com.example.CourseRegistrationSystem.service.AdmissionService;
@@ -133,14 +135,28 @@ public class AdminStudentController {
     }
 
     @GetMapping("/admissions")
-    public ResponseEntity<List<Admission>> getAllAdmissions() {
-        return ResponseEntity.ok(admissionService.getAllAdmissions());
+    public ResponseEntity<List<Admission>> getAllAdmissions(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "admissionId") String sortBy,
+        @RequestParam(defaultValue = "asc") String direction
+    ) {
+        return ResponseEntity.ok(admissionService.getAllAdmissions(page, size, sortBy, direction));
     }
 
     @PostMapping("/enrollments")
     public ResponseEntity<Void> enrollStudentInSection(@PathVariable Long studentId, @PathVariable Long sectionId) {
         enrollmentService.enrollStudentInCourse(studentId, sectionId);
         return ResponseEntity.ok().build();
+    }
+    
+    @PutMapping("/enrollments/{enrollmentId}")
+    public ResponseEntity<Enrollment> updateEnrollment(
+            @PathVariable Long enrollmentId,
+            @RequestBody Enrollment enrollment
+    ) {
+        Enrollment updated = enrollmentService.updateEnrollment(enrollmentId, enrollment);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/enrollments/{enrollmentId}")
@@ -150,8 +166,13 @@ public class AdminStudentController {
     }
 
     @GetMapping("/enrollments")
-    public ResponseEntity<List<Enrollment>> getAllEnrollments() {
-        return ResponseEntity.ok(enrollmentService.getAllEnrollments());
+    public ResponseEntity<List<Enrollment>> getAllEnrollments(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "enrollmentId") String sortBy,
+        @RequestParam(defaultValue = "asc") String direction
+    ) {
+        return ResponseEntity.ok(enrollmentService.getAllEnrollments(page, size, sortBy, direction));
     }
 
     @PostMapping("/students/{studentId}/completed/{courseId}")
@@ -163,6 +184,36 @@ public class AdminStudentController {
     @DeleteMapping("/students/{studentId}/completed/{courseId}")
     public ResponseEntity<Void> removeCompletedCourse(@PathVariable Long studentId, @PathVariable Long courseId) {
         completedCourseService.removeCompletedCourse(studentId, courseId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/completions")
+    public ResponseEntity<List<CompletedCourse>> getAll(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "completedCourseId") String sortBy,
+        @RequestParam(defaultValue = "asc") String direction
+    ) {
+        return ResponseEntity.ok(completedCourseService.getAll(page, size, sortBy, direction));
+    }
+
+    @PostMapping("/completions")
+    public ResponseEntity<CompletedCourse> create(@RequestBody CompletedCourse req) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(completedCourseService.create(req));
+    }
+
+    @PutMapping("/completions/{id}")
+    public ResponseEntity<CompletedCourse> update(
+            @PathVariable Long id,
+            @RequestBody CompletedCourse req
+    ) {
+        return ResponseEntity.ok(completedCourseService.update(id, req));
+    }
+
+    @DeleteMapping("/completions/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        completedCourseService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

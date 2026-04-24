@@ -5,6 +5,7 @@ import com.example.CourseRegistrationSystem.entity.Student;
 import com.example.CourseRegistrationSystem.entity.Program;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
@@ -55,11 +56,41 @@ public class AdmissionDAOImpl implements AdmissionDAO {
     }
 
     @Override
-    public List<Admission> getAllAdmissions() {
-        String jpql = "SELECT a FROM Admission a JOIN FETCH a.student JOIN FETCH a.program";
+    public List<Admission> getAllAdmissions(int page, int size, String sortBy, String direction) {
 
-        return entityManager.createQuery(jpql, Admission.class)
-                .getResultList();
+        List<String> allowedSortFields = List.of(
+                "admissionId",
+                "status"
+        );
+
+        if (!allowedSortFields.contains(sortBy)) {
+            sortBy = "admissionId";
+        }
+
+        if (!direction.equalsIgnoreCase("asc") && !direction.equalsIgnoreCase("desc")) {
+            direction = "asc";
+        }
+
+        String jpql = """
+            SELECT DISTINCT a
+            FROM Admission a
+            JOIN FETCH a.student
+            JOIN FETCH a.program
+            ORDER BY a.""" + sortBy + " " + direction;
+
+        TypedQuery<Admission> query = entityManager.createQuery(jpql, Admission.class);
+
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+
+        List<Admission> result = query.getResultList();
+
+        result.forEach(a -> {
+            if (a.getStudent() != null) a.getStudent().getFirstName();
+            if (a.getProgram() != null) a.getProgram().getProgramName();
+        });
+
+        return result;
     }
 
     @Override

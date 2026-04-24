@@ -92,4 +92,14 @@ public class SectionDAOImpl implements SectionDAO {
         section.setInstructor(null);
         entityManager.merge(section);
     }
+
+    @Override
+    public List<Section> findBySemesterId(Long semesterId) {
+        return entityManager.createQuery(
+            "SELECT s FROM Section s WHERE s.semester.semesterId = :semesterId",
+            Section.class
+        )
+        .setParameter("semesterId", semesterId)
+        .getResultList();
+    }
 }

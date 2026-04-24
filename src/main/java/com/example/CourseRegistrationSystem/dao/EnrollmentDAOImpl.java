@@ -5,6 +5,7 @@ import com.example.CourseRegistrationSystem.entity.Section;
 import com.example.CourseRegistrationSystem.entity.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
@@ -83,15 +84,31 @@ public class EnrollmentDAOImpl implements EnrollmentDAO{
     }
 
     @Override
-    public List<Enrollment> findAllEnrollments() {
+    public List<Enrollment> findAllEnrollments(int page, int size, String sortBy, String direction) {
+    
+        List<String> allowedSortFields = List.of(
+                "enrollmentId",
+                "status"
+        );
+    
+        if (!allowedSortFields.contains(sortBy)) {
+            sortBy = "enrollmentId";
+        }
+    
+        if (!direction.equalsIgnoreCase("asc") && !direction.equalsIgnoreCase("desc")) {
+            direction = "asc";
+        }
+    
         String jpql = """
-            SELECT e FROM Enrollment e
+            SELECT e
+            FROM Enrollment e
             JOIN FETCH e.student s
             JOIN FETCH e.section sec
-            JOIN FETCH sec.course c
-        """;
-
+            ORDER BY e.""" + sortBy + " " + direction;
+    
         return entityManager.createQuery(jpql, Enrollment.class)
+                .setFirstResult(page * size)
+                .setMaxResults(size)
                 .getResultList();
     }
 
@@ -104,5 +121,13 @@ public class EnrollmentDAOImpl implements EnrollmentDAO{
         } else {
             throw new IllegalArgumentException("Enrollment not found with ID: " + enrollmentId);
         }
+    }
+
+    public Enrollment save(Enrollment enrollment) {
+        return entityManager.merge(enrollment);
+    }
+
+    public Enrollment findById(Long id) {
+        return entityManager.find(Enrollment.class, id);
     }
 }

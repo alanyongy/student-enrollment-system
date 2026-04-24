@@ -194,9 +194,6 @@ VALUES (3, 'Mathematics Major', 'Core mathematics degree program', 2, 'MAJOR');
 INSERT INTO programs (program_id, program_name, description, dept_id, program_type)
 VALUES (4, 'Engineering Minor', 'Minor in engineering fundamentals', 3, 'MINOR');
 
-INSERT INTO programs (program_id, program_name, description, dept_id, program_type)
-VALUES (5, 'Art Major', 'Major in drawing stuff', 3, 'MINOR');
-
 
 -- ========================
 -- ADMISSIONS

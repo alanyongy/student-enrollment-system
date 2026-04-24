@@ -60,15 +60,27 @@
 
 ## 10. Relationship Endpoints
 
-### Assign Instructor to Section (TEACHES)
-- POST   /api/admin/sections/{sectionId}/assign-instructor/{instructorId}
-- DELETE /api/admin/sections/{sectionId}/remove-instructor
-
 ### Add Course Prerequisite (PRE_REQ_OF)
 - GET    /api/admin/courses/prerequisites
 - POST   /api/admin/courses/prerequisites
 - PUT    /api/admin/courses/prerequisites{prereqId}
 - DELETE /api/admin/courses/prerequisites/{prereqId}
+
+### Set Course Required for Program (GIVES_ACCESS)
+- GET    /api/admin/courses/access
+- POST   /api/admin/courses/access
+- PUT    /api/admin/courses/access{id}
+- DELETE /api/admin/courses/access/{accessId}
+
+### Set Course Completed for Students (COMPLETED)
+- GET    /api/admin/students/completions
+- POST   /api/admin/students/completions
+- PUT    /api/admin/students/completions/{id}
+- DELETE /api/admin/students/completions/{accessId}
+
+### Assign Instructor to Section (TEACHES)
+- POST   /api/admin/sections/{sectionId}/assign-instructor/{instructorId}
+- DELETE /api/admin/sections/{sectionId}/remove-instructor
 
 ### Add Course to Department (OFFERS)
 - POST /api/admin/departments/{deptId}/courses/{courseId}
@@ -78,13 +90,6 @@
 
 ### Admit Student to Program (ADMITTED)
 - POST /api/admin/students/{studentId}/admit/{programId}
-
-### Set Course Required for Program (GIVES_ACCESS / is_required)
-- POST   /api/admin/programs/{programId}/required-courses/{courseId}
-- DELETE /api/admin/programs/{programId}/required-courses/{courseId}
-
-### Mark Course Completed (COMPLETED)
-- POST /api/admin/students/{studentId}/completed/{courseId}
 
 ### Enroll Student in Section (ENROLLS)
 - POST   /api/admin/students/{studentId}/enroll/{sectionId}
