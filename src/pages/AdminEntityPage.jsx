@@ -31,9 +31,7 @@ export default function AdminEntityPage() {
     return path.split(".").reduce((acc, key) => acc?.[key], obj);
   };
 
-  // -----------------------------
-  // LOAD DATA
-  // -----------------------------
+  //load data
   useEffect(() => {
     if (!config) return;
   
@@ -57,7 +55,7 @@ export default function AdminEntityPage() {
   
     setRows(data);
   
-    // 🔍 peek next page
+    //check next page
     const nextRes = await api.get(config.endpoint, {
       params: {
         page: page + 1,
@@ -74,9 +72,8 @@ export default function AdminEntityPage() {
     setHasNextPage(nextData.length > 0);
   };
 
-  // -----------------------------
-  // LOAD RELATIONS
-  // -----------------------------
+
+  //relations
   const loadRelations = async () => {
     if (!config) return;
 
@@ -100,9 +97,7 @@ export default function AdminEntityPage() {
     setRelationOptions(results);
   };
 
-  // -----------------------------
-  // CREATE / UPDATE
-  // -----------------------------
+  //create/update
   const handleSubmit = async () => {
     const payload = { ...form };
 
@@ -137,9 +132,7 @@ export default function AdminEntityPage() {
     fetchData();
   };
 
-  // -----------------------------
-  // EDIT
-  // -----------------------------
+  //edit
   const handleEdit = (row) => {
     const cleaned = {};
 
@@ -164,17 +157,13 @@ export default function AdminEntityPage() {
     setEditingId(row[config.idKey]);
   };
 
-  // -----------------------------
-  // DELETE
-  // -----------------------------
+  //delete
   const handleDelete = async (row) => {
     await api.delete(`${config.endpoint}/${row[config.idKey]}`);
     fetchData();
   };
 
-  // -----------------------------
-  // SORT HANDLER
-  // -----------------------------
+  //sort
   const handleSort = (key) => {
     if (sortBy === key) {
       setSortDir((prev) => (prev === "asc" ? "desc" : "asc"));
@@ -344,7 +333,7 @@ export default function AdminEntityPage() {
           </tbody>
         </table>
 
-        {/* PAGINATION (RESTORED STYLE YOU LIKED) */}
+        {/* PAGINATION */}
         <div className="flex justify-center items-center gap-4 mt-6 text-white">
           <button
             disabled={page === 0}
