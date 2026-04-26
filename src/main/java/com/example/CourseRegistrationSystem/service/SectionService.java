@@ -1,5 +1,6 @@
 package com.example.CourseRegistrationSystem.service;
 
+import com.example.CourseRegistrationSystem.dto.EnrollmentResponseDTO;
 import com.example.CourseRegistrationSystem.entity.Section;
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface SectionService {
     void removeInstructor(Long sectionId);
     void assignCourse(Long sectionId, Long courseId);
     void removeCourse(Long sectionId, Long courseId);
+    List<Long> getCoursesForSection(Long sectionId);
+    List<EnrollmentResponseDTO> getAvailableSectionsForSemester(Long semesterId);
 }

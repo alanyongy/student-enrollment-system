@@ -1,7 +1,6 @@
 package com.example.CourseRegistrationSystem.dao;
 
 import com.example.CourseRegistrationSystem.entity.Instructor;
-import com.example.CourseRegistrationSystem.entity.Program;
 import com.example.CourseRegistrationSystem.entity.Section;
 import com.example.CourseRegistrationSystem.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityManager;
@@ -95,11 +94,11 @@ public class SectionDAOImpl implements SectionDAO {
 
     @Override
     public List<Section> findBySemesterId(Long semesterId) {
-        return entityManager.createQuery(
-            "SELECT s FROM Section s WHERE s.semester.semesterId = :semesterId",
-            Section.class
-        )
-        .setParameter("semesterId", semesterId)
-        .getResultList();
+        String jpql = "SELECT ss.section FROM SemesterSection ss WHERE ss.semester.semesterId = :semesterId";
+
+        return entityManager.createQuery(jpql, Section.class)
+                .setParameter("semesterId", semesterId)
+                .getResultList();
     }
+
 }

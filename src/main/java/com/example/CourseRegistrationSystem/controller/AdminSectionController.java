@@ -69,4 +69,9 @@ public class AdminSectionController {
         sectionService.removeCourse(sectionId, courseId);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/{sectionId}/courses")
+    public ResponseEntity<List<Long>> getCourseForSection(@PathVariable Long sectionId) {
+        return ResponseEntity.ok(sectionService.getCoursesForSection(sectionId));
+    }
 }

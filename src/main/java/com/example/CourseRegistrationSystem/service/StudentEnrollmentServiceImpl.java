@@ -99,10 +99,13 @@ public class StudentEnrollmentServiceImpl implements StudentEnrollmentService {
     @Override
     @Transactional(readOnly = true)
     public List<EnrollmentResponseDTO> getEnrollmentsForStudent(Long studentId) {
-        // Assuming semester filter will be added later if needed; for now, fetch all
-        // active enrollments for the student across semesters
         List<Enrollment> enrollments = entityManager.createQuery(
-                "SELECT e FROM Enrollment e WHERE e.student.personId = :studentId",
+                "SELECT e FROM Enrollment e " +
+                        "JOIN FETCH e.section sec " +
+                        "JOIN FETCH sec.course " +
+                        "LEFT JOIN FETCH sec.instructor " +
+                        "LEFT JOIN FETCH sec.semester " +
+                        "WHERE e.student.personId = :studentId",
                 Enrollment.class)
                 .setParameter("studentId", studentId)
                 .getResultList();
@@ -137,10 +140,42 @@ public class StudentEnrollmentServiceImpl implements StudentEnrollmentService {
     private EnrollmentResponseDTO mapToDto(Enrollment enrollment) {
         EnrollmentResponseDTO dto = new EnrollmentResponseDTO();
         Section section = enrollment.getSection();
+        Course course = section.getCourse();
+        dto.setCredits(course.getCredits());
         dto.setEnrollmentId(enrollment.getEnrollmentId());
         dto.setSectionId(section.getSectionId());
-        dto.setCourseName(section.getCourse().getDescription());
+        dto.setCourseCode(course.getCourseNumber());
+        dto.setCourseName(course.getDescription());
+        dto.setSectionLabel(buildSectionLabel(section));
         dto.setSemester(section.getSemester().getTermName());
+        dto.setInstructor(buildInstructorName(section.getInstructor()));
+        dto.setLocation(section.getLocation());
+        dto.setCapacity(section.getCapacity());
+        dto.setEnrolledCount(Math.toIntExact(enrollmentDAO.countBySection(section.getSectionId())));
         return dto;
+    }
+
+    private String buildSectionLabel(Section section) {
+        return "Section " + section.getSectionId();
+    }
+
+    private String buildInstructorName(Instructor instructor) {
+        if (instructor == null) {
+            return null;
+        }
+
+        String firstName = instructor.getFirstName();
+        String lastName = instructor.getLastName();
+
+        if (firstName == null && lastName == null) {
+            return null;
+        }
+        if (firstName == null) {
+            return lastName;
+        }
+        if (lastName == null) {
+            return firstName;
+        }
+        return firstName + " " + lastName;
     }
 }

@@ -55,5 +55,10 @@ public class AdminSemesterController {
         semesterSectionService.removeSemesterSection(semesterId, sectionId);
         return ResponseEntity.noContent().build();
     }
+
+
+    @GetMapping("/{semesterId}/sections")
+    public ResponseEntity<List<Long>> getSectionsForSemester(@PathVariable Long semesterId) {
+        return ResponseEntity.ok(semesterSectionService.getSectionsForSemester(semesterId));    }
 }
 

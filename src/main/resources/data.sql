@@ -92,6 +92,11 @@ VALUES (18, 'Daniel', 'Christopher', 'Kim', 'instructor6@example.com',
  '$2a$10$M67C/BLkfotfl14WbFSh8Out/6ReJxaLunI.WsdTPNS66.VLmJ9KG',
  '4035550018', '1975-10-11', 'STUDENT');
 
+INSERT INTO persons (person_id, first_name, middle_name, last_name, email, password, phone_number, date_of_birth, security_role)
+VALUES (19, 'Prateek', '-', 'Babani', 'prateek@gmail.com',
+ '$2a$10$sse0PSljrdndmbjFDg1BYe3vw.Jxr/MnYl.TUZEKlRQ5Vjj13iGPy',
+ '4035550018', '1975-10-11', 'ADMIN');
+
 -- ========================
 -- SUBCLASS TABLES (JOINED)
 -- ========================
@@ -99,6 +104,11 @@ VALUES (18, 'Daniel', 'Christopher', 'Kim', 'instructor6@example.com',
 -- ADMINISTRATOR
 INSERT INTO administrator (person_id)
 VALUES (2);
+
+INSERT INTO administrator (person_id)
+VALUES (19);
+
+
 
 -- INSTRUCTOR
 
@@ -371,3 +381,31 @@ VALUES (9, 'ENROLLED', 8, 5);
 
 INSERT INTO enrollments (enrollment_id, status, student_id, section_id)
 VALUES (10, 'WAITLIST', 1, 7);
+-- Fall 2026 (semester_id = 1)
+INSERT INTO semester_sections (semester_section_id, semester_id, section_id)
+VALUES (1, 1, 1);
+
+INSERT INTO semester_sections (semester_section_id, semester_id, section_id)
+VALUES (2, 1, 2);
+
+INSERT INTO semester_sections (semester_section_id, semester_id, section_id)
+VALUES (3, 1, 3);
+
+
+-- Winter 2027 (semester_id = 2)
+INSERT INTO semester_sections (semester_section_id, semester_id, section_id)
+VALUES (4, 2, 4);
+
+INSERT INTO semester_sections (semester_section_id, semester_id, section_id)
+VALUES (5, 2, 5);
+
+INSERT INTO semester_sections (semester_section_id, semester_id, section_id)
+VALUES (6, 2, 6);
+
+
+-- Spring 2027 (semester_id = 3)
+INSERT INTO semester_sections (semester_section_id, semester_id, section_id)
+VALUES (7, 3, 7);
+
+INSERT INTO semester_sections (semester_section_id, semester_id, section_id)
+VALUES (8, 3, 8);

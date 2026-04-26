@@ -4,6 +4,7 @@ import com.example.CourseRegistrationSystem.entity.Enrollment;
 import com.example.CourseRegistrationSystem.entity.Section;
 import com.example.CourseRegistrationSystem.entity.Student;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 
@@ -77,10 +78,13 @@ public class EnrollmentDAOImpl implements EnrollmentDAO{
     @Override
     public long countBySection(Long sectionId) {
         String jpql = "SELECT COUNT(e) FROM Enrollment e WHERE e.section.sectionId = :sectionId";
-        Long count = entityManager.createQuery(jpql, Long.class)
-                .setParameter("sectionId", sectionId)
-                .getSingleResult();
-        return count != null ? count : 0L;
+        try {
+            return entityManager.createQuery(jpql, Long.class)
+                    .setParameter("sectionId", sectionId)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return 0L;
+        }
     }
 
     @Override
