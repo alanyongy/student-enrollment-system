@@ -115,80 +115,50 @@ export default function StudentProfile() {
                 </div>
               </div>
 
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-sky-950/30 backdrop-blur-xl">
+              <div className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-2xl shadow-sky-950/30 backdrop-blur-xl">
                 <div className="flex items-center justify-between">
                   <h2 className="text-lg font-semibold text-white">
-                    Profile Summary
+                    Profile Details
                   </h2>
-                  <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-white/70">
-                    Updated live
-                  </span>
                 </div>
 
-                <div className="mt-5 space-y-3">
-                  <div className="rounded-2xl bg-black/20 p-4">
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-2xl bg-black/20 p-3 sm:col-span-2">
                     <div className="text-sm text-white/50">Name</div>
                     <div className="mt-1 text-base font-semibold text-white">
                       {displayName}
                     </div>
                   </div>
 
-                  <div className="rounded-2xl bg-black/20 p-4">
+                  <div className="rounded-2xl bg-black/20 p-3 sm:col-span-2">
                     <div className="text-sm text-white/50">Email</div>
                     <div className="mt-1 break-all text-base font-semibold text-white">
                       {student.email || "N/A"}
                     </div>
                   </div>
 
-                  <div className="rounded-2xl bg-black/20 p-4">
-                    <div className="text-sm text-white/50">Status</div>
-                    <div className="mt-1 text-base font-semibold text-white">
-                      {student.academicStatus || "N/A"}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section className="grid gap-6 lg:grid-cols-2">
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-sky-950/30 backdrop-blur-xl">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-white/60">
-                      Personal Information
-                    </p>
-                    <h2 className="text-xl font-semibold text-white">
-                      Identity and contact details
-                    </h2>
-                  </div>
-                  <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-white/70">
-                    Profile
-                  </span>
-                </div>
-
-                <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                  <div className="rounded-2xl bg-black/20 p-3">
                     <div className="text-sm text-white/50">First Name</div>
                     <div className="mt-1 text-base font-semibold text-white">
                       {student.firstName || "N/A"}
                     </div>
                   </div>
 
-                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                  <div className="rounded-2xl bg-black/20 p-3">
                     <div className="text-sm text-white/50">Last Name</div>
                     <div className="mt-1 text-base font-semibold text-white">
                       {student.lastName || "N/A"}
                     </div>
                   </div>
 
-                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4 sm:col-span-2">
-                    <div className="text-sm text-white/50">Email</div>
-                    <div className="mt-1 break-all text-base font-semibold text-white">
-                      {student.email || "N/A"}
+                  <div className="rounded-2xl bg-black/20 p-3">
+                    <div className="text-sm text-white/50">Status</div>
+                    <div className="mt-1 text-base font-semibold text-white">
+                      {student.academicStatus || "N/A"}
                     </div>
                   </div>
 
-                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4 sm:col-span-2">
+                  <div className="rounded-2xl bg-black/20 p-3">
                     <div className="text-sm text-white/50">Phone</div>
                     <div className="mt-1 text-base font-semibold text-white">
                       {student.phoneNumber || "N/A"}
@@ -196,66 +166,58 @@ export default function StudentProfile() {
                   </div>
                 </div>
               </div>
+            </section>
 
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-sky-950/30 backdrop-blur-xl">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-white/60">
-                      Academic Information
-                    </p>
-                    <h2 className="text-xl font-semibold text-white">
-                      Enrollment overview
-                    </h2>
+            <section className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-2xl shadow-sky-950/30 backdrop-blur-xl">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-white/60">Academic Information</p>
+                  <h2 className="text-xl font-semibold text-white">
+                    Enrollment overview
+                  </h2>
+                </div>
+                <span className="rounded-full bg-sky-500/15 px-3 py-1 text-xs text-sky-200">
+                  Academic
+                </span>
+              </div>
+
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-2xl border border-white/10 bg-black/20 p-3">
+                  <div className="text-sm text-white/50">Student ID</div>
+                  <div className="mt-1 text-base font-semibold text-white">
+                    {student.id || "N/A"}
                   </div>
-                  <span className="rounded-full bg-sky-500/15 px-3 py-1 text-xs text-sky-200">
-                    Academic
-                  </span>
                 </div>
 
-                <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-                    <div className="text-sm text-white/50">Student ID</div>
-                    <div className="mt-1 text-base font-semibold text-white">
-                      {student.id || "N/A"}
-                    </div>
+                <div className="rounded-2xl border border-white/10 bg-black/20 p-3">
+                  <div className="text-sm text-white/50">Enrollment Year</div>
+                  <div className="mt-1 text-base font-semibold text-white">
+                    {student.enrollmentYear || "N/A"}
                   </div>
+                </div>
 
-                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-                    <div className="text-sm text-white/50">Enrollment Year</div>
-                    <div className="mt-1 text-base font-semibold text-white">
-                      {student.enrollmentYear || "N/A"}
-                    </div>
+                <div className="rounded-2xl border border-white/10 bg-black/20 p-3">
+                  <div className="text-sm text-white/50">Academic Status</div>
+                  <div className="mt-1 text-base font-semibold text-white">
+                    {student.academicStatus || "N/A"}
                   </div>
+                </div>
 
-                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-                    <div className="text-sm text-white/50">Academic Status</div>
-                    <div className="mt-1 text-base font-semibold text-white">
-                      {student.academicStatus || "N/A"}
-                    </div>
+                <div className="rounded-2xl border border-white/10 bg-black/20 p-3">
+                  <div className="text-sm text-white/50">Credits Earned</div>
+                  <div className="mt-1 text-base font-semibold text-white">
+                    {student.creditsEarned ?? "N/A"}
                   </div>
+                </div>
 
-                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-                    <div className="text-sm text-white/50">Credits Earned</div>
-                    <div className="mt-1 text-base font-semibold text-white">
-                      {student.creditsEarned ?? "N/A"}
-                    </div>
-                  </div>
-
-                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4 sm:col-span-2">
-                    <div className="text-sm text-white/50">Year of Study</div>
-                    <div className="mt-1 text-base font-semibold text-white">
-                      {student.yearOfStudy || "N/A"}
-                    </div>
+                <div className="rounded-2xl border border-white/10 bg-black/20 p-3">
+                  <div className="text-sm text-white/50">Year of Study</div>
+                  <div className="mt-1 text-base font-semibold text-white">
+                    {student.yearOfStudy || "N/A"}
                   </div>
                 </div>
               </div>
             </section>
-
-            <div className="flex justify-end">
-              <button className="rounded-xl bg-sky-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-950/30 transition-all duration-200 hover:bg-sky-400 active:scale-95">
-                Edit Profile
-              </button>
-            </div>
           </>
         )}
       </main>
