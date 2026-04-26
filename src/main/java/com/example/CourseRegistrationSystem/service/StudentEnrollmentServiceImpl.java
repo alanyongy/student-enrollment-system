@@ -6,6 +6,7 @@ import com.example.CourseRegistrationSystem.dao.EnrollmentDAO;
 import com.example.CourseRegistrationSystem.dao.SectionDAO;
 import com.example.CourseRegistrationSystem.dto.EnrollmentResponseDTO;
 import com.example.CourseRegistrationSystem.entity.*;
+import com.example.CourseRegistrationSystem.enums.StatusType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
@@ -87,6 +88,7 @@ public class StudentEnrollmentServiceImpl implements StudentEnrollmentService {
         Enrollment enrollment = new Enrollment();
         enrollment.setStudent(student);
         enrollment.setSection(section);
+        enrollment.setStatus(StatusType.ENROLLED);
         entityManager.persist(enrollment);
 
         EnrollmentResponseDTO dto = mapToDto(enrollment);

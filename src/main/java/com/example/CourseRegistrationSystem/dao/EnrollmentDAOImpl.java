@@ -3,6 +3,7 @@ package com.example.CourseRegistrationSystem.dao;
 import com.example.CourseRegistrationSystem.entity.Enrollment;
 import com.example.CourseRegistrationSystem.entity.Section;
 import com.example.CourseRegistrationSystem.entity.Student;
+import com.example.CourseRegistrationSystem.enums.StatusType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
@@ -38,6 +39,7 @@ public class EnrollmentDAOImpl implements EnrollmentDAO{
             throw new IllegalArgumentException("Section with ID " + sectionId + " not found");
         }
         enrollment.setSection(section);
+        enrollment.setStatus(StatusType.ENROLLED);
         entityManager.persist(enrollment);
 
     }
