@@ -45,4 +45,4 @@ Behavior:
 
 ## Notes
 
-The login page in `src/pages/Login.jsx` currently posts to `POST /api/auth/login` and expects a token inside the response message, so the backend contract should match the page you are using.
+The login pages in `src/pages/Login.jsx` and `src/pages/AdminLogin.jsx` currently post to `POST /api/auth/login` and expect a token inside the response message, so the backend contract should match the page you are using.

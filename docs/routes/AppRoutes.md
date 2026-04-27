@@ -10,7 +10,7 @@ Defines the client-side routes for the whole application.
 
 - `/` -> `Login`
 - `/login` -> `Login`
-- `/admin-login` -> `Login`
+- `/admin-login` -> `AdminLogin`
 - `/admin-dashboard` -> `AdminDashboard`
 - `/student-dashboard` -> `StudentDashboard`
 - `/admin/:entity` -> `AdminEntityPage`

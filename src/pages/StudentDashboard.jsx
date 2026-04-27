@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import api from "../api/api";
 import Navbar from "../components/Navbar";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // ---------------------------------------------------------------------------
 // Time-conflict helpers (pure)
@@ -265,11 +267,6 @@ export default function StudentDashboard() {
       });
   }, [enrollments, activeSemester, sectionDetailsMap]);
 
-  const totalCredits = useMemo(
-    () => activeSchedule.reduce((sum, s) => sum + (s.credits ?? 0), 0),
-    [activeSchedule],
-  );
-
   const resolvedLabel = activeSemester
     ? semesterLabel(activeSemester)
     : "Select a semester";
@@ -399,6 +396,12 @@ export default function StudentDashboard() {
         errData?.message ||
         err?.message ||
         "Failed to drop section. Please try again.";
+      toast.error(msg, {
+        style: {
+          background: "#111827",
+          color: "#fff",
+        },
+      });
       setNotice({ type: "error", message: msg });
     } finally {
       setDroppingId(null);
@@ -413,6 +416,13 @@ export default function StudentDashboard() {
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_38%),linear-gradient(135deg,#020617_0%,#0f172a_50%,#020617_100%)]">
       <Navbar studentName={student?.firstName || student?.name} />
 
+      <ToastContainer
+        position="top-right"
+        autoClose={4500}
+        theme="dark"
+        newestOnTop
+        pauseOnFocusLoss={false}
+      />
       <main className="space-y-8 px-6 py-8 text-white">
         {/* ── Hero ── */}
         <section className="grid gap-4 items-stretch lg:grid-cols-[1.35fr_0.65fr]">
@@ -446,17 +456,11 @@ export default function StudentDashboard() {
                 {activeIsClosed ? "Enrollment closed" : "Enrollment open"}
               </span>
             </div>
-            <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-              <div className="rounded-2xl bg-black/20 p-4">
+            <div className="mt-4">
+              <div className="rounded-2xl bg-black/20 p-6">
                 <div className="text-white/50">Sections</div>
-                <div className="mt-1 text-2xl font-bold">
+                <div className="mt-2 text-4xl font-bold">
                   {enrollmentsLoading ? "…" : activeSchedule.length}
-                </div>
-              </div>
-              <div className="rounded-2xl bg-black/20 p-4">
-                <div className="text-white/50">Credits</div>
-                <div className="mt-1 text-2xl font-bold">
-                  {enrollmentsLoading ? "…" : totalCredits}
                 </div>
               </div>
             </div>

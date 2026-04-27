@@ -55,6 +55,12 @@ Admin login:
 - Email: `admin@example.com`
 - Password: `admin123`
 
+Admin users should sign in from the admin login page:
+
+- Open `/admin-login`
+- Enter the admin email and password
+- Continue to `/admin-dashboard` after login
+
 ## Login endpoint
 
 The backend login request should use `POST /api/auth/login` with a JSON body like this:
@@ -75,7 +81,7 @@ Example admin request:
 }
 ```
 
-Note: the current frontend code is wired to `POST /api/student/login` for student sign-in and `POST /api/admin/login` for admin sign-in. Make sure the backend is running and exposes the route your build expects before testing.
+Note: the current frontend code is wired to `POST /api/auth/login` for both student and admin sign-in. Make sure the backend is running and exposes the route your build expects before testing.
 
 ## Available scripts
 

@@ -11,6 +11,7 @@ This folder documents the frontend structure file by file.
 ## Pages
 
 - [Login](./pages/Login.md)
+- [Admin login](./pages/AdminLogin.md)
 - [Admin dashboard](./pages/AdminDashboard.md)
 - [Admin entity page](./pages/AdminEntityPage.md)
 - [Student dashboard](./pages/StudentDashboard.md)

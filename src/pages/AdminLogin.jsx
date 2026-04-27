@@ -5,12 +5,12 @@ import { motion } from "framer-motion";
 import Input from "../components/Input";
 import Button from "../components/Button";
 
-export default function Login() {
+export default function AdminLogin() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const role = "STUDENT";
+  const role = "ADMIN";
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -81,7 +81,7 @@ export default function Login() {
         "
       >
         <h2 className="text-3xl font-bold text-white text-center mb-2">
-          Student Login
+          Admin Login
         </h2>
 
         <p className="text-gray-400 text-center mb-6">

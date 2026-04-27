@@ -1,10 +1,10 @@
-# Login Page
+# Admin Login Page
 
-File: `src/pages/Login.jsx`
+File: `src/pages/AdminLogin.jsx`
 
 ## Purpose
 
-Handles student authentication.
+Handles administrator authentication before entering the admin dashboard.
 
 ## UI
 
@@ -18,12 +18,12 @@ Handles student authentication.
 On submit, the page:
 
 - sends `POST http://localhost:8080/api/auth/login`
-- includes `email`, `password`, and `role: "STUDENT"` in the request body
+- includes `email`, `password`, and `role: "ADMIN"` in the request body
 - expects a successful response with `success: true`
 - extracts a token from the response message if it contains `Token:`
 - stores the token in `localStorage`
 - decodes the JWT payload to store the role in `localStorage`
-- routes to `/student-dashboard`
+- routes to `/admin-dashboard`
 
 ## Dependencies
 
@@ -33,4 +33,4 @@ On submit, the page:
 
 ## Notes
 
-This file does not use the helper functions in `src/api/api.js`; it calls `fetch` directly.
+Admin users should open `/admin-login` before going to the admin dashboard.
