@@ -83,3 +83,7 @@ Note: the current frontend code is wired to `POST /api/student/login` for studen
 - `npm run build` - build the project for production
 - `npm run lint` - run ESLint
 - `npm run preview` - preview the production build
+
+## Documentation
+
+See the generated file-by-file docs in [docs/README.md](docs/README.md).
