@@ -11,6 +11,40 @@ Spring Boot backend for a Course Registration System.
 - [ ] Set your local MySQL username/password in `src/main/resources/application.yaml`
 - [ ] Run the application with Maven Wrapper
 
+## Test Login Credentials (For Teachers)
+
+Use these seeded accounts from `src/main/resources/data.sql` for testing:
+
+- Student login
+  - Email: `student@example.com`
+  - Password: `student123`
+
+- Admin login
+  - Email: `admin@example.com`
+  - Password: `admin123`
+
+Login endpoint:
+
+```http
+POST /api/auth/login
+```
+
+Example request body:
+
+```json
+{
+  "email": "student@example.com",
+  "password": "student123"
+}
+```
+
+```json
+{
+  "email": "admin@example.com",
+  "password": "admin123"
+}
+```
+
 ## 1) Clone the project
 
 ### HTTPS

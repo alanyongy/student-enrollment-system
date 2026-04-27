@@ -95,7 +95,7 @@ VALUES (18, 'Daniel', 'Christopher', 'Kim', 'instructor6@example.com',
 INSERT INTO persons (person_id, first_name, middle_name, last_name, email, password, phone_number, date_of_birth, security_role)
 VALUES (19, 'Prateek', '-', 'Babani', 'prateek@gmail.com',
  '$2a$10$sse0PSljrdndmbjFDg1BYe3vw.Jxr/MnYl.TUZEKlRQ5Vjj13iGPy',
- '4035550018', '1975-10-11', 'ADMIN');
+ '4035550019', '1975-10-11', 'ADMIN');
 
 -- ========================
 -- SUBCLASS TABLES (JOINED)
@@ -121,10 +121,19 @@ VALUES (4, 8, 'Algorithms and Data Structures');
 INSERT INTO instructors (person_id, years_of_experience, expertise_topics)
 VALUES (5, 6, 'Calculus and Linear Algebra');
 
+INSERT INTO instructors (person_id, years_of_experience, expertise_topics)
+VALUES (16, 12, 'Database Systems and Software Engineering');
+
+INSERT INTO instructors (person_id, years_of_experience, expertise_topics)
+VALUES (17, 10, 'Human-Computer Interaction and UI Design');
+
+INSERT INTO instructors (person_id, years_of_experience, expertise_topics)
+VALUES (18, 15, 'Computer Networks and Distributed Systems');
+
 
 -- STUDENT
 INSERT INTO students (person_id, credits_earned, academic_status, enrollment_year)
-VALUES (1, 1, 'test', 2026);
+VALUES (1, 12, 'Good Standing', 2026);
 
 INSERT INTO students (person_id, credits_earned, academic_status, enrollment_year)
 VALUES (6, 24, 'Good Standing', 2025);
@@ -141,7 +150,22 @@ VALUES (9, 60, 'Good Standing', 2023);
 INSERT INTO students (person_id, credits_earned, academic_status, enrollment_year)
 VALUES (10, 18, 'Good Standing', 2025);
 
--- UNDERGRAD 
+INSERT INTO students (person_id, credits_earned, academic_status, enrollment_year)
+VALUES (11, 30, 'Good Standing', 2024);
+
+INSERT INTO students (person_id, credits_earned, academic_status, enrollment_year)
+VALUES (12, 15, 'Good Standing', 2025);
+
+INSERT INTO students (person_id, credits_earned, academic_status, enrollment_year)
+VALUES (13, 75, 'Good Standing', 2023);
+
+INSERT INTO students (person_id, credits_earned, academic_status, enrollment_year)
+VALUES (14, 9, 'Good Standing', 2026);
+
+INSERT INTO students (person_id, credits_earned, academic_status, enrollment_year)
+VALUES (15, 33, 'Probation', 2024);
+
+-- UNDERGRAD
 INSERT INTO undergrads (person_id, year_of_study)
 VALUES (1, 1);
 
@@ -154,13 +178,28 @@ VALUES (7, 1);
 INSERT INTO undergrads (person_id, year_of_study)
 VALUES (8, 3);
 
+INSERT INTO undergrads (person_id, year_of_study)
+VALUES (11, 2);
+
+INSERT INTO undergrads (person_id, year_of_study)
+VALUES (12, 1);
+
+INSERT INTO undergrads (person_id, year_of_study)
+VALUES (14, 1);
+
 -- GRADS
 INSERT INTO grads (person_id)
 VALUES (9);
 
+INSERT INTO grads (person_id)
+VALUES (13);
+
 -- POSTGRADS
 INSERT INTO postgrads (person_id)
 VALUES (10);
+
+INSERT INTO postgrads (person_id)
+VALUES (15);
 
 -- ========================
 -- SEMESTERS
@@ -226,6 +265,21 @@ VALUES (5, 9, 3);
 
 INSERT INTO admissions (admission_id, student_id, program_id)
 VALUES (6, 10, 4);
+
+INSERT INTO admissions (admission_id, student_id, program_id)
+VALUES (7, 11, 1);
+
+INSERT INTO admissions (admission_id, student_id, program_id)
+VALUES (8, 12, 2);
+
+INSERT INTO admissions (admission_id, student_id, program_id)
+VALUES (9, 13, 3);
+
+INSERT INTO admissions (admission_id, student_id, program_id)
+VALUES (10, 14, 1);
+
+INSERT INTO admissions (admission_id, student_id, program_id)
+VALUES (11, 15, 4);
 
 -- ========================
 -- COURSES
