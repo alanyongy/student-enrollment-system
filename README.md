@@ -4,8 +4,6 @@ A database-driven course registration platform that models real-world academic e
 
 Built as a full-stack application using **Spring Boot**, **React**, and **MySQL**, this project demonstrates relational database design, role-based access control, and constraint-driven enrollment logic.
 
----
-
 ## 🧩 Overview
 
 The Course Registration System simulates how universities manage course offerings and student enrollment at scale.
