@@ -10,8 +10,8 @@ The Course Registration System simulates how universities manage course offering
 
 It supports two primary user roles:
 
-- 👨‍🎓 **Students** — browse courses, view prerequisites, enroll/drop sections, and track academic progress  
-- 🛠️ **Administrators** — manage institutional data including courses, programs, sections, instructors, and student records  
+- **Students** — browse courses, view prerequisites, enroll/drop sections, and track academic progress  
+- **Administrators** — manage institutional data including courses, programs, sections, instructors, and student records  
 
 The system enforces key academic constraints such as:
 - prerequisite requirements
@@ -29,7 +29,7 @@ The system enforces key academic constraints such as:
 
 ## 🎯 Key Features
 
-### 👨‍🎓 Student Features
+### Student Features
 - Login / logout authentication
 - View programs and courses
 - View course prerequisites
@@ -37,7 +37,7 @@ The system enforces key academic constraints such as:
 - Enroll in / drop courses
 - View enrolled and completed courses
 
-### 🛠️ Administrator Features
+### Administrator Features
 - Manage courses and prerequisites
 - Create and update programs and departments
 - Manage sections and semesters
@@ -80,13 +80,13 @@ This ensures:
 
 ## 🧠 Core System Logic
 
-### 📌 Enrollment Constraints
+### Enrollment Constraints
 Students can only enroll if:
 - prerequisites are completed
 - the course is available in their program
 - section capacity rules are satisfied
 
-### 📌 Administrative Control Flow
+### Administrative Control Flow
 Administrators define:
 - which courses exist
 - which programs they belong to
