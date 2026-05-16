@@ -142,8 +142,6 @@ My contributions include:
 - integration between backend and frontend systems
 - full administrator frontend implementation
 
----
-
 ## 📁 Project Structure (Simplified)
 - /backend → Spring Boot REST API
 - /frontend → React UI
