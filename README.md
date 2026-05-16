@@ -21,8 +21,6 @@ The system enforces key academic constraints such as:
 - section capacity and structure rules
 - role-based access permissions
 
----
-
 ## ⚙️ Tech Stack
 
 - **Frontend:** React  
@@ -30,8 +28,6 @@ The system enforces key academic constraints such as:
 - **Database:** MySQL  
 - **Architecture:** RESTful API + Relational Database Design  
 - **Security:** Role-Based Access Control (RBAC)
-
----
 
 ## 🎯 Key Features
 
@@ -49,8 +45,6 @@ The system enforces key academic constraints such as:
 - Manage sections and semesters
 - Assign instructors to sections
 - Manage student records and admissions
-
----
 
 ## 🏗️ System Design
 
@@ -72,8 +66,6 @@ Key design principles:
 - Separation of concerns between academic structure and enrollment logic
 - Clear mapping between ER design and relational schema implementation
 
----
-
 ## 🔐 Role-Based Access Control (RBAC)
 
 The system enforces strict role separation:
@@ -87,8 +79,6 @@ This ensures:
 - data privacy
 - prevention of unauthorized modifications
 - clean separation of system responsibilities
-
----
 
 ## 🧠 Core System Logic
 
@@ -107,8 +97,6 @@ Administrators define:
 
 Students interact with this structure indirectly through enrollment actions.
 
----
-
 ## 🗄️ Database Design
 
 The system uses a fully relational MySQL schema with:
@@ -120,8 +108,6 @@ The system uses a fully relational MySQL schema with:
 
 The schema is derived from an ER model and converted into a normalized relational schema following standard database design principles.
 
----
-
 ## 🚀 Implementation Highlights
 
 - REST API built with Spring Boot for modular backend services
@@ -130,8 +116,6 @@ The schema is derived from an ER model and converted into a normalized relationa
 - Pagination and sorting for scalable course browsing
 - Structured enrollment workflow with validation at API level
 - MySQL-backed persistence layer with relational constraints
-
----
 
 ## 📊 Project Significance
 
@@ -148,8 +132,6 @@ It mirrors the kind of systems used in enterprise platforms such as:
 
 but implemented in a simplified, educational form focused on clarity and core functionality.
 
----
-
 ## 👥 Group Project Note
 
 This was a **collaborative academic project**.
@@ -160,6 +142,7 @@ My contributions include:
 - enforcement of enrollment constraints and business logic
 - role-based access control implementation
 - integration between backend and frontend systems
+- full administrator frontend implementation
 
 ---
 
@@ -169,16 +152,12 @@ My contributions include:
 - /database → MySQL schema & setup scripts
 - /docs → Project report and ERD/RM diagrams
 
----
-
 ## ⚠️ Limitations
 
 - Designed for academic scale (not production load-tested)
 - No deployment pipeline included (local setup only)
 - Limited UI polish compared to production enrollment systems
 - Simplified concurrency handling for enrollment operations
-
----
 
 ## 📌 Lessons Learned
 
@@ -188,8 +167,6 @@ My contributions include:
 - Building APIs that enforce business rules consistently
 - Structuring full-stack applications with clean separation of concerns
 
----
-
 ## 🔧 Future Improvements
 
 - Deployment to cloud (AWS / Azure / GCP)
@@ -197,12 +174,3 @@ My contributions include:
 - Enhanced UI/UX for course browsing and registration
 - Advanced search/filtering for course discovery
 - Audit logging for administrative actions
-
----
-
-## 📬 Contact
-
-**Alan Yong**  
-📧 alanyongy@gmail.com  
-💻 GitHub: https://github.com/alanyongy  
-🔗 LinkedIn: https://www.linkedin.com/in/alanyongy
