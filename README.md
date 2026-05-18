@@ -1,5 +1,7 @@
 # 🎓 Course Registration System (Full-Stack Web Application)
 
+![Login Page](/writeup-assets/combined-preview.png)
+
 A database-driven course registration platform that models real-world academic enrollment systems with support for students, administrators, programs, prerequisites, and section management.
 
 Built as a full-stack application using **Spring Boot**, **React**, and **MySQL**, this project demonstrates relational database design, role-based access control, and constraint-driven enrollment logic.
@@ -44,9 +46,40 @@ The system enforces key academic constraints such as:
 - Assign instructors to sections
 - Manage student records and admissions
 
+## 🖼️ System Screenshots
+
+### 🔐 Login Page
+![Login Page](/writeup-assets/login.png)
+
+### 🎓 Student Dashboard
+![Student Dashboard](/writeup-assets/student-dashboard.png)
+
+![Student Dashboard 2](/writeup-assets/student-dashboard2.png)
+
+### 👤 Student Profile
+![Student Profile](/writeup-assets/student-profile.png)
+
+### 🛠️ Administrator Dashboard
+![Admin Dashboard](/writeup-assets/admin-dashboard.png)
+
+### 📚 Course Creation (Admin)
+![Course Creation](/writeup-assets/admin-course-creation.png)
+
+### 🧾 Enrollment Table (Admin)
+![Enrollment Table](/writeup-assets/admin-enrollment-table.png)
+
+### 📱 Admin Mobile View
+![Admin Mobile View](/writeup-assets/admin-mobile-view.png)
+
 ## 🏗️ System Design
 
 The system is built around a relational model representing a realistic academic environment.
+
+### Conceptual ER Model
+![ER Diagram](/writeup-assets/EERD.png)
+
+### Relational Model
+![Relational Model](/writeup-assets/RM.png)
 
 Core entities include:
 - Students
@@ -77,6 +110,7 @@ This ensures:
 - data privacy
 - prevention of unauthorized modifications
 - clean separation of system responsibilities
+
 
 ## 🧠 Core System Logic
 
@@ -143,10 +177,11 @@ My contributions include:
 - full administrator frontend implementation
 
 ## 📁 Project Structure (Simplified)
-- /backend → Spring Boot REST API
-- /frontend → React UI
-- /database → MySQL schema & setup scripts
-- /docs → Project report and ERD/RM diagrams
+
+- /backend → Spring Boot REST API  
+- /frontend → React UI  
+- /database → MySQL schema & setup scripts  
+- /docs → Project report and ERD/RM diagrams  
 
 ## ⚠️ Limitations
 
@@ -170,7 +205,6 @@ My contributions include:
 - Enhanced UI/UX for course browsing and registration
 - Advanced search/filtering for course discovery
 - Audit logging for administrative actions
-
 
 ## ⚙️ How to Run
 
@@ -207,8 +241,6 @@ My contributions include:
 > 
 > ### 1. Create the Database
 > 
-> Open MySQL and create the database:
-> 
 > ```sql
 > CREATE DATABASE appdb;
 > ```
@@ -217,13 +249,9 @@ My contributions include:
 > 
 > ### 2. Configure Database Credentials
 > 
-> Edit the following file:
-> 
 > ```text
 > /backend/src/main/resources/application.yaml
 > ```
-> 
-> Example configuration:
 > 
 > ```yaml
 > spring:
@@ -235,27 +263,16 @@ My contributions include:
 > 
 > ---
 > 
-> ### 3. Run the Backend Server
-> 
-> Navigate to the backend directory:
+> ### 3. Run the Backend
 > 
 > ```bash
 > cd backend
+> .\mvnw.cmd clean spring-boot:run   # Windows
+> ./mvnw clean spring-boot:run       # Mac/Linux
 > ```
 > 
-> #### Windows
-> ```bash
-> .\mvnw.cmd clean spring-boot:run
+> Backend runs at:
 > ```
-> 
-> #### macOS / Linux
-> ```bash
-> ./mvnw clean spring-boot:run
-> ```
-> 
-> The backend will start at:
-> 
-> ```text
 > http://localhost:8080
 > ```
 > 
@@ -263,39 +280,14 @@ My contributions include:
 > 
 > ## Frontend Setup
 > 
-> The frontend source code is located in:
-> 
-> ```text
-> /frontend
-> ```
-> 
-> ### 1. Navigate to the Frontend Directory
-> 
-> From the project root:
-> 
 > ```bash
 > cd frontend
-> ```
-> 
-> ---
-> 
-> ### 2. Install Dependencies
-> 
-> ```bash
 > npm install
-> ```
-> 
-> ---
-> 
-> ### 3. Run the Frontend
-> 
-> ```bash
 > npm run dev
 > ```
 > 
-> The frontend will typically run at:
-> 
-> ```text
+> Frontend runs at:
+> ```
 > http://localhost:5173
 > ```
 > 
@@ -303,54 +295,23 @@ My contributions include:
 > 
 > ## Test Accounts
 > 
-> ### Student Account
-> ```text
-> Email: student@example.com
-> Password: student123
+> **Student**
+> ```
+> student@example.com / student123
 > ```
 > 
-> ### Administrator Account
-> ```text
-> Email: admin@example.com
-> Password: admin123
+> **Admin**
+> ```
+> admin@example.com / admin123
 > ```
 > 
 > ---
 > 
-> ## Authentication
+> ## Notes
 > 
-> The system authenticates users through:
+> - Backend must run before frontend
+> - DB is recreated on startup (`ddl-auto: create`)
+> - Seed data loads from `data.sql`
+> - Do not expose real DB credentials publicly
 > 
-> ```http
-> POST /api/auth/login
-> ```
-> 
-> After login:
-> - Students are redirected to the student dashboard
-> - Administrators are redirected to the admin dashboard
-> 
-> ---
-> 
-> ## Important Notes
-> 
-> - The backend is configured with:
-> 
-> ```yaml
-> ddl-auto: create
-> ```
-> 
-> meaning the database schema is recreated automatically on startup.
-> 
-> - Initial test data is loaded from:
-> 
-> ```text
-> data.sql
-> ```
-> 
-> each time the backend starts.
-> 
-> - The backend **must be running before** the frontend is started.
-> 
-> - Database credentials should never be committed publicly.
-
 > </details>
