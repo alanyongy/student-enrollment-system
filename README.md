@@ -69,7 +69,7 @@ The system enforces key academic constraints such as:
 ![Enrollment Table](/writeup-assets/admin-enrollment-table.png)
 
 ### 📱 Admin Mobile View
-<img src="/writeup-assets/admin-mobile-view.png" alt="Admin Mobile View" width="200px" />
+<img src="/writeup-assets/admin-mobile.png" alt="Admin Mobile View" width="200px" />
 
 ## 🏗️ System Design
 
