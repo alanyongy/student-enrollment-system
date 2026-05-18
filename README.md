@@ -170,3 +170,187 @@ My contributions include:
 - Enhanced UI/UX for course browsing and registration
 - Advanced search/filtering for course discovery
 - Audit logging for administrative actions
+
+
+## ⚙️ How to Run
+
+> <details>
+> <summary><strong>Click to Expand</strong></summary>
+> 
+> ### Prerequisites
+> 
+> Install the following software before running the project:
+> 
+> - Java Development Kit (JDK) 21
+> - MySQL Server (8.x recommended)
+> - Node.js + npm
+> - *(Optional)* MySQL Workbench
+> 
+> ---
+> 
+> ## Clone the Repository
+> 
+> ```bash
+> git clone <repository-url>
+> cd <repository-name>
+> ```
+> 
+> ---
+> 
+> ## Backend Setup
+> 
+> The backend source code is located in:
+> 
+> ```text
+> /backend
+> ```
+> 
+> ### 1. Create the Database
+> 
+> Open MySQL and create the database:
+> 
+> ```sql
+> CREATE DATABASE appdb;
+> ```
+> 
+> ---
+> 
+> ### 2. Configure Database Credentials
+> 
+> Edit the following file:
+> 
+> ```text
+> /backend/src/main/resources/application.yaml
+> ```
+> 
+> Example configuration:
+> 
+> ```yaml
+> spring:
+>   datasource:
+>     url: jdbc:mysql://localhost:3306/appdb
+>     username: root
+>     password: <your-password>
+> ```
+> 
+> ---
+> 
+> ### 3. Run the Backend Server
+> 
+> Navigate to the backend directory:
+> 
+> ```bash
+> cd backend
+> ```
+> 
+> #### Windows
+> ```bash
+> .\mvnw.cmd clean spring-boot:run
+> ```
+> 
+> #### macOS / Linux
+> ```bash
+> ./mvnw clean spring-boot:run
+> ```
+> 
+> The backend will start at:
+> 
+> ```text
+> http://localhost:8080
+> ```
+> 
+> ---
+> 
+> ## Frontend Setup
+> 
+> The frontend source code is located in:
+> 
+> ```text
+> /frontend
+> ```
+> 
+> ### 1. Navigate to the Frontend Directory
+> 
+> From the project root:
+> 
+> ```bash
+> cd frontend
+> ```
+> 
+> ---
+> 
+> ### 2. Install Dependencies
+> 
+> ```bash
+> npm install
+> ```
+> 
+> ---
+> 
+> ### 3. Run the Frontend
+> 
+> ```bash
+> npm run dev
+> ```
+> 
+> The frontend will typically run at:
+> 
+> ```text
+> http://localhost:5173
+> ```
+> 
+> ---
+> 
+> ## Test Accounts
+> 
+> ### Student Account
+> ```text
+> Email: student@example.com
+> Password: student123
+> ```
+> 
+> ### Administrator Account
+> ```text
+> Email: admin@example.com
+> Password: admin123
+> ```
+> 
+> ---
+> 
+> ## Authentication
+> 
+> The system authenticates users through:
+> 
+> ```http
+> POST /api/auth/login
+> ```
+> 
+> After login:
+> - Students are redirected to the student dashboard
+> - Administrators are redirected to the admin dashboard
+> 
+> ---
+> 
+> ## Important Notes
+> 
+> - The backend is configured with:
+> 
+> ```yaml
+> ddl-auto: create
+> ```
+> 
+> meaning the database schema is recreated automatically on startup.
+> 
+> - Initial test data is loaded from:
+> 
+> ```text
+> data.sql
+> ```
+> 
+> each time the backend starts.
+> 
+> - The backend **must be running before** the frontend is started.
+> 
+> - Database credentials should never be committed publicly.
+
+> </details>
